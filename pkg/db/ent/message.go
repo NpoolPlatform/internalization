@@ -8,13 +8,28 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
+	"github.com/google/uuid"
 )
 
 // Message is the model entity for the Message schema.
 type Message struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	ID uuid.UUID `json:"id,omitempty"`
+	// AppID holds the value of the "app_id" field.
+	AppID uuid.UUID `json:"app_id,omitempty"`
+	// MessageID holds the value of the "message_id" field.
+	MessageID uuid.UUID `json:"message_id,omitempty"`
+	// Lang holds the value of the "lang" field.
+	Lang message.Lang `json:"lang,omitempty"`
+	// Message holds the value of the "message" field.
+	Message string `json:"message,omitempty"`
+	// CreateAt holds the value of the "create_at" field.
+	CreateAt uint32 `json:"create_at,omitempty"`
+	// UpdateAt holds the value of the "update_at" field.
+	UpdateAt uint32 `json:"update_at,omitempty"`
+	// DeleteAt holds the value of the "delete_at" field.
+	DeleteAt uint32 `json:"delete_at,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -22,8 +37,12 @@ func (*Message) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case message.FieldID:
+		case message.FieldCreateAt, message.FieldUpdateAt, message.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
+		case message.FieldLang, message.FieldMessage:
+			values[i] = new(sql.NullString)
+		case message.FieldID, message.FieldAppID, message.FieldMessageID:
+			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Message", columns[i])
 		}
@@ -40,11 +59,53 @@ func (m *Message) assignValues(columns []string, values []interface{}) error {
 	for i := range columns {
 		switch columns[i] {
 		case message.FieldID:
-			value, ok := values[i].(*sql.NullInt64)
-			if !ok {
-				return fmt.Errorf("unexpected type %T for field id", value)
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field id", values[i])
+			} else if value != nil {
+				m.ID = *value
 			}
-			m.ID = int(value.Int64)
+		case message.FieldAppID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field app_id", values[i])
+			} else if value != nil {
+				m.AppID = *value
+			}
+		case message.FieldMessageID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field message_id", values[i])
+			} else if value != nil {
+				m.MessageID = *value
+			}
+		case message.FieldLang:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field lang", values[i])
+			} else if value.Valid {
+				m.Lang = message.Lang(value.String)
+			}
+		case message.FieldMessage:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field message", values[i])
+			} else if value.Valid {
+				m.Message = value.String
+			}
+		case message.FieldCreateAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field create_at", values[i])
+			} else if value.Valid {
+				m.CreateAt = uint32(value.Int64)
+			}
+		case message.FieldUpdateAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field update_at", values[i])
+			} else if value.Valid {
+				m.UpdateAt = uint32(value.Int64)
+			}
+		case message.FieldDeleteAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field delete_at", values[i])
+			} else if value.Valid {
+				m.DeleteAt = uint32(value.Int64)
+			}
 		}
 	}
 	return nil
@@ -73,6 +134,20 @@ func (m *Message) String() string {
 	var builder strings.Builder
 	builder.WriteString("Message(")
 	builder.WriteString(fmt.Sprintf("id=%v", m.ID))
+	builder.WriteString(", app_id=")
+	builder.WriteString(fmt.Sprintf("%v", m.AppID))
+	builder.WriteString(", message_id=")
+	builder.WriteString(fmt.Sprintf("%v", m.MessageID))
+	builder.WriteString(", lang=")
+	builder.WriteString(fmt.Sprintf("%v", m.Lang))
+	builder.WriteString(", message=")
+	builder.WriteString(m.Message)
+	builder.WriteString(", create_at=")
+	builder.WriteString(fmt.Sprintf("%v", m.CreateAt))
+	builder.WriteString(", update_at=")
+	builder.WriteString(fmt.Sprintf("%v", m.UpdateAt))
+	builder.WriteString(", delete_at=")
+	builder.WriteString(fmt.Sprintf("%v", m.DeleteAt))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -7,6 +7,7 @@ require (
 	github.com/NpoolPlatform/cloud-hashing-order v0.0.0-20211220094213-6976c3eb93ee
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20211222114515-4928e6cf3f1f
 	github.com/go-resty/resty/v2 v2.7.0
+	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0
 	github.com/streadway/amqp v1.0.0
 	github.com/stretchr/testify v1.7.0

@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/predicate"
+	"github.com/google/uuid"
 )
 
 // MessageUpdate is the builder for updating Message entities.
@@ -26,6 +27,85 @@ func (mu *MessageUpdate) Where(ps ...predicate.Message) *MessageUpdate {
 	return mu
 }
 
+// SetAppID sets the "app_id" field.
+func (mu *MessageUpdate) SetAppID(u uuid.UUID) *MessageUpdate {
+	mu.mutation.SetAppID(u)
+	return mu
+}
+
+// SetMessageID sets the "message_id" field.
+func (mu *MessageUpdate) SetMessageID(u uuid.UUID) *MessageUpdate {
+	mu.mutation.SetMessageID(u)
+	return mu
+}
+
+// SetLang sets the "lang" field.
+func (mu *MessageUpdate) SetLang(m message.Lang) *MessageUpdate {
+	mu.mutation.SetLang(m)
+	return mu
+}
+
+// SetMessage sets the "message" field.
+func (mu *MessageUpdate) SetMessage(s string) *MessageUpdate {
+	mu.mutation.SetMessage(s)
+	return mu
+}
+
+// SetCreateAt sets the "create_at" field.
+func (mu *MessageUpdate) SetCreateAt(u uint32) *MessageUpdate {
+	mu.mutation.ResetCreateAt()
+	mu.mutation.SetCreateAt(u)
+	return mu
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (mu *MessageUpdate) SetNillableCreateAt(u *uint32) *MessageUpdate {
+	if u != nil {
+		mu.SetCreateAt(*u)
+	}
+	return mu
+}
+
+// AddCreateAt adds u to the "create_at" field.
+func (mu *MessageUpdate) AddCreateAt(u uint32) *MessageUpdate {
+	mu.mutation.AddCreateAt(u)
+	return mu
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (mu *MessageUpdate) SetUpdateAt(u uint32) *MessageUpdate {
+	mu.mutation.ResetUpdateAt()
+	mu.mutation.SetUpdateAt(u)
+	return mu
+}
+
+// AddUpdateAt adds u to the "update_at" field.
+func (mu *MessageUpdate) AddUpdateAt(u uint32) *MessageUpdate {
+	mu.mutation.AddUpdateAt(u)
+	return mu
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (mu *MessageUpdate) SetDeleteAt(u uint32) *MessageUpdate {
+	mu.mutation.ResetDeleteAt()
+	mu.mutation.SetDeleteAt(u)
+	return mu
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (mu *MessageUpdate) SetNillableDeleteAt(u *uint32) *MessageUpdate {
+	if u != nil {
+		mu.SetDeleteAt(*u)
+	}
+	return mu
+}
+
+// AddDeleteAt adds u to the "delete_at" field.
+func (mu *MessageUpdate) AddDeleteAt(u uint32) *MessageUpdate {
+	mu.mutation.AddDeleteAt(u)
+	return mu
+}
+
 // Mutation returns the MessageMutation object of the builder.
 func (mu *MessageUpdate) Mutation() *MessageMutation {
 	return mu.mutation
@@ -37,13 +117,20 @@ func (mu *MessageUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	mu.defaults()
 	if len(mu.hooks) == 0 {
+		if err = mu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = mu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*MessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = mu.check(); err != nil {
+				return 0, err
 			}
 			mu.mutation = mutation
 			affected, err = mu.sqlSave(ctx)
@@ -85,13 +172,31 @@ func (mu *MessageUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (mu *MessageUpdate) defaults() {
+	if _, ok := mu.mutation.UpdateAt(); !ok {
+		v := message.UpdateDefaultUpdateAt()
+		mu.mutation.SetUpdateAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (mu *MessageUpdate) check() error {
+	if v, ok := mu.mutation.Lang(); ok {
+		if err := message.LangValidator(v); err != nil {
+			return &ValidationError{Name: "lang", err: fmt.Errorf("ent: validator failed for field \"lang\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   message.Table,
 			Columns: message.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: message.FieldID,
 			},
 		},
@@ -102,6 +207,76 @@ func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := mu.mutation.AppID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: message.FieldAppID,
+		})
+	}
+	if value, ok := mu.mutation.MessageID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: message.FieldMessageID,
+		})
+	}
+	if value, ok := mu.mutation.Lang(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: message.FieldLang,
+		})
+	}
+	if value, ok := mu.mutation.Message(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: message.FieldMessage,
+		})
+	}
+	if value, ok := mu.mutation.CreateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldCreateAt,
+		})
+	}
+	if value, ok := mu.mutation.AddedCreateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldCreateAt,
+		})
+	}
+	if value, ok := mu.mutation.UpdateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldUpdateAt,
+		})
+	}
+	if value, ok := mu.mutation.AddedUpdateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldUpdateAt,
+		})
+	}
+	if value, ok := mu.mutation.DeleteAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldDeleteAt,
+		})
+	}
+	if value, ok := mu.mutation.AddedDeleteAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldDeleteAt,
+		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, mu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -122,6 +297,85 @@ type MessageUpdateOne struct {
 	mutation *MessageMutation
 }
 
+// SetAppID sets the "app_id" field.
+func (muo *MessageUpdateOne) SetAppID(u uuid.UUID) *MessageUpdateOne {
+	muo.mutation.SetAppID(u)
+	return muo
+}
+
+// SetMessageID sets the "message_id" field.
+func (muo *MessageUpdateOne) SetMessageID(u uuid.UUID) *MessageUpdateOne {
+	muo.mutation.SetMessageID(u)
+	return muo
+}
+
+// SetLang sets the "lang" field.
+func (muo *MessageUpdateOne) SetLang(m message.Lang) *MessageUpdateOne {
+	muo.mutation.SetLang(m)
+	return muo
+}
+
+// SetMessage sets the "message" field.
+func (muo *MessageUpdateOne) SetMessage(s string) *MessageUpdateOne {
+	muo.mutation.SetMessage(s)
+	return muo
+}
+
+// SetCreateAt sets the "create_at" field.
+func (muo *MessageUpdateOne) SetCreateAt(u uint32) *MessageUpdateOne {
+	muo.mutation.ResetCreateAt()
+	muo.mutation.SetCreateAt(u)
+	return muo
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (muo *MessageUpdateOne) SetNillableCreateAt(u *uint32) *MessageUpdateOne {
+	if u != nil {
+		muo.SetCreateAt(*u)
+	}
+	return muo
+}
+
+// AddCreateAt adds u to the "create_at" field.
+func (muo *MessageUpdateOne) AddCreateAt(u uint32) *MessageUpdateOne {
+	muo.mutation.AddCreateAt(u)
+	return muo
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (muo *MessageUpdateOne) SetUpdateAt(u uint32) *MessageUpdateOne {
+	muo.mutation.ResetUpdateAt()
+	muo.mutation.SetUpdateAt(u)
+	return muo
+}
+
+// AddUpdateAt adds u to the "update_at" field.
+func (muo *MessageUpdateOne) AddUpdateAt(u uint32) *MessageUpdateOne {
+	muo.mutation.AddUpdateAt(u)
+	return muo
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (muo *MessageUpdateOne) SetDeleteAt(u uint32) *MessageUpdateOne {
+	muo.mutation.ResetDeleteAt()
+	muo.mutation.SetDeleteAt(u)
+	return muo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (muo *MessageUpdateOne) SetNillableDeleteAt(u *uint32) *MessageUpdateOne {
+	if u != nil {
+		muo.SetDeleteAt(*u)
+	}
+	return muo
+}
+
+// AddDeleteAt adds u to the "delete_at" field.
+func (muo *MessageUpdateOne) AddDeleteAt(u uint32) *MessageUpdateOne {
+	muo.mutation.AddDeleteAt(u)
+	return muo
+}
+
 // Mutation returns the MessageMutation object of the builder.
 func (muo *MessageUpdateOne) Mutation() *MessageMutation {
 	return muo.mutation
@@ -140,13 +394,20 @@ func (muo *MessageUpdateOne) Save(ctx context.Context) (*Message, error) {
 		err  error
 		node *Message
 	)
+	muo.defaults()
 	if len(muo.hooks) == 0 {
+		if err = muo.check(); err != nil {
+			return nil, err
+		}
 		node, err = muo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*MessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = muo.check(); err != nil {
+				return nil, err
 			}
 			muo.mutation = mutation
 			node, err = muo.sqlSave(ctx)
@@ -188,13 +449,31 @@ func (muo *MessageUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (muo *MessageUpdateOne) defaults() {
+	if _, ok := muo.mutation.UpdateAt(); !ok {
+		v := message.UpdateDefaultUpdateAt()
+		muo.mutation.SetUpdateAt(v)
+	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (muo *MessageUpdateOne) check() error {
+	if v, ok := muo.mutation.Lang(); ok {
+		if err := message.LangValidator(v); err != nil {
+			return &ValidationError{Name: "lang", err: fmt.Errorf("ent: validator failed for field \"lang\": %w", err)}
+		}
+	}
+	return nil
+}
+
 func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
 			Table:   message.Table,
 			Columns: message.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: message.FieldID,
 			},
 		},
@@ -222,6 +501,76 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := muo.mutation.AppID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: message.FieldAppID,
+		})
+	}
+	if value, ok := muo.mutation.MessageID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: message.FieldMessageID,
+		})
+	}
+	if value, ok := muo.mutation.Lang(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: message.FieldLang,
+		})
+	}
+	if value, ok := muo.mutation.Message(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: message.FieldMessage,
+		})
+	}
+	if value, ok := muo.mutation.CreateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldCreateAt,
+		})
+	}
+	if value, ok := muo.mutation.AddedCreateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldCreateAt,
+		})
+	}
+	if value, ok := muo.mutation.UpdateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldUpdateAt,
+		})
+	}
+	if value, ok := muo.mutation.AddedUpdateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldUpdateAt,
+		})
+	}
+	if value, ok := muo.mutation.DeleteAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldDeleteAt,
+		})
+	}
+	if value, ok := muo.mutation.AddedDeleteAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: message.FieldDeleteAt,
+		})
 	}
 	_node = &Message{config: muo.config}
 	_spec.Assign = _node.assignValues

@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/predicate"
+	"github.com/google/uuid"
 )
 
 // MessageQuery is the builder for querying Message entities.
@@ -84,8 +85,8 @@ func (mq *MessageQuery) FirstX(ctx context.Context) *Message {
 
 // FirstID returns the first Message ID from the query.
 // Returns a *NotFoundError when no Message ID was found.
-func (mq *MessageQuery) FirstID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (mq *MessageQuery) FirstID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = mq.Limit(1).IDs(ctx); err != nil {
 		return
 	}
@@ -97,7 +98,7 @@ func (mq *MessageQuery) FirstID(ctx context.Context) (id int, err error) {
 }
 
 // FirstIDX is like FirstID, but panics if an error occurs.
-func (mq *MessageQuery) FirstIDX(ctx context.Context) int {
+func (mq *MessageQuery) FirstIDX(ctx context.Context) uuid.UUID {
 	id, err := mq.FirstID(ctx)
 	if err != nil && !IsNotFound(err) {
 		panic(err)
@@ -135,8 +136,8 @@ func (mq *MessageQuery) OnlyX(ctx context.Context) *Message {
 // OnlyID is like Only, but returns the only Message ID in the query.
 // Returns a *NotSingularError when exactly one Message ID is not found.
 // Returns a *NotFoundError when no entities are found.
-func (mq *MessageQuery) OnlyID(ctx context.Context) (id int, err error) {
-	var ids []int
+func (mq *MessageQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
+	var ids []uuid.UUID
 	if ids, err = mq.Limit(2).IDs(ctx); err != nil {
 		return
 	}
@@ -152,7 +153,7 @@ func (mq *MessageQuery) OnlyID(ctx context.Context) (id int, err error) {
 }
 
 // OnlyIDX is like OnlyID, but panics if an error occurs.
-func (mq *MessageQuery) OnlyIDX(ctx context.Context) int {
+func (mq *MessageQuery) OnlyIDX(ctx context.Context) uuid.UUID {
 	id, err := mq.OnlyID(ctx)
 	if err != nil {
 		panic(err)
@@ -178,8 +179,8 @@ func (mq *MessageQuery) AllX(ctx context.Context) []*Message {
 }
 
 // IDs executes the query and returns a list of Message IDs.
-func (mq *MessageQuery) IDs(ctx context.Context) ([]int, error) {
-	var ids []int
+func (mq *MessageQuery) IDs(ctx context.Context) ([]uuid.UUID, error) {
+	var ids []uuid.UUID
 	if err := mq.Select(message.FieldID).Scan(ctx, &ids); err != nil {
 		return nil, err
 	}
@@ -187,7 +188,7 @@ func (mq *MessageQuery) IDs(ctx context.Context) ([]int, error) {
 }
 
 // IDsX is like IDs, but panics if an error occurs.
-func (mq *MessageQuery) IDsX(ctx context.Context) []int {
+func (mq *MessageQuery) IDsX(ctx context.Context) []uuid.UUID {
 	ids, err := mq.IDs(ctx)
 	if err != nil {
 		panic(err)
@@ -249,6 +250,19 @@ func (mq *MessageQuery) Clone() *MessageQuery {
 
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		AppID uuid.UUID `json:"app_id,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.Message.Query().
+//		GroupBy(message.FieldAppID).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
+//
 func (mq *MessageQuery) GroupBy(field string, fields ...string) *MessageGroupBy {
 	group := &MessageGroupBy{config: mq.config}
 	group.fields = append([]string{field}, fields...)
@@ -263,6 +277,17 @@ func (mq *MessageQuery) GroupBy(field string, fields ...string) *MessageGroupBy 
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		AppID uuid.UUID `json:"app_id,omitempty"`
+//	}
+//
+//	client.Message.Query().
+//		Select(message.FieldAppID).
+//		Scan(ctx, &v)
+//
 func (mq *MessageQuery) Select(fields ...string) *MessageSelect {
 	mq.fields = append(mq.fields, fields...)
 	return &MessageSelect{MessageQuery: mq}
@@ -329,7 +354,7 @@ func (mq *MessageQuery) querySpec() *sqlgraph.QuerySpec {
 			Table:   message.Table,
 			Columns: message.Columns,
 			ID: &sqlgraph.FieldSpec{
-				Type:   field.TypeInt,
+				Type:   field.TypeUUID,
 				Column: message.FieldID,
 			},
 		},

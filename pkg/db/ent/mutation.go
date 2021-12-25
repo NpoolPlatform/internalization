@@ -7,8 +7,11 @@ import (
 	"fmt"
 	"sync"
 
-	"entgo.io/ent"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/predicate"
+	"github.com/google/uuid"
+
+	"entgo.io/ent"
 )
 
 const (
@@ -28,7 +31,17 @@ type MessageMutation struct {
 	config
 	op            Op
 	typ           string
-	id            *int
+	id            *uuid.UUID
+	app_id        *uuid.UUID
+	message_id    *uuid.UUID
+	lang          *message.Lang
+	message       *string
+	create_at     *uint32
+	addcreate_at  *uint32
+	update_at     *uint32
+	addupdate_at  *uint32
+	delete_at     *uint32
+	adddelete_at  *uint32
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*Message, error)
@@ -55,7 +68,7 @@ func newMessageMutation(c config, op Op, opts ...messageOption) *MessageMutation
 }
 
 // withMessageID sets the ID field of the mutation.
-func withMessageID(id int) messageOption {
+func withMessageID(id uuid.UUID) messageOption {
 	return func(m *MessageMutation) {
 		var (
 			err   error
@@ -105,13 +118,331 @@ func (m MessageMutation) Tx() (*Tx, error) {
 	return tx, nil
 }
 
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Message entities.
+func (m *MessageMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
 // ID returns the ID value in the mutation. Note that the ID is only available
 // if it was provided to the builder or after it was returned from the database.
-func (m *MessageMutation) ID() (id int, exists bool) {
+func (m *MessageMutation) ID() (id uuid.UUID, exists bool) {
 	if m.id == nil {
 		return
 	}
 	return *m.id, true
+}
+
+// SetAppID sets the "app_id" field.
+func (m *MessageMutation) SetAppID(u uuid.UUID) {
+	m.app_id = &u
+}
+
+// AppID returns the value of the "app_id" field in the mutation.
+func (m *MessageMutation) AppID() (r uuid.UUID, exists bool) {
+	v := m.app_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAppID returns the old "app_id" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldAppID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldAppID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldAppID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAppID: %w", err)
+	}
+	return oldValue.AppID, nil
+}
+
+// ResetAppID resets all changes to the "app_id" field.
+func (m *MessageMutation) ResetAppID() {
+	m.app_id = nil
+}
+
+// SetMessageID sets the "message_id" field.
+func (m *MessageMutation) SetMessageID(u uuid.UUID) {
+	m.message_id = &u
+}
+
+// MessageID returns the value of the "message_id" field in the mutation.
+func (m *MessageMutation) MessageID() (r uuid.UUID, exists bool) {
+	v := m.message_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMessageID returns the old "message_id" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldMessageID(ctx context.Context) (v uuid.UUID, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldMessageID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldMessageID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMessageID: %w", err)
+	}
+	return oldValue.MessageID, nil
+}
+
+// ResetMessageID resets all changes to the "message_id" field.
+func (m *MessageMutation) ResetMessageID() {
+	m.message_id = nil
+}
+
+// SetLang sets the "lang" field.
+func (m *MessageMutation) SetLang(value message.Lang) {
+	m.lang = &value
+}
+
+// Lang returns the value of the "lang" field in the mutation.
+func (m *MessageMutation) Lang() (r message.Lang, exists bool) {
+	v := m.lang
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLang returns the old "lang" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldLang(ctx context.Context) (v message.Lang, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldLang is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldLang requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLang: %w", err)
+	}
+	return oldValue.Lang, nil
+}
+
+// ResetLang resets all changes to the "lang" field.
+func (m *MessageMutation) ResetLang() {
+	m.lang = nil
+}
+
+// SetMessage sets the "message" field.
+func (m *MessageMutation) SetMessage(s string) {
+	m.message = &s
+}
+
+// Message returns the value of the "message" field in the mutation.
+func (m *MessageMutation) Message() (r string, exists bool) {
+	v := m.message
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMessage returns the old "message" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldMessage(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldMessage is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldMessage requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMessage: %w", err)
+	}
+	return oldValue.Message, nil
+}
+
+// ResetMessage resets all changes to the "message" field.
+func (m *MessageMutation) ResetMessage() {
+	m.message = nil
+}
+
+// SetCreateAt sets the "create_at" field.
+func (m *MessageMutation) SetCreateAt(u uint32) {
+	m.create_at = &u
+	m.addcreate_at = nil
+}
+
+// CreateAt returns the value of the "create_at" field in the mutation.
+func (m *MessageMutation) CreateAt() (r uint32, exists bool) {
+	v := m.create_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateAt returns the old "create_at" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldCreateAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+	}
+	return oldValue.CreateAt, nil
+}
+
+// AddCreateAt adds u to the "create_at" field.
+func (m *MessageMutation) AddCreateAt(u uint32) {
+	if m.addcreate_at != nil {
+		*m.addcreate_at += u
+	} else {
+		m.addcreate_at = &u
+	}
+}
+
+// AddedCreateAt returns the value that was added to the "create_at" field in this mutation.
+func (m *MessageMutation) AddedCreateAt() (r uint32, exists bool) {
+	v := m.addcreate_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreateAt resets all changes to the "create_at" field.
+func (m *MessageMutation) ResetCreateAt() {
+	m.create_at = nil
+	m.addcreate_at = nil
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (m *MessageMutation) SetUpdateAt(u uint32) {
+	m.update_at = &u
+	m.addupdate_at = nil
+}
+
+// UpdateAt returns the value of the "update_at" field in the mutation.
+func (m *MessageMutation) UpdateAt() (r uint32, exists bool) {
+	v := m.update_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateAt returns the old "update_at" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldUpdateAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+	}
+	return oldValue.UpdateAt, nil
+}
+
+// AddUpdateAt adds u to the "update_at" field.
+func (m *MessageMutation) AddUpdateAt(u uint32) {
+	if m.addupdate_at != nil {
+		*m.addupdate_at += u
+	} else {
+		m.addupdate_at = &u
+	}
+}
+
+// AddedUpdateAt returns the value that was added to the "update_at" field in this mutation.
+func (m *MessageMutation) AddedUpdateAt() (r uint32, exists bool) {
+	v := m.addupdate_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdateAt resets all changes to the "update_at" field.
+func (m *MessageMutation) ResetUpdateAt() {
+	m.update_at = nil
+	m.addupdate_at = nil
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (m *MessageMutation) SetDeleteAt(u uint32) {
+	m.delete_at = &u
+	m.adddelete_at = nil
+}
+
+// DeleteAt returns the value of the "delete_at" field in the mutation.
+func (m *MessageMutation) DeleteAt() (r uint32, exists bool) {
+	v := m.delete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteAt returns the old "delete_at" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldDeleteAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeleteAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeleteAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteAt: %w", err)
+	}
+	return oldValue.DeleteAt, nil
+}
+
+// AddDeleteAt adds u to the "delete_at" field.
+func (m *MessageMutation) AddDeleteAt(u uint32) {
+	if m.adddelete_at != nil {
+		*m.adddelete_at += u
+	} else {
+		m.adddelete_at = &u
+	}
+}
+
+// AddedDeleteAt returns the value that was added to the "delete_at" field in this mutation.
+func (m *MessageMutation) AddedDeleteAt() (r uint32, exists bool) {
+	v := m.adddelete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDeleteAt resets all changes to the "delete_at" field.
+func (m *MessageMutation) ResetDeleteAt() {
+	m.delete_at = nil
+	m.adddelete_at = nil
 }
 
 // Where appends a list predicates to the MessageMutation builder.
@@ -133,7 +464,28 @@ func (m *MessageMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MessageMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 7)
+	if m.app_id != nil {
+		fields = append(fields, message.FieldAppID)
+	}
+	if m.message_id != nil {
+		fields = append(fields, message.FieldMessageID)
+	}
+	if m.lang != nil {
+		fields = append(fields, message.FieldLang)
+	}
+	if m.message != nil {
+		fields = append(fields, message.FieldMessage)
+	}
+	if m.create_at != nil {
+		fields = append(fields, message.FieldCreateAt)
+	}
+	if m.update_at != nil {
+		fields = append(fields, message.FieldUpdateAt)
+	}
+	if m.delete_at != nil {
+		fields = append(fields, message.FieldDeleteAt)
+	}
 	return fields
 }
 
@@ -141,6 +493,22 @@ func (m *MessageMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *MessageMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case message.FieldAppID:
+		return m.AppID()
+	case message.FieldMessageID:
+		return m.MessageID()
+	case message.FieldLang:
+		return m.Lang()
+	case message.FieldMessage:
+		return m.Message()
+	case message.FieldCreateAt:
+		return m.CreateAt()
+	case message.FieldUpdateAt:
+		return m.UpdateAt()
+	case message.FieldDeleteAt:
+		return m.DeleteAt()
+	}
 	return nil, false
 }
 
@@ -148,6 +516,22 @@ func (m *MessageMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *MessageMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case message.FieldAppID:
+		return m.OldAppID(ctx)
+	case message.FieldMessageID:
+		return m.OldMessageID(ctx)
+	case message.FieldLang:
+		return m.OldLang(ctx)
+	case message.FieldMessage:
+		return m.OldMessage(ctx)
+	case message.FieldCreateAt:
+		return m.OldCreateAt(ctx)
+	case message.FieldUpdateAt:
+		return m.OldUpdateAt(ctx)
+	case message.FieldDeleteAt:
+		return m.OldDeleteAt(ctx)
+	}
 	return nil, fmt.Errorf("unknown Message field %s", name)
 }
 
@@ -156,6 +540,55 @@ func (m *MessageMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *MessageMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case message.FieldAppID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAppID(v)
+		return nil
+	case message.FieldMessageID:
+		v, ok := value.(uuid.UUID)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMessageID(v)
+		return nil
+	case message.FieldLang:
+		v, ok := value.(message.Lang)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLang(v)
+		return nil
+	case message.FieldMessage:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMessage(v)
+		return nil
+	case message.FieldCreateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateAt(v)
+		return nil
+	case message.FieldUpdateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateAt(v)
+		return nil
+	case message.FieldDeleteAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteAt(v)
+		return nil
 	}
 	return fmt.Errorf("unknown Message field %s", name)
 }
@@ -163,13 +596,31 @@ func (m *MessageMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *MessageMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addcreate_at != nil {
+		fields = append(fields, message.FieldCreateAt)
+	}
+	if m.addupdate_at != nil {
+		fields = append(fields, message.FieldUpdateAt)
+	}
+	if m.adddelete_at != nil {
+		fields = append(fields, message.FieldDeleteAt)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *MessageMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case message.FieldCreateAt:
+		return m.AddedCreateAt()
+	case message.FieldUpdateAt:
+		return m.AddedUpdateAt()
+	case message.FieldDeleteAt:
+		return m.AddedDeleteAt()
+	}
 	return nil, false
 }
 
@@ -177,6 +628,29 @@ func (m *MessageMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *MessageMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case message.FieldCreateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreateAt(v)
+		return nil
+	case message.FieldUpdateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdateAt(v)
+		return nil
+	case message.FieldDeleteAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteAt(v)
+		return nil
+	}
 	return fmt.Errorf("unknown Message numeric field %s", name)
 }
 
@@ -202,6 +676,29 @@ func (m *MessageMutation) ClearField(name string) error {
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *MessageMutation) ResetField(name string) error {
+	switch name {
+	case message.FieldAppID:
+		m.ResetAppID()
+		return nil
+	case message.FieldMessageID:
+		m.ResetMessageID()
+		return nil
+	case message.FieldLang:
+		m.ResetLang()
+		return nil
+	case message.FieldMessage:
+		m.ResetMessage()
+		return nil
+	case message.FieldCreateAt:
+		m.ResetCreateAt()
+		return nil
+	case message.FieldUpdateAt:
+		m.ResetUpdateAt()
+		return nil
+	case message.FieldDeleteAt:
+		m.ResetDeleteAt()
+		return nil
+	}
 	return fmt.Errorf("unknown Message field %s", name)
 }
 

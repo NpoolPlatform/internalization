@@ -5,31 +5,32 @@ package message
 import (
 	"entgo.io/ent/dialect/sql"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/predicate"
+	"github.com/google/uuid"
 )
 
 // ID filters vertices based on their ID field.
-func ID(id int) predicate.Message {
+func ID(id uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldID), id))
 	})
 }
 
 // IDEQ applies the EQ predicate on the ID field.
-func IDEQ(id int) predicate.Message {
+func IDEQ(id uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldID), id))
 	})
 }
 
 // IDNEQ applies the NEQ predicate on the ID field.
-func IDNEQ(id int) predicate.Message {
+func IDNEQ(id uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldID), id))
 	})
 }
 
 // IDIn applies the In predicate on the ID field.
-func IDIn(ids ...int) predicate.Message {
+func IDIn(ids ...uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		// if not arguments were provided, append the FALSE constants,
 		// since we can't apply "IN ()". This will make this predicate falsy.
@@ -46,7 +47,7 @@ func IDIn(ids ...int) predicate.Message {
 }
 
 // IDNotIn applies the NotIn predicate on the ID field.
-func IDNotIn(ids ...int) predicate.Message {
+func IDNotIn(ids ...uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		// if not arguments were provided, append the FALSE constants,
 		// since we can't apply "IN ()". This will make this predicate falsy.
@@ -63,30 +64,611 @@ func IDNotIn(ids ...int) predicate.Message {
 }
 
 // IDGT applies the GT predicate on the ID field.
-func IDGT(id int) predicate.Message {
+func IDGT(id uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldID), id))
 	})
 }
 
 // IDGTE applies the GTE predicate on the ID field.
-func IDGTE(id int) predicate.Message {
+func IDGTE(id uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldID), id))
 	})
 }
 
 // IDLT applies the LT predicate on the ID field.
-func IDLT(id int) predicate.Message {
+func IDLT(id uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldID), id))
 	})
 }
 
 // IDLTE applies the LTE predicate on the ID field.
-func IDLTE(id int) predicate.Message {
+func IDLTE(id uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldID), id))
+	})
+}
+
+// AppID applies equality check predicate on the "app_id" field. It's identical to AppIDEQ.
+func AppID(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAppID), v))
+	})
+}
+
+// MessageID applies equality check predicate on the "message_id" field. It's identical to MessageIDEQ.
+func MessageID(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMessageID), v))
+	})
+}
+
+// Message applies equality check predicate on the "message" field. It's identical to MessageEQ.
+func Message(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMessage), v))
+	})
+}
+
+// CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
+func CreateAt(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCreateAt), v))
+	})
+}
+
+// UpdateAt applies equality check predicate on the "update_at" field. It's identical to UpdateAtEQ.
+func UpdateAt(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUpdateAt), v))
+	})
+}
+
+// DeleteAt applies equality check predicate on the "delete_at" field. It's identical to DeleteAtEQ.
+func DeleteAt(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDeleteAt), v))
+	})
+}
+
+// AppIDEQ applies the EQ predicate on the "app_id" field.
+func AppIDEQ(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldAppID), v))
+	})
+}
+
+// AppIDNEQ applies the NEQ predicate on the "app_id" field.
+func AppIDNEQ(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldAppID), v))
+	})
+}
+
+// AppIDIn applies the In predicate on the "app_id" field.
+func AppIDIn(vs ...uuid.UUID) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldAppID), v...))
+	})
+}
+
+// AppIDNotIn applies the NotIn predicate on the "app_id" field.
+func AppIDNotIn(vs ...uuid.UUID) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldAppID), v...))
+	})
+}
+
+// AppIDGT applies the GT predicate on the "app_id" field.
+func AppIDGT(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldAppID), v))
+	})
+}
+
+// AppIDGTE applies the GTE predicate on the "app_id" field.
+func AppIDGTE(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldAppID), v))
+	})
+}
+
+// AppIDLT applies the LT predicate on the "app_id" field.
+func AppIDLT(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldAppID), v))
+	})
+}
+
+// AppIDLTE applies the LTE predicate on the "app_id" field.
+func AppIDLTE(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldAppID), v))
+	})
+}
+
+// MessageIDEQ applies the EQ predicate on the "message_id" field.
+func MessageIDEQ(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDNEQ applies the NEQ predicate on the "message_id" field.
+func MessageIDNEQ(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDIn applies the In predicate on the "message_id" field.
+func MessageIDIn(vs ...uuid.UUID) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldMessageID), v...))
+	})
+}
+
+// MessageIDNotIn applies the NotIn predicate on the "message_id" field.
+func MessageIDNotIn(vs ...uuid.UUID) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldMessageID), v...))
+	})
+}
+
+// MessageIDGT applies the GT predicate on the "message_id" field.
+func MessageIDGT(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDGTE applies the GTE predicate on the "message_id" field.
+func MessageIDGTE(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDLT applies the LT predicate on the "message_id" field.
+func MessageIDLT(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDLTE applies the LTE predicate on the "message_id" field.
+func MessageIDLTE(v uuid.UUID) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldMessageID), v))
+	})
+}
+
+// LangEQ applies the EQ predicate on the "lang" field.
+func LangEQ(v Lang) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLang), v))
+	})
+}
+
+// LangNEQ applies the NEQ predicate on the "lang" field.
+func LangNEQ(v Lang) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldLang), v))
+	})
+}
+
+// LangIn applies the In predicate on the "lang" field.
+func LangIn(vs ...Lang) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldLang), v...))
+	})
+}
+
+// LangNotIn applies the NotIn predicate on the "lang" field.
+func LangNotIn(vs ...Lang) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldLang), v...))
+	})
+}
+
+// MessageEQ applies the EQ predicate on the "message" field.
+func MessageEQ(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMessage), v))
+	})
+}
+
+// MessageNEQ applies the NEQ predicate on the "message" field.
+func MessageNEQ(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldMessage), v))
+	})
+}
+
+// MessageIn applies the In predicate on the "message" field.
+func MessageIn(vs ...string) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldMessage), v...))
+	})
+}
+
+// MessageNotIn applies the NotIn predicate on the "message" field.
+func MessageNotIn(vs ...string) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldMessage), v...))
+	})
+}
+
+// MessageGT applies the GT predicate on the "message" field.
+func MessageGT(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldMessage), v))
+	})
+}
+
+// MessageGTE applies the GTE predicate on the "message" field.
+func MessageGTE(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldMessage), v))
+	})
+}
+
+// MessageLT applies the LT predicate on the "message" field.
+func MessageLT(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldMessage), v))
+	})
+}
+
+// MessageLTE applies the LTE predicate on the "message" field.
+func MessageLTE(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldMessage), v))
+	})
+}
+
+// MessageContains applies the Contains predicate on the "message" field.
+func MessageContains(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldMessage), v))
+	})
+}
+
+// MessageHasPrefix applies the HasPrefix predicate on the "message" field.
+func MessageHasPrefix(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldMessage), v))
+	})
+}
+
+// MessageHasSuffix applies the HasSuffix predicate on the "message" field.
+func MessageHasSuffix(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldMessage), v))
+	})
+}
+
+// MessageEqualFold applies the EqualFold predicate on the "message" field.
+func MessageEqualFold(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldMessage), v))
+	})
+}
+
+// MessageContainsFold applies the ContainsFold predicate on the "message" field.
+func MessageContainsFold(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldMessage), v))
+	})
+}
+
+// CreateAtEQ applies the EQ predicate on the "create_at" field.
+func CreateAtEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCreateAt), v))
+	})
+}
+
+// CreateAtNEQ applies the NEQ predicate on the "create_at" field.
+func CreateAtNEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldCreateAt), v))
+	})
+}
+
+// CreateAtIn applies the In predicate on the "create_at" field.
+func CreateAtIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldCreateAt), v...))
+	})
+}
+
+// CreateAtNotIn applies the NotIn predicate on the "create_at" field.
+func CreateAtNotIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldCreateAt), v...))
+	})
+}
+
+// CreateAtGT applies the GT predicate on the "create_at" field.
+func CreateAtGT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldCreateAt), v))
+	})
+}
+
+// CreateAtGTE applies the GTE predicate on the "create_at" field.
+func CreateAtGTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldCreateAt), v))
+	})
+}
+
+// CreateAtLT applies the LT predicate on the "create_at" field.
+func CreateAtLT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldCreateAt), v))
+	})
+}
+
+// CreateAtLTE applies the LTE predicate on the "create_at" field.
+func CreateAtLTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldCreateAt), v))
+	})
+}
+
+// UpdateAtEQ applies the EQ predicate on the "update_at" field.
+func UpdateAtEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUpdateAt), v))
+	})
+}
+
+// UpdateAtNEQ applies the NEQ predicate on the "update_at" field.
+func UpdateAtNEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldUpdateAt), v))
+	})
+}
+
+// UpdateAtIn applies the In predicate on the "update_at" field.
+func UpdateAtIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldUpdateAt), v...))
+	})
+}
+
+// UpdateAtNotIn applies the NotIn predicate on the "update_at" field.
+func UpdateAtNotIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldUpdateAt), v...))
+	})
+}
+
+// UpdateAtGT applies the GT predicate on the "update_at" field.
+func UpdateAtGT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldUpdateAt), v))
+	})
+}
+
+// UpdateAtGTE applies the GTE predicate on the "update_at" field.
+func UpdateAtGTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldUpdateAt), v))
+	})
+}
+
+// UpdateAtLT applies the LT predicate on the "update_at" field.
+func UpdateAtLT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldUpdateAt), v))
+	})
+}
+
+// UpdateAtLTE applies the LTE predicate on the "update_at" field.
+func UpdateAtLTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldUpdateAt), v))
+	})
+}
+
+// DeleteAtEQ applies the EQ predicate on the "delete_at" field.
+func DeleteAtEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDeleteAt), v))
+	})
+}
+
+// DeleteAtNEQ applies the NEQ predicate on the "delete_at" field.
+func DeleteAtNEQ(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDeleteAt), v))
+	})
+}
+
+// DeleteAtIn applies the In predicate on the "delete_at" field.
+func DeleteAtIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldDeleteAt), v...))
+	})
+}
+
+// DeleteAtNotIn applies the NotIn predicate on the "delete_at" field.
+func DeleteAtNotIn(vs ...uint32) predicate.Message {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Message(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldDeleteAt), v...))
+	})
+}
+
+// DeleteAtGT applies the GT predicate on the "delete_at" field.
+func DeleteAtGT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldDeleteAt), v))
+	})
+}
+
+// DeleteAtGTE applies the GTE predicate on the "delete_at" field.
+func DeleteAtGTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldDeleteAt), v))
+	})
+}
+
+// DeleteAtLT applies the LT predicate on the "delete_at" field.
+func DeleteAtLT(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldDeleteAt), v))
+	})
+}
+
+// DeleteAtLTE applies the LTE predicate on the "delete_at" field.
+func DeleteAtLTE(v uint32) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldDeleteAt), v))
 	})
 }
 

@@ -10,13 +10,27 @@ import (
 var (
 	// MessagesColumns holds the columns for the "messages" table.
 	MessagesColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "app_id", Type: field.TypeUUID},
+		{Name: "message_id", Type: field.TypeUUID},
+		{Name: "lang", Type: field.TypeEnum, Enums: []string{"zh_CN", "en_US"}},
+		{Name: "message", Type: field.TypeString},
+		{Name: "create_at", Type: field.TypeUint32},
+		{Name: "update_at", Type: field.TypeUint32},
+		{Name: "delete_at", Type: field.TypeUint32},
 	}
 	// MessagesTable holds the schema information for the "messages" table.
 	MessagesTable = &schema.Table{
 		Name:       "messages",
 		Columns:    MessagesColumns,
 		PrimaryKey: []*schema.Column{MessagesColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "message_app_id_message_id",
+				Unique:  true,
+				Columns: []*schema.Column{MessagesColumns[1], MessagesColumns[2]},
+			},
+		},
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
