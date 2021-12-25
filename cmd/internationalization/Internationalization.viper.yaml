@@ -1,9 +1,10 @@
 ---
 config:
   hostname: "internationalization.npool.top"
-  http_port: 32759
-  grpc_port: 32789
-  healthz_port: 32799
+  http_port: 50190
+  grpc_port: 50191
+  healthz_port: 50192
   appid: "89089012783789789719823798127398"
+  serviceid: "5435c25a-656a-11ec-b419-8712561b6518"
   logdir: "./"
   apolloAccessKey: "0147fb70b815403790e8634b899fac07"
