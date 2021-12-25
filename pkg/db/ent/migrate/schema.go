@@ -8,12 +8,26 @@ import (
 )
 
 var (
+	// LangsColumns holds the columns for the "langs" table.
+	LangsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "lang", Type: field.TypeString, Unique: true},
+		{Name: "create_at", Type: field.TypeUint32},
+		{Name: "update_at", Type: field.TypeUint32},
+		{Name: "delete_at", Type: field.TypeUint32},
+	}
+	// LangsTable holds the schema information for the "langs" table.
+	LangsTable = &schema.Table{
+		Name:       "langs",
+		Columns:    LangsColumns,
+		PrimaryKey: []*schema.Column{LangsColumns[0]},
+	}
 	// MessagesColumns holds the columns for the "messages" table.
 	MessagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "app_id", Type: field.TypeUUID},
 		{Name: "message_id", Type: field.TypeUUID},
-		{Name: "lang", Type: field.TypeEnum, Enums: []string{"zh_CN", "en_US"}},
+		{Name: "lang", Type: field.TypeString},
 		{Name: "message", Type: field.TypeString},
 		{Name: "create_at", Type: field.TypeUint32},
 		{Name: "update_at", Type: field.TypeUint32},
@@ -34,6 +48,7 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		LangsTable,
 		MessagesTable,
 	}
 )

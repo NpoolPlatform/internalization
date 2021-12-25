@@ -36,8 +36,8 @@ func (mc *MessageCreate) SetMessageID(u uuid.UUID) *MessageCreate {
 }
 
 // SetLang sets the "lang" field.
-func (mc *MessageCreate) SetLang(m message.Lang) *MessageCreate {
-	mc.mutation.SetLang(m)
+func (mc *MessageCreate) SetLang(s string) *MessageCreate {
+	mc.mutation.SetLang(s)
 	return mc
 }
 
@@ -195,11 +195,6 @@ func (mc *MessageCreate) check() error {
 	if _, ok := mc.mutation.Lang(); !ok {
 		return &ValidationError{Name: "lang", err: errors.New(`ent: missing required field "lang"`)}
 	}
-	if v, ok := mc.mutation.Lang(); ok {
-		if err := message.LangValidator(v); err != nil {
-			return &ValidationError{Name: "lang", err: fmt.Errorf(`ent: validator failed for field "lang": %w`, err)}
-		}
-	}
 	if _, ok := mc.mutation.Message(); !ok {
 		return &ValidationError{Name: "message", err: errors.New(`ent: missing required field "message"`)}
 	}
@@ -263,7 +258,7 @@ func (mc *MessageCreate) createSpec() (*Message, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := mc.mutation.Lang(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
+			Type:   field.TypeString,
 			Value:  value,
 			Column: message.FieldLang,
 		})
@@ -380,7 +375,7 @@ func (u *MessageUpsert) UpdateMessageID() *MessageUpsert {
 }
 
 // SetLang sets the "lang" field.
-func (u *MessageUpsert) SetLang(v message.Lang) *MessageUpsert {
+func (u *MessageUpsert) SetLang(v string) *MessageUpsert {
 	u.Set(message.FieldLang, v)
 	return u
 }
@@ -518,7 +513,7 @@ func (u *MessageUpsertOne) UpdateMessageID() *MessageUpsertOne {
 }
 
 // SetLang sets the "lang" field.
-func (u *MessageUpsertOne) SetLang(v message.Lang) *MessageUpsertOne {
+func (u *MessageUpsertOne) SetLang(v string) *MessageUpsertOne {
 	return u.Update(func(s *MessageUpsert) {
 		s.SetLang(v)
 	})
@@ -832,7 +827,7 @@ func (u *MessageUpsertBulk) UpdateMessageID() *MessageUpsertBulk {
 }
 
 // SetLang sets the "lang" field.
-func (u *MessageUpsertBulk) SetLang(v message.Lang) *MessageUpsertBulk {
+func (u *MessageUpsertBulk) SetLang(v string) *MessageUpsertBulk {
 	return u.Update(func(s *MessageUpsert) {
 		s.SetLang(v)
 	})

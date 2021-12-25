@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/lang"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/predicate"
 	"github.com/google/uuid"
@@ -23,8 +24,571 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
+	TypeLang    = "Lang"
 	TypeMessage = "Message"
 )
+
+// LangMutation represents an operation that mutates the Lang nodes in the graph.
+type LangMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *uuid.UUID
+	lang          *string
+	create_at     *uint32
+	addcreate_at  *uint32
+	update_at     *uint32
+	addupdate_at  *uint32
+	delete_at     *uint32
+	adddelete_at  *uint32
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*Lang, error)
+	predicates    []predicate.Lang
+}
+
+var _ ent.Mutation = (*LangMutation)(nil)
+
+// langOption allows management of the mutation configuration using functional options.
+type langOption func(*LangMutation)
+
+// newLangMutation creates new mutation for the Lang entity.
+func newLangMutation(c config, op Op, opts ...langOption) *LangMutation {
+	m := &LangMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeLang,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withLangID sets the ID field of the mutation.
+func withLangID(id uuid.UUID) langOption {
+	return func(m *LangMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *Lang
+		)
+		m.oldValue = func(ctx context.Context) (*Lang, error) {
+			once.Do(func() {
+				if m.done {
+					err = fmt.Errorf("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().Lang.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withLang sets the old Lang of the mutation.
+func withLang(node *Lang) langOption {
+	return func(m *LangMutation) {
+		m.oldValue = func(context.Context) (*Lang, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m LangMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m LangMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, fmt.Errorf("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of Lang entities.
+func (m *LangMutation) SetID(id uuid.UUID) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *LangMutation) ID() (id uuid.UUID, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// SetLang sets the "lang" field.
+func (m *LangMutation) SetLang(s string) {
+	m.lang = &s
+}
+
+// Lang returns the value of the "lang" field in the mutation.
+func (m *LangMutation) Lang() (r string, exists bool) {
+	v := m.lang
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLang returns the old "lang" field's value of the Lang entity.
+// If the Lang object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LangMutation) OldLang(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldLang is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldLang requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLang: %w", err)
+	}
+	return oldValue.Lang, nil
+}
+
+// ResetLang resets all changes to the "lang" field.
+func (m *LangMutation) ResetLang() {
+	m.lang = nil
+}
+
+// SetCreateAt sets the "create_at" field.
+func (m *LangMutation) SetCreateAt(u uint32) {
+	m.create_at = &u
+	m.addcreate_at = nil
+}
+
+// CreateAt returns the value of the "create_at" field in the mutation.
+func (m *LangMutation) CreateAt() (r uint32, exists bool) {
+	v := m.create_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreateAt returns the old "create_at" field's value of the Lang entity.
+// If the Lang object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LangMutation) OldCreateAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCreateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCreateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
+	}
+	return oldValue.CreateAt, nil
+}
+
+// AddCreateAt adds u to the "create_at" field.
+func (m *LangMutation) AddCreateAt(u uint32) {
+	if m.addcreate_at != nil {
+		*m.addcreate_at += u
+	} else {
+		m.addcreate_at = &u
+	}
+}
+
+// AddedCreateAt returns the value that was added to the "create_at" field in this mutation.
+func (m *LangMutation) AddedCreateAt() (r uint32, exists bool) {
+	v := m.addcreate_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreateAt resets all changes to the "create_at" field.
+func (m *LangMutation) ResetCreateAt() {
+	m.create_at = nil
+	m.addcreate_at = nil
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (m *LangMutation) SetUpdateAt(u uint32) {
+	m.update_at = &u
+	m.addupdate_at = nil
+}
+
+// UpdateAt returns the value of the "update_at" field in the mutation.
+func (m *LangMutation) UpdateAt() (r uint32, exists bool) {
+	v := m.update_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdateAt returns the old "update_at" field's value of the Lang entity.
+// If the Lang object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LangMutation) OldUpdateAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldUpdateAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldUpdateAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdateAt: %w", err)
+	}
+	return oldValue.UpdateAt, nil
+}
+
+// AddUpdateAt adds u to the "update_at" field.
+func (m *LangMutation) AddUpdateAt(u uint32) {
+	if m.addupdate_at != nil {
+		*m.addupdate_at += u
+	} else {
+		m.addupdate_at = &u
+	}
+}
+
+// AddedUpdateAt returns the value that was added to the "update_at" field in this mutation.
+func (m *LangMutation) AddedUpdateAt() (r uint32, exists bool) {
+	v := m.addupdate_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdateAt resets all changes to the "update_at" field.
+func (m *LangMutation) ResetUpdateAt() {
+	m.update_at = nil
+	m.addupdate_at = nil
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (m *LangMutation) SetDeleteAt(u uint32) {
+	m.delete_at = &u
+	m.adddelete_at = nil
+}
+
+// DeleteAt returns the value of the "delete_at" field in the mutation.
+func (m *LangMutation) DeleteAt() (r uint32, exists bool) {
+	v := m.delete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeleteAt returns the old "delete_at" field's value of the Lang entity.
+// If the Lang object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LangMutation) OldDeleteAt(ctx context.Context) (v uint32, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldDeleteAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldDeleteAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeleteAt: %w", err)
+	}
+	return oldValue.DeleteAt, nil
+}
+
+// AddDeleteAt adds u to the "delete_at" field.
+func (m *LangMutation) AddDeleteAt(u uint32) {
+	if m.adddelete_at != nil {
+		*m.adddelete_at += u
+	} else {
+		m.adddelete_at = &u
+	}
+}
+
+// AddedDeleteAt returns the value that was added to the "delete_at" field in this mutation.
+func (m *LangMutation) AddedDeleteAt() (r uint32, exists bool) {
+	v := m.adddelete_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetDeleteAt resets all changes to the "delete_at" field.
+func (m *LangMutation) ResetDeleteAt() {
+	m.delete_at = nil
+	m.adddelete_at = nil
+}
+
+// Where appends a list predicates to the LangMutation builder.
+func (m *LangMutation) Where(ps ...predicate.Lang) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// Op returns the operation name.
+func (m *LangMutation) Op() Op {
+	return m.op
+}
+
+// Type returns the node type of this mutation (Lang).
+func (m *LangMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *LangMutation) Fields() []string {
+	fields := make([]string, 0, 4)
+	if m.lang != nil {
+		fields = append(fields, lang.FieldLang)
+	}
+	if m.create_at != nil {
+		fields = append(fields, lang.FieldCreateAt)
+	}
+	if m.update_at != nil {
+		fields = append(fields, lang.FieldUpdateAt)
+	}
+	if m.delete_at != nil {
+		fields = append(fields, lang.FieldDeleteAt)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *LangMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case lang.FieldLang:
+		return m.Lang()
+	case lang.FieldCreateAt:
+		return m.CreateAt()
+	case lang.FieldUpdateAt:
+		return m.UpdateAt()
+	case lang.FieldDeleteAt:
+		return m.DeleteAt()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *LangMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case lang.FieldLang:
+		return m.OldLang(ctx)
+	case lang.FieldCreateAt:
+		return m.OldCreateAt(ctx)
+	case lang.FieldUpdateAt:
+		return m.OldUpdateAt(ctx)
+	case lang.FieldDeleteAt:
+		return m.OldDeleteAt(ctx)
+	}
+	return nil, fmt.Errorf("unknown Lang field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *LangMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case lang.FieldLang:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLang(v)
+		return nil
+	case lang.FieldCreateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreateAt(v)
+		return nil
+	case lang.FieldUpdateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdateAt(v)
+		return nil
+	case lang.FieldDeleteAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeleteAt(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Lang field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *LangMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreate_at != nil {
+		fields = append(fields, lang.FieldCreateAt)
+	}
+	if m.addupdate_at != nil {
+		fields = append(fields, lang.FieldUpdateAt)
+	}
+	if m.adddelete_at != nil {
+		fields = append(fields, lang.FieldDeleteAt)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *LangMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case lang.FieldCreateAt:
+		return m.AddedCreateAt()
+	case lang.FieldUpdateAt:
+		return m.AddedUpdateAt()
+	case lang.FieldDeleteAt:
+		return m.AddedDeleteAt()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *LangMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case lang.FieldCreateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreateAt(v)
+		return nil
+	case lang.FieldUpdateAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdateAt(v)
+		return nil
+	case lang.FieldDeleteAt:
+		v, ok := value.(uint32)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddDeleteAt(v)
+		return nil
+	}
+	return fmt.Errorf("unknown Lang numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *LangMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *LangMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *LangMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown Lang nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *LangMutation) ResetField(name string) error {
+	switch name {
+	case lang.FieldLang:
+		m.ResetLang()
+		return nil
+	case lang.FieldCreateAt:
+		m.ResetCreateAt()
+		return nil
+	case lang.FieldUpdateAt:
+		m.ResetUpdateAt()
+		return nil
+	case lang.FieldDeleteAt:
+		m.ResetDeleteAt()
+		return nil
+	}
+	return fmt.Errorf("unknown Lang field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *LangMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *LangMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *LangMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *LangMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *LangMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *LangMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *LangMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown Lang unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *LangMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown Lang edge %s", name)
+}
 
 // MessageMutation represents an operation that mutates the Message nodes in the graph.
 type MessageMutation struct {
@@ -34,7 +598,7 @@ type MessageMutation struct {
 	id            *uuid.UUID
 	app_id        *uuid.UUID
 	message_id    *uuid.UUID
-	lang          *message.Lang
+	lang          *string
 	message       *string
 	create_at     *uint32
 	addcreate_at  *uint32
@@ -206,12 +770,12 @@ func (m *MessageMutation) ResetMessageID() {
 }
 
 // SetLang sets the "lang" field.
-func (m *MessageMutation) SetLang(value message.Lang) {
-	m.lang = &value
+func (m *MessageMutation) SetLang(s string) {
+	m.lang = &s
 }
 
 // Lang returns the value of the "lang" field in the mutation.
-func (m *MessageMutation) Lang() (r message.Lang, exists bool) {
+func (m *MessageMutation) Lang() (r string, exists bool) {
 	v := m.lang
 	if v == nil {
 		return
@@ -222,7 +786,7 @@ func (m *MessageMutation) Lang() (r message.Lang, exists bool) {
 // OldLang returns the old "lang" field's value of the Message entity.
 // If the Message object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldLang(ctx context.Context) (v message.Lang, err error) {
+func (m *MessageMutation) OldLang(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldLang is only allowed on UpdateOne operations")
 	}
@@ -555,7 +1119,7 @@ func (m *MessageMutation) SetField(name string, value ent.Value) error {
 		m.SetMessageID(v)
 		return nil
 	case message.FieldLang:
-		v, ok := value.(message.Lang)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

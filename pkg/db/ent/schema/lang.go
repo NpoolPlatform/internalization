@@ -5,26 +5,23 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/index"
 
 	"github.com/google/uuid"
 )
 
-// Message holds the schema definition for the Message entity.
-type Message struct {
+// Lang holds the schema definition for the Lang entity.
+type Lang struct {
 	ent.Schema
 }
 
-// Fields of the Message.
-func (Message) Fields() []ent.Field {
+// Fields of the Lang.
+func (Lang) Fields() []ent.Field {
 	return []ent.Field{
 		field.UUID("id", uuid.UUID{}).
 			Default(uuid.New).
 			Unique(),
-		field.UUID("app_id", uuid.UUID{}),
-		field.UUID("message_id", uuid.UUID{}),
-		field.String("lang"),
-		field.String("message"),
+		field.String("lang").
+			Unique(),
 		field.Uint32("create_at").
 			DefaultFunc(func() uint32 {
 				return uint32(time.Now().Unix())
@@ -40,18 +37,5 @@ func (Message) Fields() []ent.Field {
 			DefaultFunc(func() uint32 {
 				return 0
 			}),
-	}
-}
-
-// Edges of the Message.
-func (Message) Edges() []ent.Edge {
-	return nil
-}
-
-// Indexes of the Message
-func (Message) Indexes() []ent.Index {
-	return []ent.Index{
-		index.Fields("app_id", "message_id").
-			Unique(),
 	}
 }

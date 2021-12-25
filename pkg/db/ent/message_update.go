@@ -40,8 +40,8 @@ func (mu *MessageUpdate) SetMessageID(u uuid.UUID) *MessageUpdate {
 }
 
 // SetLang sets the "lang" field.
-func (mu *MessageUpdate) SetLang(m message.Lang) *MessageUpdate {
-	mu.mutation.SetLang(m)
+func (mu *MessageUpdate) SetLang(s string) *MessageUpdate {
+	mu.mutation.SetLang(s)
 	return mu
 }
 
@@ -119,18 +119,12 @@ func (mu *MessageUpdate) Save(ctx context.Context) (int, error) {
 	)
 	mu.defaults()
 	if len(mu.hooks) == 0 {
-		if err = mu.check(); err != nil {
-			return 0, err
-		}
 		affected, err = mu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*MessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			if err = mu.check(); err != nil {
-				return 0, err
 			}
 			mu.mutation = mutation
 			affected, err = mu.sqlSave(ctx)
@@ -180,16 +174,6 @@ func (mu *MessageUpdate) defaults() {
 	}
 }
 
-// check runs all checks and user-defined validators on the builder.
-func (mu *MessageUpdate) check() error {
-	if v, ok := mu.mutation.Lang(); ok {
-		if err := message.LangValidator(v); err != nil {
-			return &ValidationError{Name: "lang", err: fmt.Errorf("ent: validator failed for field \"lang\": %w", err)}
-		}
-	}
-	return nil
-}
-
 func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -224,7 +208,7 @@ func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := mu.mutation.Lang(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
+			Type:   field.TypeString,
 			Value:  value,
 			Column: message.FieldLang,
 		})
@@ -310,8 +294,8 @@ func (muo *MessageUpdateOne) SetMessageID(u uuid.UUID) *MessageUpdateOne {
 }
 
 // SetLang sets the "lang" field.
-func (muo *MessageUpdateOne) SetLang(m message.Lang) *MessageUpdateOne {
-	muo.mutation.SetLang(m)
+func (muo *MessageUpdateOne) SetLang(s string) *MessageUpdateOne {
+	muo.mutation.SetLang(s)
 	return muo
 }
 
@@ -396,18 +380,12 @@ func (muo *MessageUpdateOne) Save(ctx context.Context) (*Message, error) {
 	)
 	muo.defaults()
 	if len(muo.hooks) == 0 {
-		if err = muo.check(); err != nil {
-			return nil, err
-		}
 		node, err = muo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*MessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
-			}
-			if err = muo.check(); err != nil {
-				return nil, err
 			}
 			muo.mutation = mutation
 			node, err = muo.sqlSave(ctx)
@@ -455,16 +433,6 @@ func (muo *MessageUpdateOne) defaults() {
 		v := message.UpdateDefaultUpdateAt()
 		muo.mutation.SetUpdateAt(v)
 	}
-}
-
-// check runs all checks and user-defined validators on the builder.
-func (muo *MessageUpdateOne) check() error {
-	if v, ok := muo.mutation.Lang(); ok {
-		if err := message.LangValidator(v); err != nil {
-			return &ValidationError{Name: "lang", err: fmt.Errorf("ent: validator failed for field \"lang\": %w", err)}
-		}
-	}
-	return nil
 }
 
 func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err error) {
@@ -518,7 +486,7 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 	}
 	if value, ok := muo.mutation.Lang(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
+			Type:   field.TypeString,
 			Value:  value,
 			Column: message.FieldLang,
 		})

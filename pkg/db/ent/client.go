@@ -10,6 +10,7 @@ import (
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/migrate"
 	"github.com/google/uuid"
 
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/lang"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
 
 	"entgo.io/ent/dialect"
@@ -21,6 +22,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// Lang is the client for interacting with the Lang builders.
+	Lang *LangClient
 	// Message is the client for interacting with the Message builders.
 	Message *MessageClient
 }
@@ -36,6 +39,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.Lang = NewLangClient(c.config)
 	c.Message = NewMessageClient(c.config)
 }
 
@@ -70,6 +74,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:     ctx,
 		config:  cfg,
+		Lang:    NewLangClient(cfg),
 		Message: NewMessageClient(cfg),
 	}, nil
 }
@@ -89,6 +94,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
 		config:  cfg,
+		Lang:    NewLangClient(cfg),
 		Message: NewMessageClient(cfg),
 	}, nil
 }
@@ -96,7 +102,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		Message.
+//		Lang.
 //		Query().
 //		Count(ctx)
 //
@@ -119,7 +125,98 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.Lang.Use(hooks...)
 	c.Message.Use(hooks...)
+}
+
+// LangClient is a client for the Lang schema.
+type LangClient struct {
+	config
+}
+
+// NewLangClient returns a client for the Lang from the given config.
+func NewLangClient(c config) *LangClient {
+	return &LangClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `lang.Hooks(f(g(h())))`.
+func (c *LangClient) Use(hooks ...Hook) {
+	c.hooks.Lang = append(c.hooks.Lang, hooks...)
+}
+
+// Create returns a create builder for Lang.
+func (c *LangClient) Create() *LangCreate {
+	mutation := newLangMutation(c.config, OpCreate)
+	return &LangCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Lang entities.
+func (c *LangClient) CreateBulk(builders ...*LangCreate) *LangCreateBulk {
+	return &LangCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Lang.
+func (c *LangClient) Update() *LangUpdate {
+	mutation := newLangMutation(c.config, OpUpdate)
+	return &LangUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *LangClient) UpdateOne(l *Lang) *LangUpdateOne {
+	mutation := newLangMutation(c.config, OpUpdateOne, withLang(l))
+	return &LangUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *LangClient) UpdateOneID(id uuid.UUID) *LangUpdateOne {
+	mutation := newLangMutation(c.config, OpUpdateOne, withLangID(id))
+	return &LangUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Lang.
+func (c *LangClient) Delete() *LangDelete {
+	mutation := newLangMutation(c.config, OpDelete)
+	return &LangDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a delete builder for the given entity.
+func (c *LangClient) DeleteOne(l *Lang) *LangDeleteOne {
+	return c.DeleteOneID(l.ID)
+}
+
+// DeleteOneID returns a delete builder for the given id.
+func (c *LangClient) DeleteOneID(id uuid.UUID) *LangDeleteOne {
+	builder := c.Delete().Where(lang.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &LangDeleteOne{builder}
+}
+
+// Query returns a query builder for Lang.
+func (c *LangClient) Query() *LangQuery {
+	return &LangQuery{
+		config: c.config,
+	}
+}
+
+// Get returns a Lang entity by its id.
+func (c *LangClient) Get(ctx context.Context, id uuid.UUID) (*Lang, error) {
+	return c.Query().Where(lang.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *LangClient) GetX(ctx context.Context, id uuid.UUID) *Lang {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *LangClient) Hooks() []Hook {
+	return c.hooks.Lang
 }
 
 // MessageClient is a client for the Message schema.

@@ -21,7 +21,7 @@ type Message struct {
 	// MessageID holds the value of the "message_id" field.
 	MessageID uuid.UUID `json:"message_id,omitempty"`
 	// Lang holds the value of the "lang" field.
-	Lang message.Lang `json:"lang,omitempty"`
+	Lang string `json:"lang,omitempty"`
 	// Message holds the value of the "message" field.
 	Message string `json:"message,omitempty"`
 	// CreateAt holds the value of the "create_at" field.
@@ -80,7 +80,7 @@ func (m *Message) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field lang", values[i])
 			} else if value.Valid {
-				m.Lang = message.Lang(value.String)
+				m.Lang = value.String
 			}
 		case message.FieldMessage:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -139,7 +139,7 @@ func (m *Message) String() string {
 	builder.WriteString(", message_id=")
 	builder.WriteString(fmt.Sprintf("%v", m.MessageID))
 	builder.WriteString(", lang=")
-	builder.WriteString(fmt.Sprintf("%v", m.Lang))
+	builder.WriteString(m.Lang)
 	builder.WriteString(", message=")
 	builder.WriteString(m.Message)
 	builder.WriteString(", create_at=")
