@@ -9,8 +9,8 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/NpoolPlatform/internalization/pkg/db/ent/empty"
-	"github.com/NpoolPlatform/internalization/pkg/db/ent/predicate"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/empty"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/predicate"
 )
 
 // EmptyUpdate is the builder for updating Empty entities.

@@ -1,14 +1,14 @@
 syntax = "proto3";
 
-package internalization.v1;
+package internationalization.v1;
 
-option go_package = "github.com/NpoolPlatform/internalization/message/npool";
+option go_package = "github.com/NpoolPlatform/internationalization/message/npool";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 // Service Name
-service Internalization {
+service Internationalization {
     // Method Version
     rpc Version (google.protobuf.Empty) returns (VersionResponse){
         option (google.api.http) = {

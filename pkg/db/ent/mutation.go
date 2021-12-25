@@ -8,7 +8,7 @@ import (
 	"sync"
 
 	"entgo.io/ent"
-	"github.com/NpoolPlatform/internalization/pkg/db/ent/predicate"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/predicate"
 )
 
 const (

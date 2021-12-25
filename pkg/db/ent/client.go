@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/NpoolPlatform/internalization/pkg/db/ent/migrate"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/migrate"
 
-	"github.com/NpoolPlatform/internalization/pkg/db/ent/empty"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/empty"
 
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"

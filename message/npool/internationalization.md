@@ -3,23 +3,23 @@
 
 ## Table of Contents
 
-- [npool/internalization.proto](#npool/internalization.proto)
-    - [VersionResponse](#internalization.v1.VersionResponse)
+- [npool/internationalization.proto](#npool/internationalization.proto)
+    - [VersionResponse](#internationalization.v1.VersionResponse)
   
-    - [Internalization](#internalization.v1.Internalization)
+    - [Internationalization](#internationalization.v1.Internationalization)
   
 - [Scalar Value Types](#scalar-value-types)
 
 
 
-<a name="npool/internalization.proto"></a>
+<a name="npool/internationalization.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## npool/internalization.proto
+## npool/internationalization.proto
 
 
 
-<a name="internalization.v1.VersionResponse"></a>
+<a name="internationalization.v1.VersionResponse"></a>
 
 ### VersionResponse
 request body and response
@@ -40,14 +40,14 @@ request body and response
  
 
 
-<a name="internalization.v1.Internalization"></a>
+<a name="internationalization.v1.Internationalization"></a>
 
-### Internalization
+### Internationalization
 Service Name
 
 | Method Name | Request Type | Response Type | Description |
 | ----------- | ------------ | ------------- | ------------|
-| Version | [.google.protobuf.Empty](#google.protobuf.Empty) | [VersionResponse](#internalization.v1.VersionResponse) | Method Version |
+| Version | [.google.protobuf.Empty](#google.protobuf.Empty) | [VersionResponse](#internationalization.v1.VersionResponse) | Method Version |
 
  
 

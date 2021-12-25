@@ -1,4 +1,4 @@
-module github.com/NpoolPlatform/internalization
+module github.com/NpoolPlatform/internationalization
 
 go 1.16
 

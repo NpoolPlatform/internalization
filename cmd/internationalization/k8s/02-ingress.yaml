@@ -1,23 +1,23 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: internalization-npool-top-ingress
+  name: internationalization-npool-top-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: internalization-npool
-    k8s.kuboard.cn/workload: internalization-npool
+    k8s.kuboard.cn/displayName: internationalization-npool
+    k8s.kuboard.cn/workload: internationalization-npool
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-internalization-prefix@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-internationalization-prefix@kubernetescrd
 
 spec:
   rules:
     - host: api.npool.top
       http:
         paths:
-          - path: /api/internalization
+          - path: /api/internationalization
             backend:
-              serviceName: internalization
+              serviceName: internationalization
               servicePort: 50190
 
 ---
@@ -25,23 +25,23 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: internalization-xpool-top-ingress
+  name: internationalization-xpool-top-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: internalization-xpool
-    k8s.kuboard.cn/workload: internalization-xpool
+    k8s.kuboard.cn/displayName: internationalization-xpool
+    k8s.kuboard.cn/workload: internationalization-xpool
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-internalization-prefix@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-internationalization-prefix@kubernetescrd
 
 spec:
   rules:
     - host: api.xpool.top
       http:
         paths:
-          - path: /api/internalization
+          - path: /api/internationalization
             backend:
-              serviceName: internalization
+              serviceName: internationalization
               servicePort: 50190
 
 ---
@@ -49,9 +49,9 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: strip-internalization-prefix
+  name: strip-internationalization-prefix
   namespace: kube-system
 spec:
   stripPrefix:
     prefixes:
-      - /api/internalization
+      - /api/internationalization

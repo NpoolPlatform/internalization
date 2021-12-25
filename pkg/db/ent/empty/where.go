@@ -4,7 +4,7 @@ package empty
 
 import (
 	"entgo.io/ent/dialect/sql"
-	"github.com/NpoolPlatform/internalization/pkg/db/ent/predicate"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/predicate"
 )
 
 // ID filters vertices based on their ID field.

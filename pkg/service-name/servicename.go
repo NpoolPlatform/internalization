@@ -1,3 +1,3 @@
-package internalization
+package internationalization
 
-const ServiceName = "Internalization"
+const ServiceName = "Internationalization"

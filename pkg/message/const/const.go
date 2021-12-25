@@ -1,5 +1,5 @@
 package constant
 
 const (
-	ServiceName = "internalization.npool.top" //nolint
+	ServiceName = "internationalization.npool.top" //nolint
 )

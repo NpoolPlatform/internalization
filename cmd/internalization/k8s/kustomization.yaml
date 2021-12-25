@@ -1,6 +1,0 @@
-commonLabels:
-  # app: internalization
-
-resources:
-- 01-internalization.yaml
-- 02-ingress.yaml

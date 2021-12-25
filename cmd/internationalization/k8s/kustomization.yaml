@@ -1,0 +1,6 @@
+commonLabels:
+  # app: internationalization
+
+resources:
+- 01-internationalization.yaml
+- 02-ingress.yaml
