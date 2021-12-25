@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: service-sample
+  name: internalization
   namespace: kube-system
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: service-sample
+      app: internalization
   template:
     metadata:
       labels:
-        app: service-sample
+        app: internalization
     spec:
       containers:
-      - name: service-sample
-        image: uhub.service.ucloud.cn/entropypool/service-sample:latest
+      - name: internalization
+        image: uhub.service.ucloud.cn/entropypool/internalization:latest
         imagePullPolicy: Always
         env:
         - name: ENV_ENVIRONMENT_TARGET
@@ -42,12 +42,18 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: service-sample
+  name: internalization
   namespace: kube-system
 spec:
   ports:
-  - name: api
-    port: 32759
-    targetPort: 32759
+  - name: http
+    port: 50190
+    targetPort: 50190
+  - name: grpc
+    port: 50191
+    targetPort: 50191
+  - name: prometheus
+    port: 50192
+    targetPort: 50192
   selector:
-    app: service-sample
+    app: internalization
