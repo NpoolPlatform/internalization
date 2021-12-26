@@ -12,7 +12,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func CreateMessage(ctx context.Context, in *npool.CreateMessageRequest) (*npool.CreateMessageResponse, error) {
+func (s *Server) CreateMessage(ctx context.Context, in *npool.CreateMessageRequest) (*npool.CreateMessageResponse, error) {
 	resp, err := crud.CreateMessage(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail create message: %v", err)
@@ -21,7 +21,7 @@ func CreateMessage(ctx context.Context, in *npool.CreateMessageRequest) (*npool.
 	return resp, nil
 }
 
-func CreateMessages(ctx context.Context, in *npool.CreateMessagesRequest) (*npool.CreateMessagesResponse, error) {
+func (s *Server) CreateMessages(ctx context.Context, in *npool.CreateMessagesRequest) (*npool.CreateMessagesResponse, error) {
 	resp, err := crud.CreateMessages(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail create messages: %v", err)
@@ -30,7 +30,7 @@ func CreateMessages(ctx context.Context, in *npool.CreateMessagesRequest) (*npoo
 	return resp, nil
 }
 
-func UpdateMessage(ctx context.Context, in *npool.UpdateMessageRequest) (*npool.UpdateMessageResponse, error) {
+func (s *Server) UpdateMessage(ctx context.Context, in *npool.UpdateMessageRequest) (*npool.UpdateMessageResponse, error) {
 	resp, err := crud.UpdateMessage(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail update message: %v", err)
@@ -39,7 +39,7 @@ func UpdateMessage(ctx context.Context, in *npool.UpdateMessageRequest) (*npool.
 	return resp, nil
 }
 
-func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npool.UpdateMessagesResponse, error) {
+func (s *Server) UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npool.UpdateMessagesResponse, error) {
 	resp, err := crud.UpdateMessages(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail update messages: %v", err)
@@ -48,7 +48,7 @@ func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npoo
 	return resp, nil
 }
 
-func GetMessagesByLangID(ctx context.Context, in *npool.GetMessagesByLangIDRequest) (*npool.GetMessagesByLangIDResponse, error) {
+func (s *Server) GetMessagesByLangID(ctx context.Context, in *npool.GetMessagesByLangIDRequest) (*npool.GetMessagesByLangIDResponse, error) {
 	resp, err := crud.GetMessagesByLangID(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail get messages by lang id: %v", err)
@@ -57,7 +57,7 @@ func GetMessagesByLangID(ctx context.Context, in *npool.GetMessagesByLangIDReque
 	return resp, nil
 }
 
-func GetMessageByLangIDMessageID(ctx context.Context, in *npool.GetMessageByLangIDMessageIDRequest) (*npool.GetMessageByLangIDMessageIDResponse, error) {
+func (s *Server) GetMessageByLangIDMessageID(ctx context.Context, in *npool.GetMessageByLangIDMessageIDRequest) (*npool.GetMessageByLangIDMessageIDResponse, error) {
 	resp, err := crud.GetMessageByLangIDMessageID(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail get message by lang id message id: %v", err)
