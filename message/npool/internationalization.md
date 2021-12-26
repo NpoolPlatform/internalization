@@ -162,6 +162,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
+| LangID | [string](#string) |  |  |
 | MessageID | [string](#string) |  |  |
 
 
@@ -188,6 +189,11 @@
 
 ### GetMessagesRequest
 
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| LangID | [string](#string) |  |  |
 
 
 

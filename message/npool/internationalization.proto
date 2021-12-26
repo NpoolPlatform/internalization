@@ -150,6 +150,7 @@ message UpdateMessagesResponse {
 }
 
 message GetMessagesRequest {
+    string LangID = 10;
 }
 
 message GetMessagesResponse {
@@ -157,7 +158,8 @@ message GetMessagesResponse {
 }
 
 message GetMessageByMessageIDRequest {
-    string MessageID = 10;
+    string LangID = 10;
+    string MessageID = 20;
 }
 
 message GetMessageByMessageIDResponse {
