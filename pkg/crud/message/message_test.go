@@ -73,4 +73,24 @@ func TestCRUD(t *testing.T) {
 		assert.NotEqual(t, resp1.Infos[1].ID, uuid.UUID{}.String())
 		assertMessage(t, resp1.Infos[1], &message2)
 	}
+
+	message1.BatchGet = false
+	message1.ID = resp1.Infos[0].ID
+	message2.MessageID = uuid.New().String()
+	message2.ID = resp1.Infos[1].ID
+
+	fmt.Printf("%v\n", resp1.Infos[0].ID)
+	fmt.Printf("%v\n", message1.ID)
+	fmt.Printf("%v\n", message2.ID)
+
+	resp2, err := UpdateMessages(context.Background(), &npool.UpdateMessagesRequest{
+		Infos: []*npool.Message{&message1, &message2},
+	})
+	if assert.Nil(t, err) {
+		assert.Equal(t, resp2.Infos[0].ID, message1.ID)
+		assertMessage(t, resp2.Infos[0], &message1)
+
+		assert.Equal(t, resp2.Infos[1].ID, message2.ID)
+		assertMessage(t, resp2.Infos[1], &message2)
+	}
 }
