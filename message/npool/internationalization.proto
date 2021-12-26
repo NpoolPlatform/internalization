@@ -19,56 +19,56 @@ service Internationalization {
 
     rpc AddLang(AddLangRequest) returns (AddLangResponse) {
         option (google.api.http) = {
-            post: "/add/lang"
+            post: "/v1/add/lang"
             body: "*"
         };
     }
     rpc UpdateLang(UpdateLangRequest) returns (UpdateLangResponse) {
         option (google.api.http) = {
-            post: "/update/lang"
+            post: "/v1/update/lang"
             body: "*"
         };
     }
     rpc GetLangs(GetLangsRequest) returns (GetLangsResponse) {
         option (google.api.http) = {
-            post: "/get/langs",
+            post: "/v1/get/langs",
             body: "*"
         };
     }
 
     rpc CreateMessage(CreateMessageRequest) returns (CreateMessageResponse) {
         option (google.api.http) = {
-            post: "/create/message"
+            post: "/v1/create/message"
             body: "*"
         };
     }
     rpc CreateMessages(CreateMessagesRequest) returns (CreateMessagesResponse) {
         option (google.api.http) = {
-            post: "/create/messages"
+            post: "/v1/create/messages"
             body: "*"
         };
     }
     rpc UpdateMessage(UpdateMessageRequest) returns (UpdateMessageResponse) {
         option (google.api.http) = {
-            post: "/update/message"
+            post: "/v1/update/message"
             body: "*"
         };
     }
     rpc UpdateMessages(UpdateMessagesRequest) returns (UpdateMessagesResponse) {
         option (google.api.http) = {
-            post: "/update/messages"
+            post: "/v1/update/messages"
             body: "*"
         };
     }
     rpc GetMessagesByLangID(GetMessagesByLangIDRequest) returns (GetMessagesByLangIDResponse) {
         option (google.api.http) = {
-            post: "/get/messages/by/lang/id"
+            post: "/v1/get/messages/by/lang/id"
             body: "*"
         };
     }
     rpc GetMessageByLangIDMessageID(GetMessageByLangIDMessageIDRequest) returns (GetMessageByLangIDMessageIDResponse) {
         option (google.api.http) = {
-            post: "/get/message/by/lang/id/message/id"
+            post: "/v1/get/message/by/lang/id/message/id"
             body: "*"
         };
     }

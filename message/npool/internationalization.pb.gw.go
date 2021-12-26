@@ -407,7 +407,7 @@ func RegisterInternationalizationHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/AddLang", runtime.WithHTTPPathPattern("/add/lang"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/AddLang", runtime.WithHTTPPathPattern("/v1/add/lang"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -430,7 +430,7 @@ func RegisterInternationalizationHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateLang", runtime.WithHTTPPathPattern("/update/lang"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateLang", runtime.WithHTTPPathPattern("/v1/update/lang"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -453,7 +453,7 @@ func RegisterInternationalizationHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetLangs", runtime.WithHTTPPathPattern("/get/langs"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetLangs", runtime.WithHTTPPathPattern("/v1/get/langs"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -476,7 +476,7 @@ func RegisterInternationalizationHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/CreateMessage", runtime.WithHTTPPathPattern("/create/message"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/CreateMessage", runtime.WithHTTPPathPattern("/v1/create/message"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -499,7 +499,7 @@ func RegisterInternationalizationHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/CreateMessages", runtime.WithHTTPPathPattern("/create/messages"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/CreateMessages", runtime.WithHTTPPathPattern("/v1/create/messages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -522,7 +522,7 @@ func RegisterInternationalizationHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateMessage", runtime.WithHTTPPathPattern("/update/message"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateMessage", runtime.WithHTTPPathPattern("/v1/update/message"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -545,7 +545,7 @@ func RegisterInternationalizationHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateMessages", runtime.WithHTTPPathPattern("/update/messages"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateMessages", runtime.WithHTTPPathPattern("/v1/update/messages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -568,7 +568,7 @@ func RegisterInternationalizationHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetMessagesByLangID", runtime.WithHTTPPathPattern("/get/messages/by/lang/id"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetMessagesByLangID", runtime.WithHTTPPathPattern("/v1/get/messages/by/lang/id"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -591,7 +591,7 @@ func RegisterInternationalizationHandlerServer(ctx context.Context, mux *runtime
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetMessageByLangIDMessageID", runtime.WithHTTPPathPattern("/get/message/by/lang/id/message/id"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetMessageByLangIDMessageID", runtime.WithHTTPPathPattern("/v1/get/message/by/lang/id/message/id"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -673,7 +673,7 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/AddLang", runtime.WithHTTPPathPattern("/add/lang"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/AddLang", runtime.WithHTTPPathPattern("/v1/add/lang"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -693,7 +693,7 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateLang", runtime.WithHTTPPathPattern("/update/lang"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateLang", runtime.WithHTTPPathPattern("/v1/update/lang"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -713,7 +713,7 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetLangs", runtime.WithHTTPPathPattern("/get/langs"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetLangs", runtime.WithHTTPPathPattern("/v1/get/langs"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -733,7 +733,7 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/CreateMessage", runtime.WithHTTPPathPattern("/create/message"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/CreateMessage", runtime.WithHTTPPathPattern("/v1/create/message"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -753,7 +753,7 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/CreateMessages", runtime.WithHTTPPathPattern("/create/messages"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/CreateMessages", runtime.WithHTTPPathPattern("/v1/create/messages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -773,7 +773,7 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateMessage", runtime.WithHTTPPathPattern("/update/message"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateMessage", runtime.WithHTTPPathPattern("/v1/update/message"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -793,7 +793,7 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateMessages", runtime.WithHTTPPathPattern("/update/messages"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/UpdateMessages", runtime.WithHTTPPathPattern("/v1/update/messages"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -813,7 +813,7 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetMessagesByLangID", runtime.WithHTTPPathPattern("/get/messages/by/lang/id"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetMessagesByLangID", runtime.WithHTTPPathPattern("/v1/get/messages/by/lang/id"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -833,7 +833,7 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetMessageByLangIDMessageID", runtime.WithHTTPPathPattern("/get/message/by/lang/id/message/id"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/internationalization.v1.Internationalization/GetMessageByLangIDMessageID", runtime.WithHTTPPathPattern("/v1/get/message/by/lang/id/message/id"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -855,23 +855,23 @@ func RegisterInternationalizationHandlerClient(ctx context.Context, mux *runtime
 var (
 	pattern_Internationalization_Version_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"version"}, ""))
 
-	pattern_Internationalization_AddLang_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"add", "lang"}, ""))
+	pattern_Internationalization_AddLang_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "add", "lang"}, ""))
 
-	pattern_Internationalization_UpdateLang_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"update", "lang"}, ""))
+	pattern_Internationalization_UpdateLang_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "update", "lang"}, ""))
 
-	pattern_Internationalization_GetLangs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"get", "langs"}, ""))
+	pattern_Internationalization_GetLangs_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "get", "langs"}, ""))
 
-	pattern_Internationalization_CreateMessage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"create", "message"}, ""))
+	pattern_Internationalization_CreateMessage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "create", "message"}, ""))
 
-	pattern_Internationalization_CreateMessages_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"create", "messages"}, ""))
+	pattern_Internationalization_CreateMessages_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "create", "messages"}, ""))
 
-	pattern_Internationalization_UpdateMessage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"update", "message"}, ""))
+	pattern_Internationalization_UpdateMessage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "update", "message"}, ""))
 
-	pattern_Internationalization_UpdateMessages_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"update", "messages"}, ""))
+	pattern_Internationalization_UpdateMessages_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "update", "messages"}, ""))
 
-	pattern_Internationalization_GetMessagesByLangID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4}, []string{"get", "messages", "by", "lang", "id"}, ""))
+	pattern_Internationalization_GetMessagesByLangID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 5}, []string{"v1", "get", "messages", "by", "lang", "id"}, ""))
 
-	pattern_Internationalization_GetMessageByLangIDMessageID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 1, 2, 4}, []string{"get", "message", "by", "lang", "id"}, ""))
+	pattern_Internationalization_GetMessageByLangIDMessageID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4, 2, 5, 2, 2, 2, 5}, []string{"v1", "get", "message", "by", "lang", "id"}, ""))
 )
 
 var (
