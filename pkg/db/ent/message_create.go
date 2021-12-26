@@ -30,8 +30,8 @@ func (mc *MessageCreate) SetAppID(u uuid.UUID) *MessageCreate {
 }
 
 // SetMessageID sets the "message_id" field.
-func (mc *MessageCreate) SetMessageID(u uuid.UUID) *MessageCreate {
-	mc.mutation.SetMessageID(u)
+func (mc *MessageCreate) SetMessageID(s string) *MessageCreate {
+	mc.mutation.SetMessageID(s)
 	return mc
 }
 
@@ -259,7 +259,7 @@ func (mc *MessageCreate) createSpec() (*Message, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := mc.mutation.MessageID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeUUID,
+			Type:   field.TypeString,
 			Value:  value,
 			Column: message.FieldMessageID,
 		})
@@ -380,7 +380,7 @@ func (u *MessageUpsert) UpdateAppID() *MessageUpsert {
 }
 
 // SetMessageID sets the "message_id" field.
-func (u *MessageUpsert) SetMessageID(v uuid.UUID) *MessageUpsert {
+func (u *MessageUpsert) SetMessageID(v string) *MessageUpsert {
 	u.Set(message.FieldMessageID, v)
 	return u
 }
@@ -528,7 +528,7 @@ func (u *MessageUpsertOne) UpdateAppID() *MessageUpsertOne {
 }
 
 // SetMessageID sets the "message_id" field.
-func (u *MessageUpsertOne) SetMessageID(v uuid.UUID) *MessageUpsertOne {
+func (u *MessageUpsertOne) SetMessageID(v string) *MessageUpsertOne {
 	return u.Update(func(s *MessageUpsert) {
 		s.SetMessageID(v)
 	})
@@ -856,7 +856,7 @@ func (u *MessageUpsertBulk) UpdateAppID() *MessageUpsertBulk {
 }
 
 // SetMessageID sets the "message_id" field.
-func (u *MessageUpsertBulk) SetMessageID(v uuid.UUID) *MessageUpsertBulk {
+func (u *MessageUpsertBulk) SetMessageID(v string) *MessageUpsertBulk {
 	return u.Update(func(s *MessageUpsert) {
 		s.SetMessageID(v)
 	})

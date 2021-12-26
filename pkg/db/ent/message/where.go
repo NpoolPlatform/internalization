@@ -99,7 +99,7 @@ func AppID(v uuid.UUID) predicate.Message {
 }
 
 // MessageID applies equality check predicate on the "message_id" field. It's identical to MessageIDEQ.
-func MessageID(v uuid.UUID) predicate.Message {
+func MessageID(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldMessageID), v))
 	})
@@ -224,21 +224,21 @@ func AppIDLTE(v uuid.UUID) predicate.Message {
 }
 
 // MessageIDEQ applies the EQ predicate on the "message_id" field.
-func MessageIDEQ(v uuid.UUID) predicate.Message {
+func MessageIDEQ(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldMessageID), v))
 	})
 }
 
 // MessageIDNEQ applies the NEQ predicate on the "message_id" field.
-func MessageIDNEQ(v uuid.UUID) predicate.Message {
+func MessageIDNEQ(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldMessageID), v))
 	})
 }
 
 // MessageIDIn applies the In predicate on the "message_id" field.
-func MessageIDIn(vs ...uuid.UUID) predicate.Message {
+func MessageIDIn(vs ...string) predicate.Message {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -255,7 +255,7 @@ func MessageIDIn(vs ...uuid.UUID) predicate.Message {
 }
 
 // MessageIDNotIn applies the NotIn predicate on the "message_id" field.
-func MessageIDNotIn(vs ...uuid.UUID) predicate.Message {
+func MessageIDNotIn(vs ...string) predicate.Message {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -272,30 +272,65 @@ func MessageIDNotIn(vs ...uuid.UUID) predicate.Message {
 }
 
 // MessageIDGT applies the GT predicate on the "message_id" field.
-func MessageIDGT(v uuid.UUID) predicate.Message {
+func MessageIDGT(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldMessageID), v))
 	})
 }
 
 // MessageIDGTE applies the GTE predicate on the "message_id" field.
-func MessageIDGTE(v uuid.UUID) predicate.Message {
+func MessageIDGTE(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldMessageID), v))
 	})
 }
 
 // MessageIDLT applies the LT predicate on the "message_id" field.
-func MessageIDLT(v uuid.UUID) predicate.Message {
+func MessageIDLT(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldMessageID), v))
 	})
 }
 
 // MessageIDLTE applies the LTE predicate on the "message_id" field.
-func MessageIDLTE(v uuid.UUID) predicate.Message {
+func MessageIDLTE(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDContains applies the Contains predicate on the "message_id" field.
+func MessageIDContains(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDHasPrefix applies the HasPrefix predicate on the "message_id" field.
+func MessageIDHasPrefix(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDHasSuffix applies the HasSuffix predicate on the "message_id" field.
+func MessageIDHasSuffix(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDEqualFold applies the EqualFold predicate on the "message_id" field.
+func MessageIDEqualFold(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldMessageID), v))
+	})
+}
+
+// MessageIDContainsFold applies the ContainsFold predicate on the "message_id" field.
+func MessageIDContainsFold(v string) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldMessageID), v))
 	})
 }
 

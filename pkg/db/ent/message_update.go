@@ -34,8 +34,8 @@ func (mu *MessageUpdate) SetAppID(u uuid.UUID) *MessageUpdate {
 }
 
 // SetMessageID sets the "message_id" field.
-func (mu *MessageUpdate) SetMessageID(u uuid.UUID) *MessageUpdate {
-	mu.mutation.SetMessageID(u)
+func (mu *MessageUpdate) SetMessageID(s string) *MessageUpdate {
+	mu.mutation.SetMessageID(s)
 	return mu
 }
 
@@ -207,7 +207,7 @@ func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := mu.mutation.MessageID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUUID,
+			Type:   field.TypeString,
 			Value:  value,
 			Column: message.FieldMessageID,
 		})
@@ -301,8 +301,8 @@ func (muo *MessageUpdateOne) SetAppID(u uuid.UUID) *MessageUpdateOne {
 }
 
 // SetMessageID sets the "message_id" field.
-func (muo *MessageUpdateOne) SetMessageID(u uuid.UUID) *MessageUpdateOne {
-	muo.mutation.SetMessageID(u)
+func (muo *MessageUpdateOne) SetMessageID(s string) *MessageUpdateOne {
+	muo.mutation.SetMessageID(s)
 	return muo
 }
 
@@ -498,7 +498,7 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 	}
 	if value, ok := muo.mutation.MessageID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUUID,
+			Type:   field.TypeString,
 			Value:  value,
 			Column: message.FieldMessageID,
 		})

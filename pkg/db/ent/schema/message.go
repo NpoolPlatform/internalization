@@ -22,7 +22,7 @@ func (Message) Fields() []ent.Field {
 			Default(uuid.New).
 			Unique(),
 		field.UUID("app_id", uuid.UUID{}),
-		field.UUID("message_id", uuid.UUID{}),
+		field.String("message_id"),
 		field.UUID("lang_id", uuid.UUID{}),
 		field.String("message"),
 		field.Bool("batch_get"),

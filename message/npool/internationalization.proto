@@ -115,6 +115,7 @@ message Message {
     string MessageID = 30;
     string LangID = 40;
     string Message = 50;
+    bool BatchGet = 60;
 }
 
 message CreateMessageRequest {

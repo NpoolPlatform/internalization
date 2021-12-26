@@ -246,6 +246,7 @@
 | MessageID | [string](#string) |  |  |
 | LangID | [string](#string) |  |  |
 | Message | [string](#string) |  |  |
+| BatchGet | [bool](#bool) |  |  |
 
 
 

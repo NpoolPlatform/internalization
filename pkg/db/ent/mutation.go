@@ -705,7 +705,7 @@ type MessageMutation struct {
 	typ           string
 	id            *uuid.UUID
 	app_id        *uuid.UUID
-	message_id    *uuid.UUID
+	message_id    *string
 	lang_id       *uuid.UUID
 	message       *string
 	batch_get     *bool
@@ -843,12 +843,12 @@ func (m *MessageMutation) ResetAppID() {
 }
 
 // SetMessageID sets the "message_id" field.
-func (m *MessageMutation) SetMessageID(u uuid.UUID) {
-	m.message_id = &u
+func (m *MessageMutation) SetMessageID(s string) {
+	m.message_id = &s
 }
 
 // MessageID returns the value of the "message_id" field in the mutation.
-func (m *MessageMutation) MessageID() (r uuid.UUID, exists bool) {
+func (m *MessageMutation) MessageID() (r string, exists bool) {
 	v := m.message_id
 	if v == nil {
 		return
@@ -859,7 +859,7 @@ func (m *MessageMutation) MessageID() (r uuid.UUID, exists bool) {
 // OldMessageID returns the old "message_id" field's value of the Message entity.
 // If the Message object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldMessageID(ctx context.Context) (v uuid.UUID, err error) {
+func (m *MessageMutation) OldMessageID(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldMessageID is only allowed on UpdateOne operations")
 	}
@@ -1264,7 +1264,7 @@ func (m *MessageMutation) SetField(name string, value ent.Value) error {
 		m.SetAppID(v)
 		return nil
 	case message.FieldMessageID:
-		v, ok := value.(uuid.UUID)
+		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

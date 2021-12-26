@@ -28,7 +28,7 @@ var (
 	MessagesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "app_id", Type: field.TypeUUID},
-		{Name: "message_id", Type: field.TypeUUID},
+		{Name: "message_id", Type: field.TypeString},
 		{Name: "lang_id", Type: field.TypeUUID},
 		{Name: "message", Type: field.TypeString},
 		{Name: "batch_get", Type: field.TypeBool},

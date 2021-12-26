@@ -19,7 +19,7 @@ type Message struct {
 	// AppID holds the value of the "app_id" field.
 	AppID uuid.UUID `json:"app_id,omitempty"`
 	// MessageID holds the value of the "message_id" field.
-	MessageID uuid.UUID `json:"message_id,omitempty"`
+	MessageID string `json:"message_id,omitempty"`
 	// LangID holds the value of the "lang_id" field.
 	LangID uuid.UUID `json:"lang_id,omitempty"`
 	// Message holds the value of the "message" field.
@@ -43,9 +43,9 @@ func (*Message) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case message.FieldCreateAt, message.FieldUpdateAt, message.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
-		case message.FieldMessage:
+		case message.FieldMessageID, message.FieldMessage:
 			values[i] = new(sql.NullString)
-		case message.FieldID, message.FieldAppID, message.FieldMessageID, message.FieldLangID:
+		case message.FieldID, message.FieldAppID, message.FieldLangID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Message", columns[i])
@@ -75,10 +75,10 @@ func (m *Message) assignValues(columns []string, values []interface{}) error {
 				m.AppID = *value
 			}
 		case message.FieldMessageID:
-			if value, ok := values[i].(*uuid.UUID); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field message_id", values[i])
-			} else if value != nil {
-				m.MessageID = *value
+			} else if value.Valid {
+				m.MessageID = value.String
 			}
 		case message.FieldLangID:
 			if value, ok := values[i].(*uuid.UUID); !ok {
@@ -147,7 +147,7 @@ func (m *Message) String() string {
 	builder.WriteString(", app_id=")
 	builder.WriteString(fmt.Sprintf("%v", m.AppID))
 	builder.WriteString(", message_id=")
-	builder.WriteString(fmt.Sprintf("%v", m.MessageID))
+	builder.WriteString(m.MessageID)
 	builder.WriteString(", lang_id=")
 	builder.WriteString(fmt.Sprintf("%v", m.LangID))
 	builder.WriteString(", message=")
