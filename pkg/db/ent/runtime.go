@@ -16,17 +16,17 @@ func init() {
 	langFields := schema.Lang{}.Fields()
 	_ = langFields
 	// langDescCreateAt is the schema descriptor for create_at field.
-	langDescCreateAt := langFields[2].Descriptor()
+	langDescCreateAt := langFields[3].Descriptor()
 	// lang.DefaultCreateAt holds the default value on creation for the create_at field.
 	lang.DefaultCreateAt = langDescCreateAt.Default.(func() uint32)
 	// langDescUpdateAt is the schema descriptor for update_at field.
-	langDescUpdateAt := langFields[3].Descriptor()
+	langDescUpdateAt := langFields[4].Descriptor()
 	// lang.DefaultUpdateAt holds the default value on creation for the update_at field.
 	lang.DefaultUpdateAt = langDescUpdateAt.Default.(func() uint32)
 	// lang.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
 	lang.UpdateDefaultUpdateAt = langDescUpdateAt.UpdateDefault.(func() uint32)
 	// langDescDeleteAt is the schema descriptor for delete_at field.
-	langDescDeleteAt := langFields[4].Descriptor()
+	langDescDeleteAt := langFields[5].Descriptor()
 	// lang.DefaultDeleteAt holds the default value on creation for the delete_at field.
 	lang.DefaultDeleteAt = langDescDeleteAt.Default.(func() uint32)
 	// langDescID is the schema descriptor for id field.
@@ -36,17 +36,17 @@ func init() {
 	messageFields := schema.Message{}.Fields()
 	_ = messageFields
 	// messageDescCreateAt is the schema descriptor for create_at field.
-	messageDescCreateAt := messageFields[5].Descriptor()
+	messageDescCreateAt := messageFields[6].Descriptor()
 	// message.DefaultCreateAt holds the default value on creation for the create_at field.
 	message.DefaultCreateAt = messageDescCreateAt.Default.(func() uint32)
 	// messageDescUpdateAt is the schema descriptor for update_at field.
-	messageDescUpdateAt := messageFields[6].Descriptor()
+	messageDescUpdateAt := messageFields[7].Descriptor()
 	// message.DefaultUpdateAt holds the default value on creation for the update_at field.
 	message.DefaultUpdateAt = messageDescUpdateAt.Default.(func() uint32)
 	// message.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
 	message.UpdateDefaultUpdateAt = messageDescUpdateAt.UpdateDefault.(func() uint32)
 	// messageDescDeleteAt is the schema descriptor for delete_at field.
-	messageDescDeleteAt := messageFields[7].Descriptor()
+	messageDescDeleteAt := messageFields[8].Descriptor()
 	// message.DefaultDeleteAt holds the default value on creation for the delete_at field.
 	message.DefaultDeleteAt = messageDescDeleteAt.Default.(func() uint32)
 	// messageDescID is the schema descriptor for id field.

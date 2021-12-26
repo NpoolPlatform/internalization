@@ -20,10 +20,12 @@ type Message struct {
 	AppID uuid.UUID `json:"app_id,omitempty"`
 	// MessageID holds the value of the "message_id" field.
 	MessageID uuid.UUID `json:"message_id,omitempty"`
-	// Lang holds the value of the "lang" field.
-	Lang string `json:"lang,omitempty"`
+	// LangID holds the value of the "lang_id" field.
+	LangID uuid.UUID `json:"lang_id,omitempty"`
 	// Message holds the value of the "message" field.
 	Message string `json:"message,omitempty"`
+	// BatchGet holds the value of the "batch_get" field.
+	BatchGet bool `json:"batch_get,omitempty"`
 	// CreateAt holds the value of the "create_at" field.
 	CreateAt uint32 `json:"create_at,omitempty"`
 	// UpdateAt holds the value of the "update_at" field.
@@ -37,11 +39,13 @@ func (*Message) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case message.FieldBatchGet:
+			values[i] = new(sql.NullBool)
 		case message.FieldCreateAt, message.FieldUpdateAt, message.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
-		case message.FieldLang, message.FieldMessage:
+		case message.FieldMessage:
 			values[i] = new(sql.NullString)
-		case message.FieldID, message.FieldAppID, message.FieldMessageID:
+		case message.FieldID, message.FieldAppID, message.FieldMessageID, message.FieldLangID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Message", columns[i])
@@ -76,17 +80,23 @@ func (m *Message) assignValues(columns []string, values []interface{}) error {
 			} else if value != nil {
 				m.MessageID = *value
 			}
-		case message.FieldLang:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field lang", values[i])
-			} else if value.Valid {
-				m.Lang = value.String
+		case message.FieldLangID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field lang_id", values[i])
+			} else if value != nil {
+				m.LangID = *value
 			}
 		case message.FieldMessage:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field message", values[i])
 			} else if value.Valid {
 				m.Message = value.String
+			}
+		case message.FieldBatchGet:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field batch_get", values[i])
+			} else if value.Valid {
+				m.BatchGet = value.Bool
 			}
 		case message.FieldCreateAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -138,10 +148,12 @@ func (m *Message) String() string {
 	builder.WriteString(fmt.Sprintf("%v", m.AppID))
 	builder.WriteString(", message_id=")
 	builder.WriteString(fmt.Sprintf("%v", m.MessageID))
-	builder.WriteString(", lang=")
-	builder.WriteString(m.Lang)
+	builder.WriteString(", lang_id=")
+	builder.WriteString(fmt.Sprintf("%v", m.LangID))
 	builder.WriteString(", message=")
 	builder.WriteString(m.Message)
+	builder.WriteString(", batch_get=")
+	builder.WriteString(fmt.Sprintf("%v", m.BatchGet))
 	builder.WriteString(", create_at=")
 	builder.WriteString(fmt.Sprintf("%v", m.CreateAt))
 	builder.WriteString(", update_at=")

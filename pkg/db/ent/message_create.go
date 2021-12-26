@@ -35,15 +35,21 @@ func (mc *MessageCreate) SetMessageID(u uuid.UUID) *MessageCreate {
 	return mc
 }
 
-// SetLang sets the "lang" field.
-func (mc *MessageCreate) SetLang(s string) *MessageCreate {
-	mc.mutation.SetLang(s)
+// SetLangID sets the "lang_id" field.
+func (mc *MessageCreate) SetLangID(u uuid.UUID) *MessageCreate {
+	mc.mutation.SetLangID(u)
 	return mc
 }
 
 // SetMessage sets the "message" field.
 func (mc *MessageCreate) SetMessage(s string) *MessageCreate {
 	mc.mutation.SetMessage(s)
+	return mc
+}
+
+// SetBatchGet sets the "batch_get" field.
+func (mc *MessageCreate) SetBatchGet(b bool) *MessageCreate {
+	mc.mutation.SetBatchGet(b)
 	return mc
 }
 
@@ -192,11 +198,14 @@ func (mc *MessageCreate) check() error {
 	if _, ok := mc.mutation.MessageID(); !ok {
 		return &ValidationError{Name: "message_id", err: errors.New(`ent: missing required field "message_id"`)}
 	}
-	if _, ok := mc.mutation.Lang(); !ok {
-		return &ValidationError{Name: "lang", err: errors.New(`ent: missing required field "lang"`)}
+	if _, ok := mc.mutation.LangID(); !ok {
+		return &ValidationError{Name: "lang_id", err: errors.New(`ent: missing required field "lang_id"`)}
 	}
 	if _, ok := mc.mutation.Message(); !ok {
 		return &ValidationError{Name: "message", err: errors.New(`ent: missing required field "message"`)}
+	}
+	if _, ok := mc.mutation.BatchGet(); !ok {
+		return &ValidationError{Name: "batch_get", err: errors.New(`ent: missing required field "batch_get"`)}
 	}
 	if _, ok := mc.mutation.CreateAt(); !ok {
 		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
@@ -256,13 +265,13 @@ func (mc *MessageCreate) createSpec() (*Message, *sqlgraph.CreateSpec) {
 		})
 		_node.MessageID = value
 	}
-	if value, ok := mc.mutation.Lang(); ok {
+	if value, ok := mc.mutation.LangID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeUUID,
 			Value:  value,
-			Column: message.FieldLang,
+			Column: message.FieldLangID,
 		})
-		_node.Lang = value
+		_node.LangID = value
 	}
 	if value, ok := mc.mutation.Message(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -271,6 +280,14 @@ func (mc *MessageCreate) createSpec() (*Message, *sqlgraph.CreateSpec) {
 			Column: message.FieldMessage,
 		})
 		_node.Message = value
+	}
+	if value, ok := mc.mutation.BatchGet(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: message.FieldBatchGet,
+		})
+		_node.BatchGet = value
 	}
 	if value, ok := mc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -374,15 +391,15 @@ func (u *MessageUpsert) UpdateMessageID() *MessageUpsert {
 	return u
 }
 
-// SetLang sets the "lang" field.
-func (u *MessageUpsert) SetLang(v string) *MessageUpsert {
-	u.Set(message.FieldLang, v)
+// SetLangID sets the "lang_id" field.
+func (u *MessageUpsert) SetLangID(v uuid.UUID) *MessageUpsert {
+	u.Set(message.FieldLangID, v)
 	return u
 }
 
-// UpdateLang sets the "lang" field to the value that was provided on create.
-func (u *MessageUpsert) UpdateLang() *MessageUpsert {
-	u.SetExcluded(message.FieldLang)
+// UpdateLangID sets the "lang_id" field to the value that was provided on create.
+func (u *MessageUpsert) UpdateLangID() *MessageUpsert {
+	u.SetExcluded(message.FieldLangID)
 	return u
 }
 
@@ -395,6 +412,18 @@ func (u *MessageUpsert) SetMessage(v string) *MessageUpsert {
 // UpdateMessage sets the "message" field to the value that was provided on create.
 func (u *MessageUpsert) UpdateMessage() *MessageUpsert {
 	u.SetExcluded(message.FieldMessage)
+	return u
+}
+
+// SetBatchGet sets the "batch_get" field.
+func (u *MessageUpsert) SetBatchGet(v bool) *MessageUpsert {
+	u.Set(message.FieldBatchGet, v)
+	return u
+}
+
+// UpdateBatchGet sets the "batch_get" field to the value that was provided on create.
+func (u *MessageUpsert) UpdateBatchGet() *MessageUpsert {
+	u.SetExcluded(message.FieldBatchGet)
 	return u
 }
 
@@ -512,17 +541,17 @@ func (u *MessageUpsertOne) UpdateMessageID() *MessageUpsertOne {
 	})
 }
 
-// SetLang sets the "lang" field.
-func (u *MessageUpsertOne) SetLang(v string) *MessageUpsertOne {
+// SetLangID sets the "lang_id" field.
+func (u *MessageUpsertOne) SetLangID(v uuid.UUID) *MessageUpsertOne {
 	return u.Update(func(s *MessageUpsert) {
-		s.SetLang(v)
+		s.SetLangID(v)
 	})
 }
 
-// UpdateLang sets the "lang" field to the value that was provided on create.
-func (u *MessageUpsertOne) UpdateLang() *MessageUpsertOne {
+// UpdateLangID sets the "lang_id" field to the value that was provided on create.
+func (u *MessageUpsertOne) UpdateLangID() *MessageUpsertOne {
 	return u.Update(func(s *MessageUpsert) {
-		s.UpdateLang()
+		s.UpdateLangID()
 	})
 }
 
@@ -537,6 +566,20 @@ func (u *MessageUpsertOne) SetMessage(v string) *MessageUpsertOne {
 func (u *MessageUpsertOne) UpdateMessage() *MessageUpsertOne {
 	return u.Update(func(s *MessageUpsert) {
 		s.UpdateMessage()
+	})
+}
+
+// SetBatchGet sets the "batch_get" field.
+func (u *MessageUpsertOne) SetBatchGet(v bool) *MessageUpsertOne {
+	return u.Update(func(s *MessageUpsert) {
+		s.SetBatchGet(v)
+	})
+}
+
+// UpdateBatchGet sets the "batch_get" field to the value that was provided on create.
+func (u *MessageUpsertOne) UpdateBatchGet() *MessageUpsertOne {
+	return u.Update(func(s *MessageUpsert) {
+		s.UpdateBatchGet()
 	})
 }
 
@@ -826,17 +869,17 @@ func (u *MessageUpsertBulk) UpdateMessageID() *MessageUpsertBulk {
 	})
 }
 
-// SetLang sets the "lang" field.
-func (u *MessageUpsertBulk) SetLang(v string) *MessageUpsertBulk {
+// SetLangID sets the "lang_id" field.
+func (u *MessageUpsertBulk) SetLangID(v uuid.UUID) *MessageUpsertBulk {
 	return u.Update(func(s *MessageUpsert) {
-		s.SetLang(v)
+		s.SetLangID(v)
 	})
 }
 
-// UpdateLang sets the "lang" field to the value that was provided on create.
-func (u *MessageUpsertBulk) UpdateLang() *MessageUpsertBulk {
+// UpdateLangID sets the "lang_id" field to the value that was provided on create.
+func (u *MessageUpsertBulk) UpdateLangID() *MessageUpsertBulk {
 	return u.Update(func(s *MessageUpsert) {
-		s.UpdateLang()
+		s.UpdateLangID()
 	})
 }
 
@@ -851,6 +894,20 @@ func (u *MessageUpsertBulk) SetMessage(v string) *MessageUpsertBulk {
 func (u *MessageUpsertBulk) UpdateMessage() *MessageUpsertBulk {
 	return u.Update(func(s *MessageUpsert) {
 		s.UpdateMessage()
+	})
+}
+
+// SetBatchGet sets the "batch_get" field.
+func (u *MessageUpsertBulk) SetBatchGet(v bool) *MessageUpsertBulk {
+	return u.Update(func(s *MessageUpsert) {
+		s.SetBatchGet(v)
+	})
+}
+
+// UpdateBatchGet sets the "batch_get" field to the value that was provided on create.
+func (u *MessageUpsertBulk) UpdateBatchGet() *MessageUpsertBulk {
+	return u.Update(func(s *MessageUpsert) {
+		s.UpdateBatchGet()
 	})
 }
 

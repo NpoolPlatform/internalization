@@ -39,15 +39,21 @@ func (mu *MessageUpdate) SetMessageID(u uuid.UUID) *MessageUpdate {
 	return mu
 }
 
-// SetLang sets the "lang" field.
-func (mu *MessageUpdate) SetLang(s string) *MessageUpdate {
-	mu.mutation.SetLang(s)
+// SetLangID sets the "lang_id" field.
+func (mu *MessageUpdate) SetLangID(u uuid.UUID) *MessageUpdate {
+	mu.mutation.SetLangID(u)
 	return mu
 }
 
 // SetMessage sets the "message" field.
 func (mu *MessageUpdate) SetMessage(s string) *MessageUpdate {
 	mu.mutation.SetMessage(s)
+	return mu
+}
+
+// SetBatchGet sets the "batch_get" field.
+func (mu *MessageUpdate) SetBatchGet(b bool) *MessageUpdate {
+	mu.mutation.SetBatchGet(b)
 	return mu
 }
 
@@ -206,11 +212,11 @@ func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: message.FieldMessageID,
 		})
 	}
-	if value, ok := mu.mutation.Lang(); ok {
+	if value, ok := mu.mutation.LangID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeUUID,
 			Value:  value,
-			Column: message.FieldLang,
+			Column: message.FieldLangID,
 		})
 	}
 	if value, ok := mu.mutation.Message(); ok {
@@ -218,6 +224,13 @@ func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: message.FieldMessage,
+		})
+	}
+	if value, ok := mu.mutation.BatchGet(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: message.FieldBatchGet,
 		})
 	}
 	if value, ok := mu.mutation.CreateAt(); ok {
@@ -293,15 +306,21 @@ func (muo *MessageUpdateOne) SetMessageID(u uuid.UUID) *MessageUpdateOne {
 	return muo
 }
 
-// SetLang sets the "lang" field.
-func (muo *MessageUpdateOne) SetLang(s string) *MessageUpdateOne {
-	muo.mutation.SetLang(s)
+// SetLangID sets the "lang_id" field.
+func (muo *MessageUpdateOne) SetLangID(u uuid.UUID) *MessageUpdateOne {
+	muo.mutation.SetLangID(u)
 	return muo
 }
 
 // SetMessage sets the "message" field.
 func (muo *MessageUpdateOne) SetMessage(s string) *MessageUpdateOne {
 	muo.mutation.SetMessage(s)
+	return muo
+}
+
+// SetBatchGet sets the "batch_get" field.
+func (muo *MessageUpdateOne) SetBatchGet(b bool) *MessageUpdateOne {
+	muo.mutation.SetBatchGet(b)
 	return muo
 }
 
@@ -484,11 +503,11 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 			Column: message.FieldMessageID,
 		})
 	}
-	if value, ok := muo.mutation.Lang(); ok {
+	if value, ok := muo.mutation.LangID(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
+			Type:   field.TypeUUID,
 			Value:  value,
-			Column: message.FieldLang,
+			Column: message.FieldLangID,
 		})
 	}
 	if value, ok := muo.mutation.Message(); ok {
@@ -496,6 +515,13 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 			Type:   field.TypeString,
 			Value:  value,
 			Column: message.FieldMessage,
+		})
+	}
+	if value, ok := muo.mutation.BatchGet(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: message.FieldBatchGet,
 		})
 	}
 	if value, ok := muo.mutation.CreateAt(); ok {

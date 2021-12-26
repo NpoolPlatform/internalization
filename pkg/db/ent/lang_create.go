@@ -29,6 +29,12 @@ func (lc *LangCreate) SetLang(s string) *LangCreate {
 	return lc
 }
 
+// SetName sets the "name" field.
+func (lc *LangCreate) SetName(s string) *LangCreate {
+	lc.mutation.SetName(s)
+	return lc
+}
+
 // SetCreateAt sets the "create_at" field.
 func (lc *LangCreate) SetCreateAt(u uint32) *LangCreate {
 	lc.mutation.SetCreateAt(u)
@@ -171,6 +177,9 @@ func (lc *LangCreate) check() error {
 	if _, ok := lc.mutation.Lang(); !ok {
 		return &ValidationError{Name: "lang", err: errors.New(`ent: missing required field "lang"`)}
 	}
+	if _, ok := lc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "name"`)}
+	}
 	if _, ok := lc.mutation.CreateAt(); !ok {
 		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
 	}
@@ -220,6 +229,14 @@ func (lc *LangCreate) createSpec() (*Lang, *sqlgraph.CreateSpec) {
 			Column: lang.FieldLang,
 		})
 		_node.Lang = value
+	}
+	if value, ok := lc.mutation.Name(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: lang.FieldName,
+		})
+		_node.Name = value
 	}
 	if value, ok := lc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -308,6 +325,18 @@ func (u *LangUpsert) SetLang(v string) *LangUpsert {
 // UpdateLang sets the "lang" field to the value that was provided on create.
 func (u *LangUpsert) UpdateLang() *LangUpsert {
 	u.SetExcluded(lang.FieldLang)
+	return u
+}
+
+// SetName sets the "name" field.
+func (u *LangUpsert) SetName(v string) *LangUpsert {
+	u.Set(lang.FieldName, v)
+	return u
+}
+
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *LangUpsert) UpdateName() *LangUpsert {
+	u.SetExcluded(lang.FieldName)
 	return u
 }
 
@@ -408,6 +437,20 @@ func (u *LangUpsertOne) SetLang(v string) *LangUpsertOne {
 func (u *LangUpsertOne) UpdateLang() *LangUpsertOne {
 	return u.Update(func(s *LangUpsert) {
 		s.UpdateLang()
+	})
+}
+
+// SetName sets the "name" field.
+func (u *LangUpsertOne) SetName(v string) *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.SetName(v)
+	})
+}
+
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *LangUpsertOne) UpdateName() *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.UpdateName()
 	})
 }
 
@@ -680,6 +723,20 @@ func (u *LangUpsertBulk) SetLang(v string) *LangUpsertBulk {
 func (u *LangUpsertBulk) UpdateLang() *LangUpsertBulk {
 	return u.Update(func(s *LangUpsert) {
 		s.UpdateLang()
+	})
+}
+
+// SetName sets the "name" field.
+func (u *LangUpsertBulk) SetName(v string) *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.SetName(v)
+	})
+}
+
+// UpdateName sets the "name" field to the value that was provided on create.
+func (u *LangUpsertBulk) UpdateName() *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.UpdateName()
 	})
 }
 

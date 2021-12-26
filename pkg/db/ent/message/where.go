@@ -105,10 +105,10 @@ func MessageID(v uuid.UUID) predicate.Message {
 	})
 }
 
-// Lang applies equality check predicate on the "lang" field. It's identical to LangEQ.
-func Lang(v string) predicate.Message {
+// LangID applies equality check predicate on the "lang_id" field. It's identical to LangIDEQ.
+func LangID(v uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldLang), v))
+		s.Where(sql.EQ(s.C(FieldLangID), v))
 	})
 }
 
@@ -116,6 +116,13 @@ func Lang(v string) predicate.Message {
 func Message(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldMessage), v))
+	})
+}
+
+// BatchGet applies equality check predicate on the "batch_get" field. It's identical to BatchGetEQ.
+func BatchGet(v bool) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldBatchGet), v))
 	})
 }
 
@@ -292,22 +299,22 @@ func MessageIDLTE(v uuid.UUID) predicate.Message {
 	})
 }
 
-// LangEQ applies the EQ predicate on the "lang" field.
-func LangEQ(v string) predicate.Message {
+// LangIDEQ applies the EQ predicate on the "lang_id" field.
+func LangIDEQ(v uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldLang), v))
+		s.Where(sql.EQ(s.C(FieldLangID), v))
 	})
 }
 
-// LangNEQ applies the NEQ predicate on the "lang" field.
-func LangNEQ(v string) predicate.Message {
+// LangIDNEQ applies the NEQ predicate on the "lang_id" field.
+func LangIDNEQ(v uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldLang), v))
+		s.Where(sql.NEQ(s.C(FieldLangID), v))
 	})
 }
 
-// LangIn applies the In predicate on the "lang" field.
-func LangIn(vs ...string) predicate.Message {
+// LangIDIn applies the In predicate on the "lang_id" field.
+func LangIDIn(vs ...uuid.UUID) predicate.Message {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -319,12 +326,12 @@ func LangIn(vs ...string) predicate.Message {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldLang), v...))
+		s.Where(sql.In(s.C(FieldLangID), v...))
 	})
 }
 
-// LangNotIn applies the NotIn predicate on the "lang" field.
-func LangNotIn(vs ...string) predicate.Message {
+// LangIDNotIn applies the NotIn predicate on the "lang_id" field.
+func LangIDNotIn(vs ...uuid.UUID) predicate.Message {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -336,70 +343,35 @@ func LangNotIn(vs ...string) predicate.Message {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldLang), v...))
+		s.Where(sql.NotIn(s.C(FieldLangID), v...))
 	})
 }
 
-// LangGT applies the GT predicate on the "lang" field.
-func LangGT(v string) predicate.Message {
+// LangIDGT applies the GT predicate on the "lang_id" field.
+func LangIDGT(v uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldLang), v))
+		s.Where(sql.GT(s.C(FieldLangID), v))
 	})
 }
 
-// LangGTE applies the GTE predicate on the "lang" field.
-func LangGTE(v string) predicate.Message {
+// LangIDGTE applies the GTE predicate on the "lang_id" field.
+func LangIDGTE(v uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldLang), v))
+		s.Where(sql.GTE(s.C(FieldLangID), v))
 	})
 }
 
-// LangLT applies the LT predicate on the "lang" field.
-func LangLT(v string) predicate.Message {
+// LangIDLT applies the LT predicate on the "lang_id" field.
+func LangIDLT(v uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldLang), v))
+		s.Where(sql.LT(s.C(FieldLangID), v))
 	})
 }
 
-// LangLTE applies the LTE predicate on the "lang" field.
-func LangLTE(v string) predicate.Message {
+// LangIDLTE applies the LTE predicate on the "lang_id" field.
+func LangIDLTE(v uuid.UUID) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldLang), v))
-	})
-}
-
-// LangContains applies the Contains predicate on the "lang" field.
-func LangContains(v string) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldLang), v))
-	})
-}
-
-// LangHasPrefix applies the HasPrefix predicate on the "lang" field.
-func LangHasPrefix(v string) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldLang), v))
-	})
-}
-
-// LangHasSuffix applies the HasSuffix predicate on the "lang" field.
-func LangHasSuffix(v string) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldLang), v))
-	})
-}
-
-// LangEqualFold applies the EqualFold predicate on the "lang" field.
-func LangEqualFold(v string) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldLang), v))
-	})
-}
-
-// LangContainsFold applies the ContainsFold predicate on the "lang" field.
-func LangContainsFold(v string) predicate.Message {
-	return predicate.Message(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldLang), v))
+		s.Where(sql.LTE(s.C(FieldLangID), v))
 	})
 }
 
@@ -511,6 +483,20 @@ func MessageEqualFold(v string) predicate.Message {
 func MessageContainsFold(v string) predicate.Message {
 	return predicate.Message(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldMessage), v))
+	})
+}
+
+// BatchGetEQ applies the EQ predicate on the "batch_get" field.
+func BatchGetEQ(v bool) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldBatchGet), v))
+	})
+}
+
+// BatchGetNEQ applies the NEQ predicate on the "batch_get" field.
+func BatchGetNEQ(v bool) predicate.Message {
+	return predicate.Message(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldBatchGet), v))
 	})
 }
 

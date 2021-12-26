@@ -23,8 +23,9 @@ func (Message) Fields() []ent.Field {
 			Unique(),
 		field.UUID("app_id", uuid.UUID{}),
 		field.UUID("message_id", uuid.UUID{}),
-		field.String("lang"),
+		field.UUID("lang_id", uuid.UUID{}),
 		field.String("message"),
+		field.Bool("batch_get"),
 		field.Uint32("create_at").
 			DefaultFunc(func() uint32 {
 				return uint32(time.Now().Unix())

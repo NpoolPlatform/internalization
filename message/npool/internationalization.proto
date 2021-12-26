@@ -16,9 +16,136 @@ service Internationalization {
             body: "*"
         };
     }
+
+    rpc AddLang(AddLangRequest) returns (AddLangResponse) {
+        option (google.api.http) = {
+            post: "/add/lang"
+            body: "*"
+        };
+    }
+    rpc GetLangs(GetLangsRequest) returns (GetLangsResponse) {
+        option (google.api.http) = {
+            post: "/get/langs",
+            body: "*"
+        };
+    }
+
+    rpc CreateMessage(CreateMessageRequest) returns (CreateMessageResponse) {
+        option (google.api.http) = {
+            post: "/create/message"
+            body: "*"
+        };
+    }
+    rpc CreateMessages(CreateMessagesRequest) returns (CreateMessagesResponse) {
+        option (google.api.http) = {
+            post: "/create/messages"
+            body: "*"
+        };
+    }
+    rpc UpdateMessage(UpdateMessageRequest) returns (UpdateMessageResponse) {
+        option (google.api.http) = {
+            post: "/update/message"
+            body: "*"
+        };
+    }
+    rpc UpdateMessages(UpdateMessagesRequest) returns (UpdateMessagesResponse) {
+        option (google.api.http) = {
+            post: "/update/messages"
+            body: "*"
+        };
+    }
+    rpc GetMessages(GetMessagesRequest) returns (GetMessagesResponse) {
+        option (google.api.http) = {
+            post: "/get/messages"
+            body: "*"
+        };
+    }
+    rpc GetMessageByMessageID(GetMessageByMessageIDRequest) returns (GetMessageByMessageIDResponse) {
+        option (google.api.http) = {
+            post: "/get/message/by/message/id"
+            body: "*"
+        };
+    }
 }
 
 // request body and response
 message VersionResponse {
-    string Info = 100;
+    string Info = 1;
+}
+
+message Lang {
+    string ID = 10;
+    string Lang = 20;
+    string Logo = 30;
+}
+
+message AddLangRequest {
+    string Lang = 10;
+    string Logo = 20;
+}
+
+message AddLangResponse {
+    Lang Info = 10;
+}
+
+message GetLangsRequest {
+}
+
+message GetLangsResponse {
+    repeated Lang Infos = 10;
+}
+
+message Message {
+    string ID = 10;
+    string AppID = 20;
+    string MessageID = 30;
+    string LangID = 40;
+    string Message = 50;
+}
+
+message CreateMessageRequest {
+    Message Info = 10;
+}
+
+message CreateMessageResponse {
+    Message Info = 10;
+}
+
+message CreateMessagesRequest {
+    repeated Message Infos = 10;
+}
+
+message CreateMessagesResponse {
+    repeated Message Infos = 10;
+}
+
+message UpdateMessageRequest {
+    Message Info = 10;
+}
+
+message UpdateMessageResponse {
+    Message Info = 10;
+}
+
+message UpdateMessagesRequest {
+    repeated Message Infos = 10;
+}
+
+message UpdateMessagesResponse {
+    repeated Message Infos = 10;
+}
+
+message GetMessagesRequest {
+}
+
+message GetMessagesResponse {
+    repeated Message Infos = 10;
+}
+
+message GetMessageByMessageIDRequest {
+    string MessageID = 10;
+}
+
+message GetMessageByMessageIDResponse {
+    Message Info = 10;
 }

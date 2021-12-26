@@ -13,6 +13,8 @@ const (
 	FieldID = "id"
 	// FieldLang holds the string denoting the lang field in the database.
 	FieldLang = "lang"
+	// FieldName holds the string denoting the name field in the database.
+	FieldName = "name"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldUpdateAt holds the string denoting the update_at field in the database.
@@ -27,6 +29,7 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldLang,
+	FieldName,
 	FieldCreateAt,
 	FieldUpdateAt,
 	FieldDeleteAt,

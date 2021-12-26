@@ -35,6 +35,7 @@ type LangMutation struct {
 	typ           string
 	id            *uuid.UUID
 	lang          *string
+	name          *string
 	create_at     *uint32
 	addcreate_at  *uint32
 	update_at     *uint32
@@ -166,6 +167,42 @@ func (m *LangMutation) OldLang(ctx context.Context) (v string, err error) {
 // ResetLang resets all changes to the "lang" field.
 func (m *LangMutation) ResetLang() {
 	m.lang = nil
+}
+
+// SetName sets the "name" field.
+func (m *LangMutation) SetName(s string) {
+	m.name = &s
+}
+
+// Name returns the value of the "name" field in the mutation.
+func (m *LangMutation) Name() (r string, exists bool) {
+	v := m.name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldName returns the old "name" field's value of the Lang entity.
+// If the Lang object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LangMutation) OldName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldName: %w", err)
+	}
+	return oldValue.Name, nil
+}
+
+// ResetName resets all changes to the "name" field.
+func (m *LangMutation) ResetName() {
+	m.name = nil
 }
 
 // SetCreateAt sets the "create_at" field.
@@ -355,9 +392,12 @@ func (m *LangMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *LangMutation) Fields() []string {
-	fields := make([]string, 0, 4)
+	fields := make([]string, 0, 5)
 	if m.lang != nil {
 		fields = append(fields, lang.FieldLang)
+	}
+	if m.name != nil {
+		fields = append(fields, lang.FieldName)
 	}
 	if m.create_at != nil {
 		fields = append(fields, lang.FieldCreateAt)
@@ -378,6 +418,8 @@ func (m *LangMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case lang.FieldLang:
 		return m.Lang()
+	case lang.FieldName:
+		return m.Name()
 	case lang.FieldCreateAt:
 		return m.CreateAt()
 	case lang.FieldUpdateAt:
@@ -395,6 +437,8 @@ func (m *LangMutation) OldField(ctx context.Context, name string) (ent.Value, er
 	switch name {
 	case lang.FieldLang:
 		return m.OldLang(ctx)
+	case lang.FieldName:
+		return m.OldName(ctx)
 	case lang.FieldCreateAt:
 		return m.OldCreateAt(ctx)
 	case lang.FieldUpdateAt:
@@ -416,6 +460,13 @@ func (m *LangMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetLang(v)
+		return nil
+	case lang.FieldName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetName(v)
 		return nil
 	case lang.FieldCreateAt:
 		v, ok := value.(uint32)
@@ -529,6 +580,9 @@ func (m *LangMutation) ResetField(name string) error {
 	case lang.FieldLang:
 		m.ResetLang()
 		return nil
+	case lang.FieldName:
+		m.ResetName()
+		return nil
 	case lang.FieldCreateAt:
 		m.ResetCreateAt()
 		return nil
@@ -598,8 +652,9 @@ type MessageMutation struct {
 	id            *uuid.UUID
 	app_id        *uuid.UUID
 	message_id    *uuid.UUID
-	lang          *string
+	lang_id       *uuid.UUID
 	message       *string
+	batch_get     *bool
 	create_at     *uint32
 	addcreate_at  *uint32
 	update_at     *uint32
@@ -769,40 +824,40 @@ func (m *MessageMutation) ResetMessageID() {
 	m.message_id = nil
 }
 
-// SetLang sets the "lang" field.
-func (m *MessageMutation) SetLang(s string) {
-	m.lang = &s
+// SetLangID sets the "lang_id" field.
+func (m *MessageMutation) SetLangID(u uuid.UUID) {
+	m.lang_id = &u
 }
 
-// Lang returns the value of the "lang" field in the mutation.
-func (m *MessageMutation) Lang() (r string, exists bool) {
-	v := m.lang
+// LangID returns the value of the "lang_id" field in the mutation.
+func (m *MessageMutation) LangID() (r uuid.UUID, exists bool) {
+	v := m.lang_id
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldLang returns the old "lang" field's value of the Message entity.
+// OldLangID returns the old "lang_id" field's value of the Message entity.
 // If the Message object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MessageMutation) OldLang(ctx context.Context) (v string, err error) {
+func (m *MessageMutation) OldLangID(ctx context.Context) (v uuid.UUID, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldLang is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldLangID is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldLang requires an ID field in the mutation")
+		return v, fmt.Errorf("OldLangID requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldLang: %w", err)
+		return v, fmt.Errorf("querying old value for OldLangID: %w", err)
 	}
-	return oldValue.Lang, nil
+	return oldValue.LangID, nil
 }
 
-// ResetLang resets all changes to the "lang" field.
-func (m *MessageMutation) ResetLang() {
-	m.lang = nil
+// ResetLangID resets all changes to the "lang_id" field.
+func (m *MessageMutation) ResetLangID() {
+	m.lang_id = nil
 }
 
 // SetMessage sets the "message" field.
@@ -839,6 +894,42 @@ func (m *MessageMutation) OldMessage(ctx context.Context) (v string, err error) 
 // ResetMessage resets all changes to the "message" field.
 func (m *MessageMutation) ResetMessage() {
 	m.message = nil
+}
+
+// SetBatchGet sets the "batch_get" field.
+func (m *MessageMutation) SetBatchGet(b bool) {
+	m.batch_get = &b
+}
+
+// BatchGet returns the value of the "batch_get" field in the mutation.
+func (m *MessageMutation) BatchGet() (r bool, exists bool) {
+	v := m.batch_get
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBatchGet returns the old "batch_get" field's value of the Message entity.
+// If the Message object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *MessageMutation) OldBatchGet(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldBatchGet is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldBatchGet requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBatchGet: %w", err)
+	}
+	return oldValue.BatchGet, nil
+}
+
+// ResetBatchGet resets all changes to the "batch_get" field.
+func (m *MessageMutation) ResetBatchGet() {
+	m.batch_get = nil
 }
 
 // SetCreateAt sets the "create_at" field.
@@ -1028,18 +1119,21 @@ func (m *MessageMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *MessageMutation) Fields() []string {
-	fields := make([]string, 0, 7)
+	fields := make([]string, 0, 8)
 	if m.app_id != nil {
 		fields = append(fields, message.FieldAppID)
 	}
 	if m.message_id != nil {
 		fields = append(fields, message.FieldMessageID)
 	}
-	if m.lang != nil {
-		fields = append(fields, message.FieldLang)
+	if m.lang_id != nil {
+		fields = append(fields, message.FieldLangID)
 	}
 	if m.message != nil {
 		fields = append(fields, message.FieldMessage)
+	}
+	if m.batch_get != nil {
+		fields = append(fields, message.FieldBatchGet)
 	}
 	if m.create_at != nil {
 		fields = append(fields, message.FieldCreateAt)
@@ -1062,10 +1156,12 @@ func (m *MessageMutation) Field(name string) (ent.Value, bool) {
 		return m.AppID()
 	case message.FieldMessageID:
 		return m.MessageID()
-	case message.FieldLang:
-		return m.Lang()
+	case message.FieldLangID:
+		return m.LangID()
 	case message.FieldMessage:
 		return m.Message()
+	case message.FieldBatchGet:
+		return m.BatchGet()
 	case message.FieldCreateAt:
 		return m.CreateAt()
 	case message.FieldUpdateAt:
@@ -1085,10 +1181,12 @@ func (m *MessageMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldAppID(ctx)
 	case message.FieldMessageID:
 		return m.OldMessageID(ctx)
-	case message.FieldLang:
-		return m.OldLang(ctx)
+	case message.FieldLangID:
+		return m.OldLangID(ctx)
 	case message.FieldMessage:
 		return m.OldMessage(ctx)
+	case message.FieldBatchGet:
+		return m.OldBatchGet(ctx)
 	case message.FieldCreateAt:
 		return m.OldCreateAt(ctx)
 	case message.FieldUpdateAt:
@@ -1118,12 +1216,12 @@ func (m *MessageMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetMessageID(v)
 		return nil
-	case message.FieldLang:
-		v, ok := value.(string)
+	case message.FieldLangID:
+		v, ok := value.(uuid.UUID)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetLang(v)
+		m.SetLangID(v)
 		return nil
 	case message.FieldMessage:
 		v, ok := value.(string)
@@ -1131,6 +1229,13 @@ func (m *MessageMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetMessage(v)
+		return nil
+	case message.FieldBatchGet:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBatchGet(v)
 		return nil
 	case message.FieldCreateAt:
 		v, ok := value.(uint32)
@@ -1247,11 +1352,14 @@ func (m *MessageMutation) ResetField(name string) error {
 	case message.FieldMessageID:
 		m.ResetMessageID()
 		return nil
-	case message.FieldLang:
-		m.ResetLang()
+	case message.FieldLangID:
+		m.ResetLangID()
 		return nil
 	case message.FieldMessage:
 		m.ResetMessage()
+		return nil
+	case message.FieldBatchGet:
+		m.ResetBatchGet()
 		return nil
 	case message.FieldCreateAt:
 		m.ResetCreateAt()

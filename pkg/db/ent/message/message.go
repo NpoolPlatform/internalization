@@ -15,10 +15,12 @@ const (
 	FieldAppID = "app_id"
 	// FieldMessageID holds the string denoting the message_id field in the database.
 	FieldMessageID = "message_id"
-	// FieldLang holds the string denoting the lang field in the database.
-	FieldLang = "lang"
+	// FieldLangID holds the string denoting the lang_id field in the database.
+	FieldLangID = "lang_id"
 	// FieldMessage holds the string denoting the message field in the database.
 	FieldMessage = "message"
+	// FieldBatchGet holds the string denoting the batch_get field in the database.
+	FieldBatchGet = "batch_get"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldUpdateAt holds the string denoting the update_at field in the database.
@@ -34,8 +36,9 @@ var Columns = []string{
 	FieldID,
 	FieldAppID,
 	FieldMessageID,
-	FieldLang,
+	FieldLangID,
 	FieldMessage,
+	FieldBatchGet,
 	FieldCreateAt,
 	FieldUpdateAt,
 	FieldDeleteAt,
