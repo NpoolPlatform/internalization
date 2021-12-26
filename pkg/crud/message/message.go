@@ -247,5 +247,44 @@ func GetMessagesByLangID(ctx context.Context, in *npool.GetMessagesByLangIDReque
 }
 
 func GetMessageByLangIDMessageID(ctx context.Context, in *npool.GetMessageByLangIDMessageIDRequest) (*npool.GetMessageByLangIDMessageIDResponse, error) {
-	return nil, nil
+	langID, err := uuid.Parse(in.GetLangID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid lang id: %v", err)
+	}
+
+	if in.GetMessageID() == "" {
+		return nil, xerrors.Errorf("invalid message id")
+	}
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
+		Message.
+		Query().
+		Where(
+			message.And(
+				message.LangID(langID),
+				message.MessageID(in.GetMessageID()),
+			),
+		).
+		All(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail query message by lang id message id: %v", err)
+	}
+
+	var msg *npool.Message
+	for _, info := range infos {
+		msg = dbRowToMessage(info)
+		break
+	}
+
+	return &npool.GetMessageByLangIDMessageIDResponse{
+		Info: msg,
+	}, nil
 }

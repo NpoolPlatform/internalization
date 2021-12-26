@@ -96,4 +96,13 @@ func TestCRUD(t *testing.T) {
 	if assert.Nil(t, err) {
 		assert.NotEqual(t, len(resp3.Infos), 0)
 	}
+
+	resp4, err := GetMessageByLangIDMessageID(context.Background(), &npool.GetMessageByLangIDMessageIDRequest{
+		LangID:    message1.LangID,
+		MessageID: message1.MessageID,
+	})
+	if assert.Nil(t, err) {
+		assert.Equal(t, resp4.Info.ID, message1.ID)
+		assertMessage(t, resp4.Info, &message1)
+	}
 }
