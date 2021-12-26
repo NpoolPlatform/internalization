@@ -56,4 +56,16 @@ func TestCRUD(t *testing.T) {
 		assert.Equal(t, resp1.Info.ID, resp.Info.ID)
 		assertLang(t, resp1.Info, &lang)
 	}
+
+	resp2, err := GetAll(context.Background(), &npool.GetLangsRequest{})
+	if assert.Nil(t, err) {
+		found := false
+		for _, info := range resp2.Infos {
+			if info.ID == lang.ID && info.Lang == lang.Lang && info.Name == lang.Name && info.Logo == lang.Logo {
+				found = true
+				break
+			}
+		}
+		assert.Equal(t, found, true)
+	}
 }
