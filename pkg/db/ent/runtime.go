@@ -16,17 +16,17 @@ func init() {
 	langFields := schema.Lang{}.Fields()
 	_ = langFields
 	// langDescCreateAt is the schema descriptor for create_at field.
-	langDescCreateAt := langFields[3].Descriptor()
+	langDescCreateAt := langFields[4].Descriptor()
 	// lang.DefaultCreateAt holds the default value on creation for the create_at field.
 	lang.DefaultCreateAt = langDescCreateAt.Default.(func() uint32)
 	// langDescUpdateAt is the schema descriptor for update_at field.
-	langDescUpdateAt := langFields[4].Descriptor()
+	langDescUpdateAt := langFields[5].Descriptor()
 	// lang.DefaultUpdateAt holds the default value on creation for the update_at field.
 	lang.DefaultUpdateAt = langDescUpdateAt.Default.(func() uint32)
 	// lang.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
 	lang.UpdateDefaultUpdateAt = langDescUpdateAt.UpdateDefault.(func() uint32)
 	// langDescDeleteAt is the schema descriptor for delete_at field.
-	langDescDeleteAt := langFields[5].Descriptor()
+	langDescDeleteAt := langFields[6].Descriptor()
 	// lang.DefaultDeleteAt holds the default value on creation for the delete_at field.
 	lang.DefaultDeleteAt = langDescDeleteAt.Default.(func() uint32)
 	// langDescID is the schema descriptor for id field.

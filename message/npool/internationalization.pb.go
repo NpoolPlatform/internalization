@@ -78,6 +78,7 @@ type Lang struct {
 	ID   string `protobuf:"bytes,10,opt,name=ID,proto3" json:"ID,omitempty"`
 	Lang string `protobuf:"bytes,20,opt,name=Lang,proto3" json:"Lang,omitempty"`
 	Logo string `protobuf:"bytes,30,opt,name=Logo,proto3" json:"Logo,omitempty"`
+	Name string `protobuf:"bytes,40,opt,name=Name,proto3" json:"Name,omitempty"`
 }
 
 func (x *Lang) Reset() {
@@ -133,13 +134,19 @@ func (x *Lang) GetLogo() string {
 	return ""
 }
 
+func (x *Lang) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 type AddLangRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Lang string `protobuf:"bytes,10,opt,name=Lang,proto3" json:"Lang,omitempty"`
-	Logo string `protobuf:"bytes,20,opt,name=Logo,proto3" json:"Logo,omitempty"`
+	Info *Lang `protobuf:"bytes,10,opt,name=Info,proto3" json:"Info,omitempty"`
 }
 
 func (x *AddLangRequest) Reset() {
@@ -174,18 +181,11 @@ func (*AddLangRequest) Descriptor() ([]byte, []int) {
 	return file_npool_internationalization_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *AddLangRequest) GetLang() string {
+func (x *AddLangRequest) GetInfo() *Lang {
 	if x != nil {
-		return x.Lang
+		return x.Info
 	}
-	return ""
-}
-
-func (x *AddLangRequest) GetLogo() string {
-	if x != nil {
-		return x.Logo
-	}
-	return ""
+	return nil
 }
 
 type AddLangResponse struct {
@@ -235,6 +235,100 @@ func (x *AddLangResponse) GetInfo() *Lang {
 	return nil
 }
 
+type UpdateLangRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Info *Lang `protobuf:"bytes,10,opt,name=Info,proto3" json:"Info,omitempty"`
+}
+
+func (x *UpdateLangRequest) Reset() {
+	*x = UpdateLangRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_npool_internationalization_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateLangRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateLangRequest) ProtoMessage() {}
+
+func (x *UpdateLangRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_npool_internationalization_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateLangRequest.ProtoReflect.Descriptor instead.
+func (*UpdateLangRequest) Descriptor() ([]byte, []int) {
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpdateLangRequest) GetInfo() *Lang {
+	if x != nil {
+		return x.Info
+	}
+	return nil
+}
+
+type UpdateLangResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Info *Lang `protobuf:"bytes,10,opt,name=Info,proto3" json:"Info,omitempty"`
+}
+
+func (x *UpdateLangResponse) Reset() {
+	*x = UpdateLangResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_npool_internationalization_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *UpdateLangResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateLangResponse) ProtoMessage() {}
+
+func (x *UpdateLangResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_npool_internationalization_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateLangResponse.ProtoReflect.Descriptor instead.
+func (*UpdateLangResponse) Descriptor() ([]byte, []int) {
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UpdateLangResponse) GetInfo() *Lang {
+	if x != nil {
+		return x.Info
+	}
+	return nil
+}
+
 type GetLangsRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -244,7 +338,7 @@ type GetLangsRequest struct {
 func (x *GetLangsRequest) Reset() {
 	*x = GetLangsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[4]
+		mi := &file_npool_internationalization_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -257,7 +351,7 @@ func (x *GetLangsRequest) String() string {
 func (*GetLangsRequest) ProtoMessage() {}
 
 func (x *GetLangsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[4]
+	mi := &file_npool_internationalization_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -270,7 +364,7 @@ func (x *GetLangsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLangsRequest.ProtoReflect.Descriptor instead.
 func (*GetLangsRequest) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{4}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{6}
 }
 
 type GetLangsResponse struct {
@@ -284,7 +378,7 @@ type GetLangsResponse struct {
 func (x *GetLangsResponse) Reset() {
 	*x = GetLangsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[5]
+		mi := &file_npool_internationalization_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -297,7 +391,7 @@ func (x *GetLangsResponse) String() string {
 func (*GetLangsResponse) ProtoMessage() {}
 
 func (x *GetLangsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[5]
+	mi := &file_npool_internationalization_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -310,7 +404,7 @@ func (x *GetLangsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetLangsResponse.ProtoReflect.Descriptor instead.
 func (*GetLangsResponse) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{5}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetLangsResponse) GetInfos() []*Lang {
@@ -335,7 +429,7 @@ type Message struct {
 func (x *Message) Reset() {
 	*x = Message{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[6]
+		mi := &file_npool_internationalization_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -348,7 +442,7 @@ func (x *Message) String() string {
 func (*Message) ProtoMessage() {}
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[6]
+	mi := &file_npool_internationalization_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -361,7 +455,7 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{6}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *Message) GetID() string {
@@ -410,7 +504,7 @@ type CreateMessageRequest struct {
 func (x *CreateMessageRequest) Reset() {
 	*x = CreateMessageRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[7]
+		mi := &file_npool_internationalization_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -423,7 +517,7 @@ func (x *CreateMessageRequest) String() string {
 func (*CreateMessageRequest) ProtoMessage() {}
 
 func (x *CreateMessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[7]
+	mi := &file_npool_internationalization_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -436,7 +530,7 @@ func (x *CreateMessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMessageRequest.ProtoReflect.Descriptor instead.
 func (*CreateMessageRequest) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{7}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CreateMessageRequest) GetInfo() *Message {
@@ -457,7 +551,7 @@ type CreateMessageResponse struct {
 func (x *CreateMessageResponse) Reset() {
 	*x = CreateMessageResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[8]
+		mi := &file_npool_internationalization_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -470,7 +564,7 @@ func (x *CreateMessageResponse) String() string {
 func (*CreateMessageResponse) ProtoMessage() {}
 
 func (x *CreateMessageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[8]
+	mi := &file_npool_internationalization_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -483,7 +577,7 @@ func (x *CreateMessageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMessageResponse.ProtoReflect.Descriptor instead.
 func (*CreateMessageResponse) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{8}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CreateMessageResponse) GetInfo() *Message {
@@ -504,7 +598,7 @@ type CreateMessagesRequest struct {
 func (x *CreateMessagesRequest) Reset() {
 	*x = CreateMessagesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[9]
+		mi := &file_npool_internationalization_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -517,7 +611,7 @@ func (x *CreateMessagesRequest) String() string {
 func (*CreateMessagesRequest) ProtoMessage() {}
 
 func (x *CreateMessagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[9]
+	mi := &file_npool_internationalization_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -530,7 +624,7 @@ func (x *CreateMessagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMessagesRequest.ProtoReflect.Descriptor instead.
 func (*CreateMessagesRequest) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{9}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CreateMessagesRequest) GetInfos() []*Message {
@@ -551,7 +645,7 @@ type CreateMessagesResponse struct {
 func (x *CreateMessagesResponse) Reset() {
 	*x = CreateMessagesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[10]
+		mi := &file_npool_internationalization_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -564,7 +658,7 @@ func (x *CreateMessagesResponse) String() string {
 func (*CreateMessagesResponse) ProtoMessage() {}
 
 func (x *CreateMessagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[10]
+	mi := &file_npool_internationalization_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -577,7 +671,7 @@ func (x *CreateMessagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMessagesResponse.ProtoReflect.Descriptor instead.
 func (*CreateMessagesResponse) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{10}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CreateMessagesResponse) GetInfos() []*Message {
@@ -598,7 +692,7 @@ type UpdateMessageRequest struct {
 func (x *UpdateMessageRequest) Reset() {
 	*x = UpdateMessageRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[11]
+		mi := &file_npool_internationalization_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -611,7 +705,7 @@ func (x *UpdateMessageRequest) String() string {
 func (*UpdateMessageRequest) ProtoMessage() {}
 
 func (x *UpdateMessageRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[11]
+	mi := &file_npool_internationalization_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -624,7 +718,7 @@ func (x *UpdateMessageRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMessageRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMessageRequest) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{11}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *UpdateMessageRequest) GetInfo() *Message {
@@ -645,7 +739,7 @@ type UpdateMessageResponse struct {
 func (x *UpdateMessageResponse) Reset() {
 	*x = UpdateMessageResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[12]
+		mi := &file_npool_internationalization_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -658,7 +752,7 @@ func (x *UpdateMessageResponse) String() string {
 func (*UpdateMessageResponse) ProtoMessage() {}
 
 func (x *UpdateMessageResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[12]
+	mi := &file_npool_internationalization_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -671,7 +765,7 @@ func (x *UpdateMessageResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMessageResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMessageResponse) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{12}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *UpdateMessageResponse) GetInfo() *Message {
@@ -692,7 +786,7 @@ type UpdateMessagesRequest struct {
 func (x *UpdateMessagesRequest) Reset() {
 	*x = UpdateMessagesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[13]
+		mi := &file_npool_internationalization_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -705,7 +799,7 @@ func (x *UpdateMessagesRequest) String() string {
 func (*UpdateMessagesRequest) ProtoMessage() {}
 
 func (x *UpdateMessagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[13]
+	mi := &file_npool_internationalization_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -718,7 +812,7 @@ func (x *UpdateMessagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMessagesRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMessagesRequest) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{13}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *UpdateMessagesRequest) GetInfos() []*Message {
@@ -739,7 +833,7 @@ type UpdateMessagesResponse struct {
 func (x *UpdateMessagesResponse) Reset() {
 	*x = UpdateMessagesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[14]
+		mi := &file_npool_internationalization_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -752,7 +846,7 @@ func (x *UpdateMessagesResponse) String() string {
 func (*UpdateMessagesResponse) ProtoMessage() {}
 
 func (x *UpdateMessagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[14]
+	mi := &file_npool_internationalization_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -765,7 +859,7 @@ func (x *UpdateMessagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMessagesResponse.ProtoReflect.Descriptor instead.
 func (*UpdateMessagesResponse) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{14}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *UpdateMessagesResponse) GetInfos() []*Message {
@@ -784,7 +878,7 @@ type GetMessagesRequest struct {
 func (x *GetMessagesRequest) Reset() {
 	*x = GetMessagesRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[15]
+		mi := &file_npool_internationalization_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -797,7 +891,7 @@ func (x *GetMessagesRequest) String() string {
 func (*GetMessagesRequest) ProtoMessage() {}
 
 func (x *GetMessagesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[15]
+	mi := &file_npool_internationalization_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -810,7 +904,7 @@ func (x *GetMessagesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMessagesRequest.ProtoReflect.Descriptor instead.
 func (*GetMessagesRequest) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{15}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{17}
 }
 
 type GetMessagesResponse struct {
@@ -824,7 +918,7 @@ type GetMessagesResponse struct {
 func (x *GetMessagesResponse) Reset() {
 	*x = GetMessagesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[16]
+		mi := &file_npool_internationalization_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -837,7 +931,7 @@ func (x *GetMessagesResponse) String() string {
 func (*GetMessagesResponse) ProtoMessage() {}
 
 func (x *GetMessagesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[16]
+	mi := &file_npool_internationalization_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -850,7 +944,7 @@ func (x *GetMessagesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMessagesResponse.ProtoReflect.Descriptor instead.
 func (*GetMessagesResponse) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{16}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *GetMessagesResponse) GetInfos() []*Message {
@@ -871,7 +965,7 @@ type GetMessageByMessageIDRequest struct {
 func (x *GetMessageByMessageIDRequest) Reset() {
 	*x = GetMessageByMessageIDRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[17]
+		mi := &file_npool_internationalization_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -884,7 +978,7 @@ func (x *GetMessageByMessageIDRequest) String() string {
 func (*GetMessageByMessageIDRequest) ProtoMessage() {}
 
 func (x *GetMessageByMessageIDRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[17]
+	mi := &file_npool_internationalization_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -897,7 +991,7 @@ func (x *GetMessageByMessageIDRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMessageByMessageIDRequest.ProtoReflect.Descriptor instead.
 func (*GetMessageByMessageIDRequest) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{17}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *GetMessageByMessageIDRequest) GetMessageID() string {
@@ -918,7 +1012,7 @@ type GetMessageByMessageIDResponse struct {
 func (x *GetMessageByMessageIDResponse) Reset() {
 	*x = GetMessageByMessageIDResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_npool_internationalization_proto_msgTypes[18]
+		mi := &file_npool_internationalization_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -931,7 +1025,7 @@ func (x *GetMessageByMessageIDResponse) String() string {
 func (*GetMessageByMessageIDResponse) ProtoMessage() {}
 
 func (x *GetMessageByMessageIDResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_npool_internationalization_proto_msgTypes[18]
+	mi := &file_npool_internationalization_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -944,7 +1038,7 @@ func (x *GetMessageByMessageIDResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMessageByMessageIDResponse.ProtoReflect.Descriptor instead.
 func (*GetMessageByMessageIDResponse) Descriptor() ([]byte, []int) {
-	return file_npool_internationalization_proto_rawDescGZIP(), []int{18}
+	return file_npool_internationalization_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *GetMessageByMessageIDResponse) GetInfo() *Message {
@@ -966,15 +1060,26 @@ var file_npool_internationalization_proto_rawDesc = []byte{
 	0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x65, 0x6d, 0x70, 0x74, 0x79,
 	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x25, 0x0a, 0x0f, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f,
 	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x49, 0x6e, 0x66,
-	0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0x3e, 0x0a,
+	0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0x52, 0x0a,
 	0x04, 0x4c, 0x61, 0x6e, 0x67, 0x12, 0x0e, 0x0a, 0x02, 0x49, 0x44, 0x18, 0x0a, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x02, 0x49, 0x44, 0x12, 0x12, 0x0a, 0x04, 0x4c, 0x61, 0x6e, 0x67, 0x18, 0x14, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x04, 0x4c, 0x61, 0x6e, 0x67, 0x12, 0x12, 0x0a, 0x04, 0x4c, 0x6f, 0x67,
-	0x6f, 0x18, 0x1e, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x4c, 0x6f, 0x67, 0x6f, 0x22, 0x38, 0x0a,
-	0x0e, 0x41, 0x64, 0x64, 0x4c, 0x61, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
-	0x12, 0x0a, 0x04, 0x4c, 0x61, 0x6e, 0x67, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x4c,
-	0x61, 0x6e, 0x67, 0x12, 0x12, 0x0a, 0x04, 0x4c, 0x6f, 0x67, 0x6f, 0x18, 0x14, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x4c, 0x6f, 0x67, 0x6f, 0x22, 0x44, 0x0a, 0x0f, 0x41, 0x64, 0x64, 0x4c, 0x61,
+	0x6f, 0x18, 0x1e, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x4c, 0x6f, 0x67, 0x6f, 0x12, 0x12, 0x0a,
+	0x04, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x28, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x4e, 0x61, 0x6d,
+	0x65, 0x22, 0x43, 0x0a, 0x0e, 0x41, 0x64, 0x64, 0x4c, 0x61, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x31, 0x0a, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x18, 0x0a, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x1d, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61,
+	0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x61, 0x6e, 0x67,
+	0x52, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0x44, 0x0a, 0x0f, 0x41, 0x64, 0x64, 0x4c, 0x61, 0x6e,
+	0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x31, 0x0a, 0x04, 0x49, 0x6e, 0x66,
+	0x6f, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e,
+	0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76,
+	0x31, 0x2e, 0x4c, 0x61, 0x6e, 0x67, 0x52, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0x46, 0x0a, 0x11,
+	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x31, 0x0a, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x1d, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x69,
+	0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x4c, 0x61, 0x6e, 0x67, 0x52, 0x04,
+	0x49, 0x6e, 0x66, 0x6f, 0x22, 0x47, 0x0a, 0x12, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4c, 0x61,
 	0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x31, 0x0a, 0x04, 0x49, 0x6e,
 	0x66, 0x6f, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x72,
 	0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e,
@@ -1048,7 +1153,7 @@ var file_npool_internationalization_proto_rawDesc = []byte{
 	0x0a, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x69,
 	0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x74,
 	0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x52, 0x04,
-	0x49, 0x6e, 0x66, 0x6f, 0x32, 0xd5, 0x09, 0x0a, 0x14, 0x49, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61,
+	0x49, 0x6e, 0x66, 0x6f, 0x32, 0xd5, 0x0a, 0x0a, 0x14, 0x49, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61,
 	0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x60, 0x0a,
 	0x07, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c,
 	0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79,
@@ -1063,6 +1168,14 @@ var file_npool_internationalization_proto_rawDesc = []byte{
 	0x6e, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x41, 0x64,
 	0x64, 0x4c, 0x61, 0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x14, 0x82,
 	0xd3, 0xe4, 0x93, 0x02, 0x0e, 0x22, 0x09, 0x2f, 0x61, 0x64, 0x64, 0x2f, 0x6c, 0x61, 0x6e, 0x67,
+	0x3a, 0x01, 0x2a, 0x12, 0x7e, 0x0a, 0x0a, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4c, 0x61, 0x6e,
+	0x67, 0x12, 0x2a, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61,
+	0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x4c, 0x61, 0x6e, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2b, 0x2e,
+	0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x69, 0x7a, 0x61,
+	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x4c, 0x61,
+	0x6e, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x17, 0x82, 0xd3, 0xe4, 0x93,
+	0x02, 0x11, 0x22, 0x0c, 0x2f, 0x75, 0x70, 0x64, 0x61, 0x74, 0x65, 0x2f, 0x6c, 0x61, 0x6e, 0x67,
 	0x3a, 0x01, 0x2a, 0x12, 0x76, 0x0a, 0x08, 0x47, 0x65, 0x74, 0x4c, 0x61, 0x6e, 0x67, 0x73, 0x12,
 	0x28, 0x2e, 0x69, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x61, 0x6c, 0x69,
 	0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x2e, 0x47, 0x65, 0x74, 0x4c, 0x61, 0x6e,
@@ -1145,65 +1258,72 @@ func file_npool_internationalization_proto_rawDescGZIP() []byte {
 	return file_npool_internationalization_proto_rawDescData
 }
 
-var file_npool_internationalization_proto_msgTypes = make([]protoimpl.MessageInfo, 19)
+var file_npool_internationalization_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
 var file_npool_internationalization_proto_goTypes = []interface{}{
 	(*VersionResponse)(nil),               // 0: internationalization.v1.VersionResponse
 	(*Lang)(nil),                          // 1: internationalization.v1.Lang
 	(*AddLangRequest)(nil),                // 2: internationalization.v1.AddLangRequest
 	(*AddLangResponse)(nil),               // 3: internationalization.v1.AddLangResponse
-	(*GetLangsRequest)(nil),               // 4: internationalization.v1.GetLangsRequest
-	(*GetLangsResponse)(nil),              // 5: internationalization.v1.GetLangsResponse
-	(*Message)(nil),                       // 6: internationalization.v1.Message
-	(*CreateMessageRequest)(nil),          // 7: internationalization.v1.CreateMessageRequest
-	(*CreateMessageResponse)(nil),         // 8: internationalization.v1.CreateMessageResponse
-	(*CreateMessagesRequest)(nil),         // 9: internationalization.v1.CreateMessagesRequest
-	(*CreateMessagesResponse)(nil),        // 10: internationalization.v1.CreateMessagesResponse
-	(*UpdateMessageRequest)(nil),          // 11: internationalization.v1.UpdateMessageRequest
-	(*UpdateMessageResponse)(nil),         // 12: internationalization.v1.UpdateMessageResponse
-	(*UpdateMessagesRequest)(nil),         // 13: internationalization.v1.UpdateMessagesRequest
-	(*UpdateMessagesResponse)(nil),        // 14: internationalization.v1.UpdateMessagesResponse
-	(*GetMessagesRequest)(nil),            // 15: internationalization.v1.GetMessagesRequest
-	(*GetMessagesResponse)(nil),           // 16: internationalization.v1.GetMessagesResponse
-	(*GetMessageByMessageIDRequest)(nil),  // 17: internationalization.v1.GetMessageByMessageIDRequest
-	(*GetMessageByMessageIDResponse)(nil), // 18: internationalization.v1.GetMessageByMessageIDResponse
-	(*emptypb.Empty)(nil),                 // 19: google.protobuf.Empty
+	(*UpdateLangRequest)(nil),             // 4: internationalization.v1.UpdateLangRequest
+	(*UpdateLangResponse)(nil),            // 5: internationalization.v1.UpdateLangResponse
+	(*GetLangsRequest)(nil),               // 6: internationalization.v1.GetLangsRequest
+	(*GetLangsResponse)(nil),              // 7: internationalization.v1.GetLangsResponse
+	(*Message)(nil),                       // 8: internationalization.v1.Message
+	(*CreateMessageRequest)(nil),          // 9: internationalization.v1.CreateMessageRequest
+	(*CreateMessageResponse)(nil),         // 10: internationalization.v1.CreateMessageResponse
+	(*CreateMessagesRequest)(nil),         // 11: internationalization.v1.CreateMessagesRequest
+	(*CreateMessagesResponse)(nil),        // 12: internationalization.v1.CreateMessagesResponse
+	(*UpdateMessageRequest)(nil),          // 13: internationalization.v1.UpdateMessageRequest
+	(*UpdateMessageResponse)(nil),         // 14: internationalization.v1.UpdateMessageResponse
+	(*UpdateMessagesRequest)(nil),         // 15: internationalization.v1.UpdateMessagesRequest
+	(*UpdateMessagesResponse)(nil),        // 16: internationalization.v1.UpdateMessagesResponse
+	(*GetMessagesRequest)(nil),            // 17: internationalization.v1.GetMessagesRequest
+	(*GetMessagesResponse)(nil),           // 18: internationalization.v1.GetMessagesResponse
+	(*GetMessageByMessageIDRequest)(nil),  // 19: internationalization.v1.GetMessageByMessageIDRequest
+	(*GetMessageByMessageIDResponse)(nil), // 20: internationalization.v1.GetMessageByMessageIDResponse
+	(*emptypb.Empty)(nil),                 // 21: google.protobuf.Empty
 }
 var file_npool_internationalization_proto_depIdxs = []int32{
-	1,  // 0: internationalization.v1.AddLangResponse.Info:type_name -> internationalization.v1.Lang
-	1,  // 1: internationalization.v1.GetLangsResponse.Infos:type_name -> internationalization.v1.Lang
-	6,  // 2: internationalization.v1.CreateMessageRequest.Info:type_name -> internationalization.v1.Message
-	6,  // 3: internationalization.v1.CreateMessageResponse.Info:type_name -> internationalization.v1.Message
-	6,  // 4: internationalization.v1.CreateMessagesRequest.Infos:type_name -> internationalization.v1.Message
-	6,  // 5: internationalization.v1.CreateMessagesResponse.Infos:type_name -> internationalization.v1.Message
-	6,  // 6: internationalization.v1.UpdateMessageRequest.Info:type_name -> internationalization.v1.Message
-	6,  // 7: internationalization.v1.UpdateMessageResponse.Info:type_name -> internationalization.v1.Message
-	6,  // 8: internationalization.v1.UpdateMessagesRequest.Infos:type_name -> internationalization.v1.Message
-	6,  // 9: internationalization.v1.UpdateMessagesResponse.Infos:type_name -> internationalization.v1.Message
-	6,  // 10: internationalization.v1.GetMessagesResponse.Infos:type_name -> internationalization.v1.Message
-	6,  // 11: internationalization.v1.GetMessageByMessageIDResponse.Info:type_name -> internationalization.v1.Message
-	19, // 12: internationalization.v1.Internationalization.Version:input_type -> google.protobuf.Empty
-	2,  // 13: internationalization.v1.Internationalization.AddLang:input_type -> internationalization.v1.AddLangRequest
-	4,  // 14: internationalization.v1.Internationalization.GetLangs:input_type -> internationalization.v1.GetLangsRequest
-	7,  // 15: internationalization.v1.Internationalization.CreateMessage:input_type -> internationalization.v1.CreateMessageRequest
-	9,  // 16: internationalization.v1.Internationalization.CreateMessages:input_type -> internationalization.v1.CreateMessagesRequest
-	11, // 17: internationalization.v1.Internationalization.UpdateMessage:input_type -> internationalization.v1.UpdateMessageRequest
-	13, // 18: internationalization.v1.Internationalization.UpdateMessages:input_type -> internationalization.v1.UpdateMessagesRequest
-	15, // 19: internationalization.v1.Internationalization.GetMessages:input_type -> internationalization.v1.GetMessagesRequest
-	17, // 20: internationalization.v1.Internationalization.GetMessageByMessageID:input_type -> internationalization.v1.GetMessageByMessageIDRequest
-	0,  // 21: internationalization.v1.Internationalization.Version:output_type -> internationalization.v1.VersionResponse
-	3,  // 22: internationalization.v1.Internationalization.AddLang:output_type -> internationalization.v1.AddLangResponse
-	5,  // 23: internationalization.v1.Internationalization.GetLangs:output_type -> internationalization.v1.GetLangsResponse
-	8,  // 24: internationalization.v1.Internationalization.CreateMessage:output_type -> internationalization.v1.CreateMessageResponse
-	10, // 25: internationalization.v1.Internationalization.CreateMessages:output_type -> internationalization.v1.CreateMessagesResponse
-	12, // 26: internationalization.v1.Internationalization.UpdateMessage:output_type -> internationalization.v1.UpdateMessageResponse
-	14, // 27: internationalization.v1.Internationalization.UpdateMessages:output_type -> internationalization.v1.UpdateMessagesResponse
-	16, // 28: internationalization.v1.Internationalization.GetMessages:output_type -> internationalization.v1.GetMessagesResponse
-	18, // 29: internationalization.v1.Internationalization.GetMessageByMessageID:output_type -> internationalization.v1.GetMessageByMessageIDResponse
-	21, // [21:30] is the sub-list for method output_type
-	12, // [12:21] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	1,  // 0: internationalization.v1.AddLangRequest.Info:type_name -> internationalization.v1.Lang
+	1,  // 1: internationalization.v1.AddLangResponse.Info:type_name -> internationalization.v1.Lang
+	1,  // 2: internationalization.v1.UpdateLangRequest.Info:type_name -> internationalization.v1.Lang
+	1,  // 3: internationalization.v1.UpdateLangResponse.Info:type_name -> internationalization.v1.Lang
+	1,  // 4: internationalization.v1.GetLangsResponse.Infos:type_name -> internationalization.v1.Lang
+	8,  // 5: internationalization.v1.CreateMessageRequest.Info:type_name -> internationalization.v1.Message
+	8,  // 6: internationalization.v1.CreateMessageResponse.Info:type_name -> internationalization.v1.Message
+	8,  // 7: internationalization.v1.CreateMessagesRequest.Infos:type_name -> internationalization.v1.Message
+	8,  // 8: internationalization.v1.CreateMessagesResponse.Infos:type_name -> internationalization.v1.Message
+	8,  // 9: internationalization.v1.UpdateMessageRequest.Info:type_name -> internationalization.v1.Message
+	8,  // 10: internationalization.v1.UpdateMessageResponse.Info:type_name -> internationalization.v1.Message
+	8,  // 11: internationalization.v1.UpdateMessagesRequest.Infos:type_name -> internationalization.v1.Message
+	8,  // 12: internationalization.v1.UpdateMessagesResponse.Infos:type_name -> internationalization.v1.Message
+	8,  // 13: internationalization.v1.GetMessagesResponse.Infos:type_name -> internationalization.v1.Message
+	8,  // 14: internationalization.v1.GetMessageByMessageIDResponse.Info:type_name -> internationalization.v1.Message
+	21, // 15: internationalization.v1.Internationalization.Version:input_type -> google.protobuf.Empty
+	2,  // 16: internationalization.v1.Internationalization.AddLang:input_type -> internationalization.v1.AddLangRequest
+	4,  // 17: internationalization.v1.Internationalization.UpdateLang:input_type -> internationalization.v1.UpdateLangRequest
+	6,  // 18: internationalization.v1.Internationalization.GetLangs:input_type -> internationalization.v1.GetLangsRequest
+	9,  // 19: internationalization.v1.Internationalization.CreateMessage:input_type -> internationalization.v1.CreateMessageRequest
+	11, // 20: internationalization.v1.Internationalization.CreateMessages:input_type -> internationalization.v1.CreateMessagesRequest
+	13, // 21: internationalization.v1.Internationalization.UpdateMessage:input_type -> internationalization.v1.UpdateMessageRequest
+	15, // 22: internationalization.v1.Internationalization.UpdateMessages:input_type -> internationalization.v1.UpdateMessagesRequest
+	17, // 23: internationalization.v1.Internationalization.GetMessages:input_type -> internationalization.v1.GetMessagesRequest
+	19, // 24: internationalization.v1.Internationalization.GetMessageByMessageID:input_type -> internationalization.v1.GetMessageByMessageIDRequest
+	0,  // 25: internationalization.v1.Internationalization.Version:output_type -> internationalization.v1.VersionResponse
+	3,  // 26: internationalization.v1.Internationalization.AddLang:output_type -> internationalization.v1.AddLangResponse
+	5,  // 27: internationalization.v1.Internationalization.UpdateLang:output_type -> internationalization.v1.UpdateLangResponse
+	7,  // 28: internationalization.v1.Internationalization.GetLangs:output_type -> internationalization.v1.GetLangsResponse
+	10, // 29: internationalization.v1.Internationalization.CreateMessage:output_type -> internationalization.v1.CreateMessageResponse
+	12, // 30: internationalization.v1.Internationalization.CreateMessages:output_type -> internationalization.v1.CreateMessagesResponse
+	14, // 31: internationalization.v1.Internationalization.UpdateMessage:output_type -> internationalization.v1.UpdateMessageResponse
+	16, // 32: internationalization.v1.Internationalization.UpdateMessages:output_type -> internationalization.v1.UpdateMessagesResponse
+	18, // 33: internationalization.v1.Internationalization.GetMessages:output_type -> internationalization.v1.GetMessagesResponse
+	20, // 34: internationalization.v1.Internationalization.GetMessageByMessageID:output_type -> internationalization.v1.GetMessageByMessageIDResponse
+	25, // [25:35] is the sub-list for method output_type
+	15, // [15:25] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_npool_internationalization_proto_init() }
@@ -1261,7 +1381,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetLangsRequest); i {
+			switch v := v.(*UpdateLangRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1273,7 +1393,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetLangsResponse); i {
+			switch v := v.(*UpdateLangResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1285,7 +1405,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Message); i {
+			switch v := v.(*GetLangsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1297,7 +1417,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateMessageRequest); i {
+			switch v := v.(*GetLangsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1309,7 +1429,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateMessageResponse); i {
+			switch v := v.(*Message); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1321,7 +1441,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateMessagesRequest); i {
+			switch v := v.(*CreateMessageRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1333,7 +1453,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateMessagesResponse); i {
+			switch v := v.(*CreateMessageResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1345,7 +1465,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateMessageRequest); i {
+			switch v := v.(*CreateMessagesRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1357,7 +1477,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateMessageResponse); i {
+			switch v := v.(*CreateMessagesResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1369,7 +1489,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateMessagesRequest); i {
+			switch v := v.(*UpdateMessageRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1381,7 +1501,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateMessagesResponse); i {
+			switch v := v.(*UpdateMessageResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1393,7 +1513,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetMessagesRequest); i {
+			switch v := v.(*UpdateMessagesRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1405,7 +1525,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetMessagesResponse); i {
+			switch v := v.(*UpdateMessagesResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1417,7 +1537,7 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetMessageByMessageIDRequest); i {
+			switch v := v.(*GetMessagesRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1429,6 +1549,30 @@ func file_npool_internationalization_proto_init() {
 			}
 		}
 		file_npool_internationalization_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetMessagesResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_npool_internationalization_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*GetMessageByMessageIDRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_npool_internationalization_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetMessageByMessageIDResponse); i {
 			case 0:
 				return &v.state
@@ -1447,7 +1591,7 @@ func file_npool_internationalization_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_npool_internationalization_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   19,
+			NumMessages:   21,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

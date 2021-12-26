@@ -22,6 +22,7 @@ type InternationalizationClient interface {
 	// Method Version
 	Version(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*VersionResponse, error)
 	AddLang(ctx context.Context, in *AddLangRequest, opts ...grpc.CallOption) (*AddLangResponse, error)
+	UpdateLang(ctx context.Context, in *UpdateLangRequest, opts ...grpc.CallOption) (*UpdateLangResponse, error)
 	GetLangs(ctx context.Context, in *GetLangsRequest, opts ...grpc.CallOption) (*GetLangsResponse, error)
 	CreateMessage(ctx context.Context, in *CreateMessageRequest, opts ...grpc.CallOption) (*CreateMessageResponse, error)
 	CreateMessages(ctx context.Context, in *CreateMessagesRequest, opts ...grpc.CallOption) (*CreateMessagesResponse, error)
@@ -51,6 +52,15 @@ func (c *internationalizationClient) Version(ctx context.Context, in *emptypb.Em
 func (c *internationalizationClient) AddLang(ctx context.Context, in *AddLangRequest, opts ...grpc.CallOption) (*AddLangResponse, error) {
 	out := new(AddLangResponse)
 	err := c.cc.Invoke(ctx, "/internationalization.v1.Internationalization/AddLang", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *internationalizationClient) UpdateLang(ctx context.Context, in *UpdateLangRequest, opts ...grpc.CallOption) (*UpdateLangResponse, error) {
+	out := new(UpdateLangResponse)
+	err := c.cc.Invoke(ctx, "/internationalization.v1.Internationalization/UpdateLang", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -127,6 +137,7 @@ type InternationalizationServer interface {
 	// Method Version
 	Version(context.Context, *emptypb.Empty) (*VersionResponse, error)
 	AddLang(context.Context, *AddLangRequest) (*AddLangResponse, error)
+	UpdateLang(context.Context, *UpdateLangRequest) (*UpdateLangResponse, error)
 	GetLangs(context.Context, *GetLangsRequest) (*GetLangsResponse, error)
 	CreateMessage(context.Context, *CreateMessageRequest) (*CreateMessageResponse, error)
 	CreateMessages(context.Context, *CreateMessagesRequest) (*CreateMessagesResponse, error)
@@ -146,6 +157,9 @@ func (UnimplementedInternationalizationServer) Version(context.Context, *emptypb
 }
 func (UnimplementedInternationalizationServer) AddLang(context.Context, *AddLangRequest) (*AddLangResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddLang not implemented")
+}
+func (UnimplementedInternationalizationServer) UpdateLang(context.Context, *UpdateLangRequest) (*UpdateLangResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateLang not implemented")
 }
 func (UnimplementedInternationalizationServer) GetLangs(context.Context, *GetLangsRequest) (*GetLangsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLangs not implemented")
@@ -213,6 +227,24 @@ func _Internationalization_AddLang_Handler(srv interface{}, ctx context.Context,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(InternationalizationServer).AddLang(ctx, req.(*AddLangRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Internationalization_UpdateLang_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateLangRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(InternationalizationServer).UpdateLang(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/internationalization.v1.Internationalization/UpdateLang",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(InternationalizationServer).UpdateLang(ctx, req.(*UpdateLangRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -357,6 +389,10 @@ var Internationalization_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "AddLang",
 			Handler:    _Internationalization_AddLang_Handler,
+		},
+		{
+			MethodName: "UpdateLang",
+			Handler:    _Internationalization_UpdateLang_Handler,
 		},
 		{
 			MethodName: "GetLangs",

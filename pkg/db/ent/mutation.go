@@ -35,6 +35,7 @@ type LangMutation struct {
 	typ           string
 	id            *uuid.UUID
 	lang          *string
+	logo          *string
 	name          *string
 	create_at     *uint32
 	addcreate_at  *uint32
@@ -167,6 +168,42 @@ func (m *LangMutation) OldLang(ctx context.Context) (v string, err error) {
 // ResetLang resets all changes to the "lang" field.
 func (m *LangMutation) ResetLang() {
 	m.lang = nil
+}
+
+// SetLogo sets the "logo" field.
+func (m *LangMutation) SetLogo(s string) {
+	m.logo = &s
+}
+
+// Logo returns the value of the "logo" field in the mutation.
+func (m *LangMutation) Logo() (r string, exists bool) {
+	v := m.logo
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLogo returns the old "logo" field's value of the Lang entity.
+// If the Lang object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LangMutation) OldLogo(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldLogo is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldLogo requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLogo: %w", err)
+	}
+	return oldValue.Logo, nil
+}
+
+// ResetLogo resets all changes to the "logo" field.
+func (m *LangMutation) ResetLogo() {
+	m.logo = nil
 }
 
 // SetName sets the "name" field.
@@ -392,9 +429,12 @@ func (m *LangMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *LangMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.lang != nil {
 		fields = append(fields, lang.FieldLang)
+	}
+	if m.logo != nil {
+		fields = append(fields, lang.FieldLogo)
 	}
 	if m.name != nil {
 		fields = append(fields, lang.FieldName)
@@ -418,6 +458,8 @@ func (m *LangMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case lang.FieldLang:
 		return m.Lang()
+	case lang.FieldLogo:
+		return m.Logo()
 	case lang.FieldName:
 		return m.Name()
 	case lang.FieldCreateAt:
@@ -437,6 +479,8 @@ func (m *LangMutation) OldField(ctx context.Context, name string) (ent.Value, er
 	switch name {
 	case lang.FieldLang:
 		return m.OldLang(ctx)
+	case lang.FieldLogo:
+		return m.OldLogo(ctx)
 	case lang.FieldName:
 		return m.OldName(ctx)
 	case lang.FieldCreateAt:
@@ -460,6 +504,13 @@ func (m *LangMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetLang(v)
+		return nil
+	case lang.FieldLogo:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLogo(v)
 		return nil
 	case lang.FieldName:
 		v, ok := value.(string)
@@ -579,6 +630,9 @@ func (m *LangMutation) ResetField(name string) error {
 	switch name {
 	case lang.FieldLang:
 		m.ResetLang()
+		return nil
+	case lang.FieldLogo:
+		m.ResetLogo()
 		return nil
 	case lang.FieldName:
 		m.ResetName()

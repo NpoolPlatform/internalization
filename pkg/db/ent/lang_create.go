@@ -29,6 +29,12 @@ func (lc *LangCreate) SetLang(s string) *LangCreate {
 	return lc
 }
 
+// SetLogo sets the "logo" field.
+func (lc *LangCreate) SetLogo(s string) *LangCreate {
+	lc.mutation.SetLogo(s)
+	return lc
+}
+
 // SetName sets the "name" field.
 func (lc *LangCreate) SetName(s string) *LangCreate {
 	lc.mutation.SetName(s)
@@ -177,6 +183,9 @@ func (lc *LangCreate) check() error {
 	if _, ok := lc.mutation.Lang(); !ok {
 		return &ValidationError{Name: "lang", err: errors.New(`ent: missing required field "lang"`)}
 	}
+	if _, ok := lc.mutation.Logo(); !ok {
+		return &ValidationError{Name: "logo", err: errors.New(`ent: missing required field "logo"`)}
+	}
 	if _, ok := lc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "name"`)}
 	}
@@ -229,6 +238,14 @@ func (lc *LangCreate) createSpec() (*Lang, *sqlgraph.CreateSpec) {
 			Column: lang.FieldLang,
 		})
 		_node.Lang = value
+	}
+	if value, ok := lc.mutation.Logo(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: lang.FieldLogo,
+		})
+		_node.Logo = value
 	}
 	if value, ok := lc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -325,6 +342,18 @@ func (u *LangUpsert) SetLang(v string) *LangUpsert {
 // UpdateLang sets the "lang" field to the value that was provided on create.
 func (u *LangUpsert) UpdateLang() *LangUpsert {
 	u.SetExcluded(lang.FieldLang)
+	return u
+}
+
+// SetLogo sets the "logo" field.
+func (u *LangUpsert) SetLogo(v string) *LangUpsert {
+	u.Set(lang.FieldLogo, v)
+	return u
+}
+
+// UpdateLogo sets the "logo" field to the value that was provided on create.
+func (u *LangUpsert) UpdateLogo() *LangUpsert {
+	u.SetExcluded(lang.FieldLogo)
 	return u
 }
 
@@ -437,6 +466,20 @@ func (u *LangUpsertOne) SetLang(v string) *LangUpsertOne {
 func (u *LangUpsertOne) UpdateLang() *LangUpsertOne {
 	return u.Update(func(s *LangUpsert) {
 		s.UpdateLang()
+	})
+}
+
+// SetLogo sets the "logo" field.
+func (u *LangUpsertOne) SetLogo(v string) *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.SetLogo(v)
+	})
+}
+
+// UpdateLogo sets the "logo" field to the value that was provided on create.
+func (u *LangUpsertOne) UpdateLogo() *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.UpdateLogo()
 	})
 }
 
@@ -723,6 +766,20 @@ func (u *LangUpsertBulk) SetLang(v string) *LangUpsertBulk {
 func (u *LangUpsertBulk) UpdateLang() *LangUpsertBulk {
 	return u.Update(func(s *LangUpsert) {
 		s.UpdateLang()
+	})
+}
+
+// SetLogo sets the "logo" field.
+func (u *LangUpsertBulk) SetLogo(v string) *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.SetLogo(v)
+	})
+}
+
+// UpdateLogo sets the "logo" field to the value that was provided on create.
+func (u *LangUpsertBulk) UpdateLogo() *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.UpdateLogo()
 	})
 }
 

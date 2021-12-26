@@ -22,6 +22,8 @@ func (Lang) Fields() []ent.Field {
 			Unique(),
 		field.String("lang").
 			Unique(),
+		field.String("logo").
+			Unique(),
 		field.String("name").
 			Unique(),
 		field.Uint32("create_at").

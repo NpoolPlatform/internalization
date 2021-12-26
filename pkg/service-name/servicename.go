@@ -1,3 +1,3 @@
-package internationalization
+package servicename
 
 const ServiceName = "Internationalization"

@@ -18,6 +18,8 @@
     - [GetMessagesResponse](#internationalization.v1.GetMessagesResponse)
     - [Lang](#internationalization.v1.Lang)
     - [Message](#internationalization.v1.Message)
+    - [UpdateLangRequest](#internationalization.v1.UpdateLangRequest)
+    - [UpdateLangResponse](#internationalization.v1.UpdateLangResponse)
     - [UpdateMessageRequest](#internationalization.v1.UpdateMessageRequest)
     - [UpdateMessageResponse](#internationalization.v1.UpdateMessageResponse)
     - [UpdateMessagesRequest](#internationalization.v1.UpdateMessagesRequest)
@@ -45,8 +47,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| Lang | [string](#string) |  |  |
-| Logo | [string](#string) |  |  |
+| Info | [Lang](#internationalization.v1.Lang) |  |  |
 
 
 
@@ -219,6 +220,7 @@
 | ID | [string](#string) |  |  |
 | Lang | [string](#string) |  |  |
 | Logo | [string](#string) |  |  |
+| Name | [string](#string) |  |  |
 
 
 
@@ -238,6 +240,36 @@
 | MessageID | [string](#string) |  |  |
 | LangID | [string](#string) |  |  |
 | Message | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="internationalization.v1.UpdateLangRequest"></a>
+
+### UpdateLangRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Lang](#internationalization.v1.Lang) |  |  |
+
+
+
+
+
+
+<a name="internationalization.v1.UpdateLangResponse"></a>
+
+### UpdateLangResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [Lang](#internationalization.v1.Lang) |  |  |
 
 
 
@@ -334,6 +366,7 @@ Service Name
 | ----------- | ------------ | ------------- | ------------|
 | Version | [.google.protobuf.Empty](#google.protobuf.Empty) | [VersionResponse](#internationalization.v1.VersionResponse) | Method Version |
 | AddLang | [AddLangRequest](#internationalization.v1.AddLangRequest) | [AddLangResponse](#internationalization.v1.AddLangResponse) |  |
+| UpdateLang | [UpdateLangRequest](#internationalization.v1.UpdateLangRequest) | [UpdateLangResponse](#internationalization.v1.UpdateLangResponse) |  |
 | GetLangs | [GetLangsRequest](#internationalization.v1.GetLangsRequest) | [GetLangsResponse](#internationalization.v1.GetLangsResponse) |  |
 | CreateMessage | [CreateMessageRequest](#internationalization.v1.CreateMessageRequest) | [CreateMessageResponse](#internationalization.v1.CreateMessageResponse) |  |
 | CreateMessages | [CreateMessagesRequest](#internationalization.v1.CreateMessagesRequest) | [CreateMessagesResponse](#internationalization.v1.CreateMessagesResponse) |  |
