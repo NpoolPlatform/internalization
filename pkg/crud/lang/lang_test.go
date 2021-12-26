@@ -22,6 +22,8 @@ func init() {
 	if err := testinit.Init(); err != nil {
 		fmt.Printf("cannot init test stub: %v\n", err)
 	}
+
+	inTesting = true
 }
 
 func assertLang(t *testing.T, actual, expected *npool.Lang) {

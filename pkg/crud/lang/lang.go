@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/NpoolPlatform/internationalization/message/npool"
+	constant "github.com/NpoolPlatform/internationalization/pkg/const"
 	"github.com/NpoolPlatform/internationalization/pkg/db"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent"
 
@@ -17,13 +18,19 @@ const (
 	dbTimeout = 30 * time.Second
 )
 
+var inTesting = false
+
 func validateLang(info *npool.Lang) error {
 	if info.Lang == "" {
 		return xerrors.Errorf("invalid lang")
 	}
-	if info.Name == "" {
-		return xerrors.Errorf("invalid lang name")
+
+	if !inTesting {
+		if _, ok := constant.Langs[info.Lang]; !ok {
+			return xerrors.Errorf("lang not supported")
+		}
 	}
+
 	if info.Logo == "" {
 		return xerrors.Errorf("invalid lang logo")
 	}
@@ -42,6 +49,10 @@ func dbRowToLang(row *ent.Lang) *npool.Lang {
 func Add(ctx context.Context, in *npool.AddLangRequest) (*npool.AddLangResponse, error) {
 	if err := validateLang(in.GetInfo()); err != nil {
 		return nil, xerrors.Errorf("invalid parameter: %v", err)
+	}
+
+	if !inTesting {
+		in.GetInfo().Name = constant.Langs[in.GetInfo().GetLang()].Name
 	}
 
 	cli, err := db.Client()
