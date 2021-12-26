@@ -20,3 +20,12 @@ func (s *Server) Add(ctx context.Context, in *npool.AddLangRequest) (*npool.AddL
 	}
 	return resp, nil
 }
+
+func (s *Server) Update(ctx context.Context, in *npool.UpdateLangRequest) (*npool.UpdateLangResponse, error) {
+	resp, err := crud.Update(ctx, in)
+	if err != nil {
+		logger.Sugar().Errorw("fail update lang: %v", err)
+		return &npool.UpdateLangResponse{}, status.Error(codes.Internal, "internal server error")
+	}
+	return resp, nil
+}

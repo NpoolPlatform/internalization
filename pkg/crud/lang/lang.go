@@ -8,6 +8,8 @@ import (
 	"github.com/NpoolPlatform/internationalization/pkg/db"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent"
 
+	"github.com/google/uuid"
+
 	"golang.org/x/xerrors"
 )
 
@@ -67,7 +69,35 @@ func Add(ctx context.Context, in *npool.AddLangRequest) (*npool.AddLangResponse,
 }
 
 func Update(ctx context.Context, in *npool.UpdateLangRequest) (*npool.UpdateLangResponse, error) {
-	return nil, nil
+	id, err := uuid.Parse(in.GetInfo().GetID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid lang id: %v", err)
+	}
+
+	if err := validateLang(in.GetInfo()); err != nil {
+		return nil, xerrors.Errorf("invalid parameter: %v", err)
+	}
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	info, err := cli.
+		Lang.
+		UpdateOneID(id).
+		SetLogo(in.GetInfo().GetLogo()).
+		Save(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail update lang: %v", err)
+	}
+
+	return &npool.UpdateLangResponse{
+		Info: dbRowToLang(info),
+	}, nil
 }
 
 func GetAll(ctx context.Context, in *npool.GetLangsRequest) (*npool.GetLangsResponse, error) {

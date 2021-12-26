@@ -45,4 +45,15 @@ func TestCRUD(t *testing.T) {
 		assert.NotEqual(t, resp.Info.ID, uuid.UUID{}.String())
 		assertLang(t, resp.Info, &lang)
 	}
+
+	lang.Logo = fmt.Sprintf("ChaineseLogo-%v", uuid.New())
+	lang.ID = resp.Info.ID
+
+	resp1, err := Update(context.Background(), &npool.UpdateLangRequest{
+		Info: &lang,
+	})
+	if assert.Nil(t, err) {
+		assert.Equal(t, resp1.Info.ID, resp.Info.ID)
+		assertLang(t, resp1.Info, &lang)
+	}
 }
