@@ -38,7 +38,7 @@ func TestCRUD(t *testing.T) {
 		LangID:    uuid.New().String(),
 		MessageID: uuid.New().String(),
 		BatchGet:  true,
-		Message:   "Test Test Test",
+		Message:   fmt.Sprintf("Test Test Test %v", uuid.New().String()),
 	}
 
 	resp, err := CreateMessage(context.Background(), &npool.CreateMessageRequest{
@@ -47,5 +47,30 @@ func TestCRUD(t *testing.T) {
 	if assert.Nil(t, err) {
 		assert.NotEqual(t, resp.Info.ID, uuid.UUID{}.String())
 		assertMessage(t, resp.Info, &message)
+	}
+
+	message1 := npool.Message{
+		AppID:     message.AppID,
+		LangID:    message.LangID,
+		MessageID: uuid.New().String(),
+		BatchGet:  true,
+		Message:   fmt.Sprintf("Test Test Test Test %v", uuid.New().String()),
+	}
+	message2 := npool.Message{
+		AppID:     message.AppID,
+		LangID:    message.LangID,
+		MessageID: uuid.New().String(),
+		BatchGet:  true,
+		Message:   fmt.Sprintf("Test Test Test Test %v", uuid.New().String()),
+	}
+	resp1, err := CreateMessages(context.Background(), &npool.CreateMessagesRequest{
+		Infos: []*npool.Message{&message1, &message2},
+	})
+	if assert.Nil(t, err) {
+		assert.NotEqual(t, resp1.Infos[0].ID, uuid.UUID{}.String())
+		assertMessage(t, resp1.Infos[0], &message1)
+
+		assert.NotEqual(t, resp1.Infos[1].ID, uuid.UUID{}.String())
+		assertMessage(t, resp1.Infos[1], &message2)
 	}
 }

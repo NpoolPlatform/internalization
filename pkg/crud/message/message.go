@@ -75,7 +75,46 @@ func CreateMessage(ctx context.Context, in *npool.CreateMessageRequest) (*npool.
 }
 
 func CreateMessages(ctx context.Context, in *npool.CreateMessagesRequest) (*npool.CreateMessagesResponse, error) {
-	return nil, nil
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	bulk := make([]*ent.MessageCreate, len(in.GetInfos()))
+	for i, info := range in.GetInfos() {
+		if err := validateMessage(info); err != nil {
+			return nil, xerrors.Errorf("invalid parameter: %v", err)
+		}
+
+		bulk[i] = cli.
+			Message.
+			Create().
+			SetAppID(uuid.MustParse(info.GetAppID())).
+			SetLangID(uuid.MustParse(info.GetLangID())).
+			SetMessageID(info.GetMessageID()).
+			SetBatchGet(info.GetBatchGet()).
+			SetMessage(info.GetMessage())
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
+		Message.
+		CreateBulk(bulk...).
+		Save(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail create bulk messages: %v", err)
+	}
+
+	msgs := []*npool.Message{}
+	for _, info := range infos {
+		msgs = append(msgs, dbRowToMessage(info))
+	}
+
+	return &npool.CreateMessagesResponse{
+		Infos: msgs,
+	}, nil
 }
 
 func UpdateMessage(ctx context.Context, in *npool.UpdateMessageRequest) (*npool.UpdateMessageResponse, error) {
