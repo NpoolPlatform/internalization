@@ -79,10 +79,6 @@ func TestCRUD(t *testing.T) {
 	message2.MessageID = uuid.New().String()
 	message2.ID = resp1.Infos[1].ID
 
-	fmt.Printf("%v\n", resp1.Infos[0].ID)
-	fmt.Printf("%v\n", message1.ID)
-	fmt.Printf("%v\n", message2.ID)
-
 	resp2, err := UpdateMessages(context.Background(), &npool.UpdateMessagesRequest{
 		Infos: []*npool.Message{&message1, &message2},
 	})
@@ -92,5 +88,12 @@ func TestCRUD(t *testing.T) {
 
 		assert.Equal(t, resp2.Infos[1].ID, message2.ID)
 		assertMessage(t, resp2.Infos[1], &message2)
+	}
+
+	resp3, err := GetMessagesByLangID(context.Background(), &npool.GetMessagesByLangIDRequest{
+		LangID: message1.LangID,
+	})
+	if assert.Nil(t, err) {
+		assert.NotEqual(t, len(resp3.Infos), 0)
 	}
 }

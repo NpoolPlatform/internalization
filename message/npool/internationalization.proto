@@ -60,15 +60,15 @@ service Internationalization {
             body: "*"
         };
     }
-    rpc GetMessages(GetMessagesRequest) returns (GetMessagesResponse) {
+    rpc GetMessagesByLangID(GetMessagesByLangIDRequest) returns (GetMessagesByLangIDResponse) {
         option (google.api.http) = {
-            post: "/get/messages"
+            post: "/get/messages/by/lang/id"
             body: "*"
         };
     }
-    rpc GetMessageByMessageID(GetMessageByMessageIDRequest) returns (GetMessageByMessageIDResponse) {
+    rpc GetMessageByLangIDMessageID(GetMessageByLangIDMessageIDRequest) returns (GetMessageByLangIDMessageIDResponse) {
         option (google.api.http) = {
-            post: "/get/message/by/message/id"
+            post: "/get/message/by/lang/id/message/id"
             body: "*"
         };
     }
@@ -150,19 +150,19 @@ message UpdateMessagesResponse {
     repeated Message Infos = 10;
 }
 
-message GetMessagesRequest {
+message GetMessagesByLangIDRequest {
     string LangID = 10;
 }
 
-message GetMessagesResponse {
+message GetMessagesByLangIDResponse {
     repeated Message Infos = 10;
 }
 
-message GetMessageByMessageIDRequest {
+message GetMessageByLangIDMessageIDRequest {
     string LangID = 10;
     string MessageID = 20;
 }
 
-message GetMessageByMessageIDResponse {
+message GetMessageByLangIDMessageIDResponse {
     Message Info = 10;
 }

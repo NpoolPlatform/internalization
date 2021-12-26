@@ -12,10 +12,10 @@
     - [CreateMessagesResponse](#internationalization.v1.CreateMessagesResponse)
     - [GetLangsRequest](#internationalization.v1.GetLangsRequest)
     - [GetLangsResponse](#internationalization.v1.GetLangsResponse)
-    - [GetMessageByMessageIDRequest](#internationalization.v1.GetMessageByMessageIDRequest)
-    - [GetMessageByMessageIDResponse](#internationalization.v1.GetMessageByMessageIDResponse)
-    - [GetMessagesRequest](#internationalization.v1.GetMessagesRequest)
-    - [GetMessagesResponse](#internationalization.v1.GetMessagesResponse)
+    - [GetMessageByLangIDMessageIDRequest](#internationalization.v1.GetMessageByLangIDMessageIDRequest)
+    - [GetMessageByLangIDMessageIDResponse](#internationalization.v1.GetMessageByLangIDMessageIDResponse)
+    - [GetMessagesByLangIDRequest](#internationalization.v1.GetMessagesByLangIDRequest)
+    - [GetMessagesByLangIDResponse](#internationalization.v1.GetMessagesByLangIDResponse)
     - [Lang](#internationalization.v1.Lang)
     - [Message](#internationalization.v1.Message)
     - [UpdateLangRequest](#internationalization.v1.UpdateLangRequest)
@@ -154,9 +154,9 @@
 
 
 
-<a name="internationalization.v1.GetMessageByMessageIDRequest"></a>
+<a name="internationalization.v1.GetMessageByLangIDMessageIDRequest"></a>
 
-### GetMessageByMessageIDRequest
+### GetMessageByLangIDMessageIDRequest
 
 
 
@@ -170,9 +170,9 @@
 
 
 
-<a name="internationalization.v1.GetMessageByMessageIDResponse"></a>
+<a name="internationalization.v1.GetMessageByLangIDMessageIDResponse"></a>
 
-### GetMessageByMessageIDResponse
+### GetMessageByLangIDMessageIDResponse
 
 
 
@@ -185,9 +185,9 @@
 
 
 
-<a name="internationalization.v1.GetMessagesRequest"></a>
+<a name="internationalization.v1.GetMessagesByLangIDRequest"></a>
 
-### GetMessagesRequest
+### GetMessagesByLangIDRequest
 
 
 
@@ -200,9 +200,9 @@
 
 
 
-<a name="internationalization.v1.GetMessagesResponse"></a>
+<a name="internationalization.v1.GetMessagesByLangIDResponse"></a>
 
-### GetMessagesResponse
+### GetMessagesByLangIDResponse
 
 
 
@@ -379,8 +379,8 @@ Service Name
 | CreateMessages | [CreateMessagesRequest](#internationalization.v1.CreateMessagesRequest) | [CreateMessagesResponse](#internationalization.v1.CreateMessagesResponse) |  |
 | UpdateMessage | [UpdateMessageRequest](#internationalization.v1.UpdateMessageRequest) | [UpdateMessageResponse](#internationalization.v1.UpdateMessageResponse) |  |
 | UpdateMessages | [UpdateMessagesRequest](#internationalization.v1.UpdateMessagesRequest) | [UpdateMessagesResponse](#internationalization.v1.UpdateMessagesResponse) |  |
-| GetMessages | [GetMessagesRequest](#internationalization.v1.GetMessagesRequest) | [GetMessagesResponse](#internationalization.v1.GetMessagesResponse) |  |
-| GetMessageByMessageID | [GetMessageByMessageIDRequest](#internationalization.v1.GetMessageByMessageIDRequest) | [GetMessageByMessageIDResponse](#internationalization.v1.GetMessageByMessageIDResponse) |  |
+| GetMessagesByLangID | [GetMessagesByLangIDRequest](#internationalization.v1.GetMessagesByLangIDRequest) | [GetMessagesByLangIDResponse](#internationalization.v1.GetMessagesByLangIDResponse) |  |
+| GetMessageByLangIDMessageID | [GetMessageByLangIDMessageIDRequest](#internationalization.v1.GetMessageByLangIDMessageIDRequest) | [GetMessageByLangIDMessageIDResponse](#internationalization.v1.GetMessageByLangIDMessageIDResponse) |  |
 
  
 

@@ -28,8 +28,8 @@ type InternationalizationClient interface {
 	CreateMessages(ctx context.Context, in *CreateMessagesRequest, opts ...grpc.CallOption) (*CreateMessagesResponse, error)
 	UpdateMessage(ctx context.Context, in *UpdateMessageRequest, opts ...grpc.CallOption) (*UpdateMessageResponse, error)
 	UpdateMessages(ctx context.Context, in *UpdateMessagesRequest, opts ...grpc.CallOption) (*UpdateMessagesResponse, error)
-	GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...grpc.CallOption) (*GetMessagesResponse, error)
-	GetMessageByMessageID(ctx context.Context, in *GetMessageByMessageIDRequest, opts ...grpc.CallOption) (*GetMessageByMessageIDResponse, error)
+	GetMessagesByLangID(ctx context.Context, in *GetMessagesByLangIDRequest, opts ...grpc.CallOption) (*GetMessagesByLangIDResponse, error)
+	GetMessageByLangIDMessageID(ctx context.Context, in *GetMessageByLangIDMessageIDRequest, opts ...grpc.CallOption) (*GetMessageByLangIDMessageIDResponse, error)
 }
 
 type internationalizationClient struct {
@@ -112,18 +112,18 @@ func (c *internationalizationClient) UpdateMessages(ctx context.Context, in *Upd
 	return out, nil
 }
 
-func (c *internationalizationClient) GetMessages(ctx context.Context, in *GetMessagesRequest, opts ...grpc.CallOption) (*GetMessagesResponse, error) {
-	out := new(GetMessagesResponse)
-	err := c.cc.Invoke(ctx, "/internationalization.v1.Internationalization/GetMessages", in, out, opts...)
+func (c *internationalizationClient) GetMessagesByLangID(ctx context.Context, in *GetMessagesByLangIDRequest, opts ...grpc.CallOption) (*GetMessagesByLangIDResponse, error) {
+	out := new(GetMessagesByLangIDResponse)
+	err := c.cc.Invoke(ctx, "/internationalization.v1.Internationalization/GetMessagesByLangID", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *internationalizationClient) GetMessageByMessageID(ctx context.Context, in *GetMessageByMessageIDRequest, opts ...grpc.CallOption) (*GetMessageByMessageIDResponse, error) {
-	out := new(GetMessageByMessageIDResponse)
-	err := c.cc.Invoke(ctx, "/internationalization.v1.Internationalization/GetMessageByMessageID", in, out, opts...)
+func (c *internationalizationClient) GetMessageByLangIDMessageID(ctx context.Context, in *GetMessageByLangIDMessageIDRequest, opts ...grpc.CallOption) (*GetMessageByLangIDMessageIDResponse, error) {
+	out := new(GetMessageByLangIDMessageIDResponse)
+	err := c.cc.Invoke(ctx, "/internationalization.v1.Internationalization/GetMessageByLangIDMessageID", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -143,8 +143,8 @@ type InternationalizationServer interface {
 	CreateMessages(context.Context, *CreateMessagesRequest) (*CreateMessagesResponse, error)
 	UpdateMessage(context.Context, *UpdateMessageRequest) (*UpdateMessageResponse, error)
 	UpdateMessages(context.Context, *UpdateMessagesRequest) (*UpdateMessagesResponse, error)
-	GetMessages(context.Context, *GetMessagesRequest) (*GetMessagesResponse, error)
-	GetMessageByMessageID(context.Context, *GetMessageByMessageIDRequest) (*GetMessageByMessageIDResponse, error)
+	GetMessagesByLangID(context.Context, *GetMessagesByLangIDRequest) (*GetMessagesByLangIDResponse, error)
+	GetMessageByLangIDMessageID(context.Context, *GetMessageByLangIDMessageIDRequest) (*GetMessageByLangIDMessageIDResponse, error)
 	mustEmbedUnimplementedInternationalizationServer()
 }
 
@@ -176,11 +176,11 @@ func (UnimplementedInternationalizationServer) UpdateMessage(context.Context, *U
 func (UnimplementedInternationalizationServer) UpdateMessages(context.Context, *UpdateMessagesRequest) (*UpdateMessagesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateMessages not implemented")
 }
-func (UnimplementedInternationalizationServer) GetMessages(context.Context, *GetMessagesRequest) (*GetMessagesResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMessages not implemented")
+func (UnimplementedInternationalizationServer) GetMessagesByLangID(context.Context, *GetMessagesByLangIDRequest) (*GetMessagesByLangIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMessagesByLangID not implemented")
 }
-func (UnimplementedInternationalizationServer) GetMessageByMessageID(context.Context, *GetMessageByMessageIDRequest) (*GetMessageByMessageIDResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetMessageByMessageID not implemented")
+func (UnimplementedInternationalizationServer) GetMessageByLangIDMessageID(context.Context, *GetMessageByLangIDMessageIDRequest) (*GetMessageByLangIDMessageIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMessageByLangIDMessageID not implemented")
 }
 func (UnimplementedInternationalizationServer) mustEmbedUnimplementedInternationalizationServer() {}
 
@@ -339,38 +339,38 @@ func _Internationalization_UpdateMessages_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Internationalization_GetMessages_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMessagesRequest)
+func _Internationalization_GetMessagesByLangID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMessagesByLangIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InternationalizationServer).GetMessages(ctx, in)
+		return srv.(InternationalizationServer).GetMessagesByLangID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/internationalization.v1.Internationalization/GetMessages",
+		FullMethod: "/internationalization.v1.Internationalization/GetMessagesByLangID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InternationalizationServer).GetMessages(ctx, req.(*GetMessagesRequest))
+		return srv.(InternationalizationServer).GetMessagesByLangID(ctx, req.(*GetMessagesByLangIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Internationalization_GetMessageByMessageID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMessageByMessageIDRequest)
+func _Internationalization_GetMessageByLangIDMessageID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMessageByLangIDMessageIDRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InternationalizationServer).GetMessageByMessageID(ctx, in)
+		return srv.(InternationalizationServer).GetMessageByLangIDMessageID(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/internationalization.v1.Internationalization/GetMessageByMessageID",
+		FullMethod: "/internationalization.v1.Internationalization/GetMessageByLangIDMessageID",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InternationalizationServer).GetMessageByMessageID(ctx, req.(*GetMessageByMessageIDRequest))
+		return srv.(InternationalizationServer).GetMessageByLangIDMessageID(ctx, req.(*GetMessageByLangIDMessageIDRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -415,12 +415,12 @@ var Internationalization_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Internationalization_UpdateMessages_Handler,
 		},
 		{
-			MethodName: "GetMessages",
-			Handler:    _Internationalization_GetMessages_Handler,
+			MethodName: "GetMessagesByLangID",
+			Handler:    _Internationalization_GetMessagesByLangID_Handler,
 		},
 		{
-			MethodName: "GetMessageByMessageID",
-			Handler:    _Internationalization_GetMessageByMessageID_Handler,
+			MethodName: "GetMessageByLangIDMessageID",
+			Handler:    _Internationalization_GetMessageByLangIDMessageID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

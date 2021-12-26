@@ -7,6 +7,7 @@ import (
 	"github.com/NpoolPlatform/internationalization/message/npool"
 	"github.com/NpoolPlatform/internationalization/pkg/db"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
 
 	"github.com/google/uuid"
 
@@ -210,10 +211,41 @@ func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npoo
 	}, nil
 }
 
-func GetMessages(ctx context.Context, in *npool.GetMessagesRequest) (*npool.GetMessagesResponse, error) {
-	return nil, nil
+func GetMessagesByLangID(ctx context.Context, in *npool.GetMessagesByLangIDRequest) (*npool.GetMessagesByLangIDResponse, error) {
+	langID, err := uuid.Parse(in.GetLangID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid lang id: %v", err)
+	}
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
+		Message.
+		Query().
+		Where(
+			message.LangID(langID),
+		).
+		All(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail query message by lang id: %v", err)
+	}
+
+	msgs := []*npool.Message{}
+	for _, info := range infos {
+		msgs = append(msgs, dbRowToMessage(info))
+	}
+
+	return &npool.GetMessagesByLangIDResponse{
+		Infos: msgs,
+	}, nil
 }
 
-func GetMessageByMessageID(ctx context.Context, in *npool.GetMessageByMessageIDRequest) (*npool.GetMessageByMessageIDResponse, error) {
+func GetMessageByLangIDMessageID(ctx context.Context, in *npool.GetMessageByLangIDMessageIDRequest) (*npool.GetMessageByLangIDMessageIDResponse, error) {
 	return nil, nil
 }
