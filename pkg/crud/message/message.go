@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/NpoolPlatform/internationalization/message/npool"
 	"github.com/NpoolPlatform/internationalization/pkg/db"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
+	npool "github.com/NpoolPlatform/message/npool/internationalization"
 
 	"github.com/google/uuid"
 

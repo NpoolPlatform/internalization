@@ -6,8 +6,8 @@ import (
 	"context"
 
 	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
-	"github.com/NpoolPlatform/internationalization/message/npool"
 	crud "github.com/NpoolPlatform/internationalization/pkg/crud/message"
+	npool "github.com/NpoolPlatform/message/npool/internationalization"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
