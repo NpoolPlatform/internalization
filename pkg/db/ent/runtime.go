@@ -3,6 +3,7 @@
 package ent
 
 import (
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/applang"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/lang"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/schema"
@@ -13,6 +14,26 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	applangFields := schema.AppLang{}.Fields()
+	_ = applangFields
+	// applangDescCreateAt is the schema descriptor for create_at field.
+	applangDescCreateAt := applangFields[3].Descriptor()
+	// applang.DefaultCreateAt holds the default value on creation for the create_at field.
+	applang.DefaultCreateAt = applangDescCreateAt.Default.(func() uint32)
+	// applangDescUpdateAt is the schema descriptor for update_at field.
+	applangDescUpdateAt := applangFields[4].Descriptor()
+	// applang.DefaultUpdateAt holds the default value on creation for the update_at field.
+	applang.DefaultUpdateAt = applangDescUpdateAt.Default.(func() uint32)
+	// applang.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
+	applang.UpdateDefaultUpdateAt = applangDescUpdateAt.UpdateDefault.(func() uint32)
+	// applangDescDeleteAt is the schema descriptor for delete_at field.
+	applangDescDeleteAt := applangFields[5].Descriptor()
+	// applang.DefaultDeleteAt holds the default value on creation for the delete_at field.
+	applang.DefaultDeleteAt = applangDescDeleteAt.Default.(func() uint32)
+	// applangDescID is the schema descriptor for id field.
+	applangDescID := applangFields[0].Descriptor()
+	// applang.DefaultID holds the default value on creation for the id field.
+	applang.DefaultID = applangDescID.Default.(func() uuid.UUID)
 	langFields := schema.Lang{}.Fields()
 	_ = langFields
 	// langDescCreateAt is the schema descriptor for create_at field.

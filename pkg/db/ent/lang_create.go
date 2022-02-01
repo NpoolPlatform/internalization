@@ -89,6 +89,14 @@ func (lc *LangCreate) SetID(u uuid.UUID) *LangCreate {
 	return lc
 }
 
+// SetNillableID sets the "id" field if the given value is not nil.
+func (lc *LangCreate) SetNillableID(u *uuid.UUID) *LangCreate {
+	if u != nil {
+		lc.SetID(*u)
+	}
+	return lc
+}
+
 // Mutation returns the LangMutation object of the builder.
 func (lc *LangCreate) Mutation() *LangMutation {
 	return lc.mutation
@@ -181,22 +189,22 @@ func (lc *LangCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (lc *LangCreate) check() error {
 	if _, ok := lc.mutation.Lang(); !ok {
-		return &ValidationError{Name: "lang", err: errors.New(`ent: missing required field "lang"`)}
+		return &ValidationError{Name: "lang", err: errors.New(`ent: missing required field "Lang.lang"`)}
 	}
 	if _, ok := lc.mutation.Logo(); !ok {
-		return &ValidationError{Name: "logo", err: errors.New(`ent: missing required field "logo"`)}
+		return &ValidationError{Name: "logo", err: errors.New(`ent: missing required field "Lang.logo"`)}
 	}
 	if _, ok := lc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "name"`)}
+		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Lang.name"`)}
 	}
 	if _, ok := lc.mutation.CreateAt(); !ok {
-		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
+		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "Lang.create_at"`)}
 	}
 	if _, ok := lc.mutation.UpdateAt(); !ok {
-		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "update_at"`)}
+		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "Lang.update_at"`)}
 	}
 	if _, ok := lc.mutation.DeleteAt(); !ok {
-		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "delete_at"`)}
+		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "Lang.delete_at"`)}
 	}
 	return nil
 }
@@ -210,7 +218,11 @@ func (lc *LangCreate) sqlSave(ctx context.Context) (*Lang, error) {
 		return nil, err
 	}
 	if _spec.ID.Value != nil {
-		_node.ID = _spec.ID.Value.(uuid.UUID)
+		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
+			_node.ID = *id
+		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
+			return nil, err
+		}
 	}
 	return _node, nil
 }
@@ -229,7 +241,7 @@ func (lc *LangCreate) createSpec() (*Lang, *sqlgraph.CreateSpec) {
 	_spec.OnConflict = lc.conflict
 	if id, ok := lc.mutation.ID(); ok {
 		_node.ID = id
-		_spec.ID.Value = id
+		_spec.ID.Value = &id
 	}
 	if value, ok := lc.mutation.Lang(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -381,6 +393,12 @@ func (u *LangUpsert) UpdateCreateAt() *LangUpsert {
 	return u
 }
 
+// AddCreateAt adds v to the "create_at" field.
+func (u *LangUpsert) AddCreateAt(v uint32) *LangUpsert {
+	u.Add(lang.FieldCreateAt, v)
+	return u
+}
+
 // SetUpdateAt sets the "update_at" field.
 func (u *LangUpsert) SetUpdateAt(v uint32) *LangUpsert {
 	u.Set(lang.FieldUpdateAt, v)
@@ -390,6 +408,12 @@ func (u *LangUpsert) SetUpdateAt(v uint32) *LangUpsert {
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *LangUpsert) UpdateUpdateAt() *LangUpsert {
 	u.SetExcluded(lang.FieldUpdateAt)
+	return u
+}
+
+// AddUpdateAt adds v to the "update_at" field.
+func (u *LangUpsert) AddUpdateAt(v uint32) *LangUpsert {
+	u.Add(lang.FieldUpdateAt, v)
 	return u
 }
 
@@ -405,7 +429,13 @@ func (u *LangUpsert) UpdateDeleteAt() *LangUpsert {
 	return u
 }
 
-// UpdateNewValues updates the fields using the new values that were set on create except the ID field.
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *LangUpsert) AddDeleteAt(v uint32) *LangUpsert {
+	u.Add(lang.FieldDeleteAt, v)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
 //	client.Lang.Create().
@@ -504,6 +534,13 @@ func (u *LangUpsertOne) SetCreateAt(v uint32) *LangUpsertOne {
 	})
 }
 
+// AddCreateAt adds v to the "create_at" field.
+func (u *LangUpsertOne) AddCreateAt(v uint32) *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
 // UpdateCreateAt sets the "create_at" field to the value that was provided on create.
 func (u *LangUpsertOne) UpdateCreateAt() *LangUpsertOne {
 	return u.Update(func(s *LangUpsert) {
@@ -518,6 +555,13 @@ func (u *LangUpsertOne) SetUpdateAt(v uint32) *LangUpsertOne {
 	})
 }
 
+// AddUpdateAt adds v to the "update_at" field.
+func (u *LangUpsertOne) AddUpdateAt(v uint32) *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *LangUpsertOne) UpdateUpdateAt() *LangUpsertOne {
 	return u.Update(func(s *LangUpsert) {
@@ -529,6 +573,13 @@ func (u *LangUpsertOne) UpdateUpdateAt() *LangUpsertOne {
 func (u *LangUpsertOne) SetDeleteAt(v uint32) *LangUpsertOne {
 	return u.Update(func(s *LangUpsert) {
 		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *LangUpsertOne) AddDeleteAt(v uint32) *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.AddDeleteAt(v)
 	})
 }
 
@@ -702,7 +753,7 @@ type LangUpsertBulk struct {
 	create *LangCreateBulk
 }
 
-// UpdateNewValues updates the fields using the new values that
+// UpdateNewValues updates the mutable fields using the new values that
 // were set on create. Using this option is equivalent to using:
 //
 //	client.Lang.Create().
@@ -804,6 +855,13 @@ func (u *LangUpsertBulk) SetCreateAt(v uint32) *LangUpsertBulk {
 	})
 }
 
+// AddCreateAt adds v to the "create_at" field.
+func (u *LangUpsertBulk) AddCreateAt(v uint32) *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
 // UpdateCreateAt sets the "create_at" field to the value that was provided on create.
 func (u *LangUpsertBulk) UpdateCreateAt() *LangUpsertBulk {
 	return u.Update(func(s *LangUpsert) {
@@ -818,6 +876,13 @@ func (u *LangUpsertBulk) SetUpdateAt(v uint32) *LangUpsertBulk {
 	})
 }
 
+// AddUpdateAt adds v to the "update_at" field.
+func (u *LangUpsertBulk) AddUpdateAt(v uint32) *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *LangUpsertBulk) UpdateUpdateAt() *LangUpsertBulk {
 	return u.Update(func(s *LangUpsert) {
@@ -829,6 +894,13 @@ func (u *LangUpsertBulk) UpdateUpdateAt() *LangUpsertBulk {
 func (u *LangUpsertBulk) SetDeleteAt(v uint32) *LangUpsertBulk {
 	return u.Update(func(s *LangUpsert) {
 		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *LangUpsertBulk) AddDeleteAt(v uint32) *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.AddDeleteAt(v)
 	})
 }
 

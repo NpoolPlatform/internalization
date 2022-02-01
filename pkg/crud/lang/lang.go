@@ -111,6 +111,33 @@ func Update(ctx context.Context, in *npool.UpdateLangRequest) (*npool.UpdateLang
 	}, nil
 }
 
+func GetByApp(ctx context.Context, in *npool.GetLangsByAppRequest) (*npool.GetLangsByAppResponse, error) {
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
+		Lang.
+		Query().
+		All(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail query langs: %v", err)
+	}
+
+	langs := []*npool.Lang{}
+	for _, info := range infos {
+		langs = append(langs, dbRowToLang(info))
+	}
+
+	return &npool.GetLangsByAppResponse{
+		Infos: langs,
+	}, nil
+}
+
 func GetAll(ctx context.Context, in *npool.GetLangsRequest) (*npool.GetLangsResponse, error) {
 	cli, err := db.Client()
 	if err != nil {

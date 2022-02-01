@@ -337,6 +337,10 @@ func (lq *LangQuery) sqlAll(ctx context.Context) ([]*Lang, error) {
 
 func (lq *LangQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := lq.querySpec()
+	_spec.Node.Columns = lq.fields
+	if len(lq.fields) > 0 {
+		_spec.Unique = lq.unique != nil && *lq.unique
+	}
 	return sqlgraph.CountNodes(ctx, lq.driver, _spec)
 }
 
@@ -407,6 +411,9 @@ func (lq *LangQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if lq.sql != nil {
 		selector = lq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if lq.unique != nil && *lq.unique {
+		selector.Distinct()
 	}
 	for _, p := range lq.predicates {
 		p(selector)
@@ -686,9 +693,7 @@ func (lgb *LangGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range lgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(lgb.fields...)...)

@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
@@ -60,7 +61,7 @@ func (lu *LangUpdate) SetNillableCreateAt(u *uint32) *LangUpdate {
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (lu *LangUpdate) AddCreateAt(u uint32) *LangUpdate {
+func (lu *LangUpdate) AddCreateAt(u int32) *LangUpdate {
 	lu.mutation.AddCreateAt(u)
 	return lu
 }
@@ -73,7 +74,7 @@ func (lu *LangUpdate) SetUpdateAt(u uint32) *LangUpdate {
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (lu *LangUpdate) AddUpdateAt(u uint32) *LangUpdate {
+func (lu *LangUpdate) AddUpdateAt(u int32) *LangUpdate {
 	lu.mutation.AddUpdateAt(u)
 	return lu
 }
@@ -94,7 +95,7 @@ func (lu *LangUpdate) SetNillableDeleteAt(u *uint32) *LangUpdate {
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (lu *LangUpdate) AddDeleteAt(u uint32) *LangUpdate {
+func (lu *LangUpdate) AddDeleteAt(u int32) *LangUpdate {
 	lu.mutation.AddDeleteAt(u)
 	return lu
 }
@@ -301,7 +302,7 @@ func (luo *LangUpdateOne) SetNillableCreateAt(u *uint32) *LangUpdateOne {
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (luo *LangUpdateOne) AddCreateAt(u uint32) *LangUpdateOne {
+func (luo *LangUpdateOne) AddCreateAt(u int32) *LangUpdateOne {
 	luo.mutation.AddCreateAt(u)
 	return luo
 }
@@ -314,7 +315,7 @@ func (luo *LangUpdateOne) SetUpdateAt(u uint32) *LangUpdateOne {
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (luo *LangUpdateOne) AddUpdateAt(u uint32) *LangUpdateOne {
+func (luo *LangUpdateOne) AddUpdateAt(u int32) *LangUpdateOne {
 	luo.mutation.AddUpdateAt(u)
 	return luo
 }
@@ -335,7 +336,7 @@ func (luo *LangUpdateOne) SetNillableDeleteAt(u *uint32) *LangUpdateOne {
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (luo *LangUpdateOne) AddDeleteAt(u uint32) *LangUpdateOne {
+func (luo *LangUpdateOne) AddDeleteAt(u int32) *LangUpdateOne {
 	luo.mutation.AddDeleteAt(u)
 	return luo
 }
@@ -428,7 +429,7 @@ func (luo *LangUpdateOne) sqlSave(ctx context.Context) (_node *Lang, err error) 
 	}
 	id, ok := luo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Lang.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Lang.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := luo.fields; len(fields) > 0 {

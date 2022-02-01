@@ -8,6 +8,28 @@ import (
 )
 
 var (
+	// AppLangsColumns holds the columns for the "app_langs" table.
+	AppLangsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUUID, Unique: true},
+		{Name: "app_id", Type: field.TypeUUID},
+		{Name: "lang_id", Type: field.TypeUUID},
+		{Name: "create_at", Type: field.TypeUint32},
+		{Name: "update_at", Type: field.TypeUint32},
+		{Name: "delete_at", Type: field.TypeUint32},
+	}
+	// AppLangsTable holds the schema information for the "app_langs" table.
+	AppLangsTable = &schema.Table{
+		Name:       "app_langs",
+		Columns:    AppLangsColumns,
+		PrimaryKey: []*schema.Column{AppLangsColumns[0]},
+		Indexes: []*schema.Index{
+			{
+				Name:    "applang_app_id_lang_id",
+				Unique:  true,
+				Columns: []*schema.Column{AppLangsColumns[1], AppLangsColumns[2]},
+			},
+		},
+	}
 	// LangsColumns holds the columns for the "langs" table.
 	LangsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
@@ -30,7 +52,7 @@ var (
 		{Name: "app_id", Type: field.TypeUUID},
 		{Name: "message_id", Type: field.TypeString},
 		{Name: "lang_id", Type: field.TypeUUID},
-		{Name: "message", Type: field.TypeString},
+		{Name: "message", Type: field.TypeString, Unique: true},
 		{Name: "batch_get", Type: field.TypeBool},
 		{Name: "create_at", Type: field.TypeUint32},
 		{Name: "update_at", Type: field.TypeUint32},
@@ -51,6 +73,7 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		AppLangsTable,
 		LangsTable,
 		MessagesTable,
 	}

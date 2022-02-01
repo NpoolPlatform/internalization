@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
@@ -73,7 +74,7 @@ func (mu *MessageUpdate) SetNillableCreateAt(u *uint32) *MessageUpdate {
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (mu *MessageUpdate) AddCreateAt(u uint32) *MessageUpdate {
+func (mu *MessageUpdate) AddCreateAt(u int32) *MessageUpdate {
 	mu.mutation.AddCreateAt(u)
 	return mu
 }
@@ -86,7 +87,7 @@ func (mu *MessageUpdate) SetUpdateAt(u uint32) *MessageUpdate {
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (mu *MessageUpdate) AddUpdateAt(u uint32) *MessageUpdate {
+func (mu *MessageUpdate) AddUpdateAt(u int32) *MessageUpdate {
 	mu.mutation.AddUpdateAt(u)
 	return mu
 }
@@ -107,7 +108,7 @@ func (mu *MessageUpdate) SetNillableDeleteAt(u *uint32) *MessageUpdate {
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (mu *MessageUpdate) AddDeleteAt(u uint32) *MessageUpdate {
+func (mu *MessageUpdate) AddDeleteAt(u int32) *MessageUpdate {
 	mu.mutation.AddDeleteAt(u)
 	return mu
 }
@@ -340,7 +341,7 @@ func (muo *MessageUpdateOne) SetNillableCreateAt(u *uint32) *MessageUpdateOne {
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (muo *MessageUpdateOne) AddCreateAt(u uint32) *MessageUpdateOne {
+func (muo *MessageUpdateOne) AddCreateAt(u int32) *MessageUpdateOne {
 	muo.mutation.AddCreateAt(u)
 	return muo
 }
@@ -353,7 +354,7 @@ func (muo *MessageUpdateOne) SetUpdateAt(u uint32) *MessageUpdateOne {
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (muo *MessageUpdateOne) AddUpdateAt(u uint32) *MessageUpdateOne {
+func (muo *MessageUpdateOne) AddUpdateAt(u int32) *MessageUpdateOne {
 	muo.mutation.AddUpdateAt(u)
 	return muo
 }
@@ -374,7 +375,7 @@ func (muo *MessageUpdateOne) SetNillableDeleteAt(u *uint32) *MessageUpdateOne {
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (muo *MessageUpdateOne) AddDeleteAt(u uint32) *MessageUpdateOne {
+func (muo *MessageUpdateOne) AddDeleteAt(u int32) *MessageUpdateOne {
 	muo.mutation.AddDeleteAt(u)
 	return muo
 }
@@ -467,7 +468,7 @@ func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err e
 	}
 	id, ok := muo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing Message.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "Message.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := muo.fields; len(fields) > 0 {

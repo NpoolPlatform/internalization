@@ -101,6 +101,14 @@ func (mc *MessageCreate) SetID(u uuid.UUID) *MessageCreate {
 	return mc
 }
 
+// SetNillableID sets the "id" field if the given value is not nil.
+func (mc *MessageCreate) SetNillableID(u *uuid.UUID) *MessageCreate {
+	if u != nil {
+		mc.SetID(*u)
+	}
+	return mc
+}
+
 // Mutation returns the MessageMutation object of the builder.
 func (mc *MessageCreate) Mutation() *MessageMutation {
 	return mc.mutation
@@ -193,28 +201,28 @@ func (mc *MessageCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (mc *MessageCreate) check() error {
 	if _, ok := mc.mutation.AppID(); !ok {
-		return &ValidationError{Name: "app_id", err: errors.New(`ent: missing required field "app_id"`)}
+		return &ValidationError{Name: "app_id", err: errors.New(`ent: missing required field "Message.app_id"`)}
 	}
 	if _, ok := mc.mutation.MessageID(); !ok {
-		return &ValidationError{Name: "message_id", err: errors.New(`ent: missing required field "message_id"`)}
+		return &ValidationError{Name: "message_id", err: errors.New(`ent: missing required field "Message.message_id"`)}
 	}
 	if _, ok := mc.mutation.LangID(); !ok {
-		return &ValidationError{Name: "lang_id", err: errors.New(`ent: missing required field "lang_id"`)}
+		return &ValidationError{Name: "lang_id", err: errors.New(`ent: missing required field "Message.lang_id"`)}
 	}
 	if _, ok := mc.mutation.Message(); !ok {
-		return &ValidationError{Name: "message", err: errors.New(`ent: missing required field "message"`)}
+		return &ValidationError{Name: "message", err: errors.New(`ent: missing required field "Message.message"`)}
 	}
 	if _, ok := mc.mutation.BatchGet(); !ok {
-		return &ValidationError{Name: "batch_get", err: errors.New(`ent: missing required field "batch_get"`)}
+		return &ValidationError{Name: "batch_get", err: errors.New(`ent: missing required field "Message.batch_get"`)}
 	}
 	if _, ok := mc.mutation.CreateAt(); !ok {
-		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
+		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "Message.create_at"`)}
 	}
 	if _, ok := mc.mutation.UpdateAt(); !ok {
-		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "update_at"`)}
+		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "Message.update_at"`)}
 	}
 	if _, ok := mc.mutation.DeleteAt(); !ok {
-		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "delete_at"`)}
+		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "Message.delete_at"`)}
 	}
 	return nil
 }
@@ -228,7 +236,11 @@ func (mc *MessageCreate) sqlSave(ctx context.Context) (*Message, error) {
 		return nil, err
 	}
 	if _spec.ID.Value != nil {
-		_node.ID = _spec.ID.Value.(uuid.UUID)
+		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
+			_node.ID = *id
+		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
+			return nil, err
+		}
 	}
 	return _node, nil
 }
@@ -247,7 +259,7 @@ func (mc *MessageCreate) createSpec() (*Message, *sqlgraph.CreateSpec) {
 	_spec.OnConflict = mc.conflict
 	if id, ok := mc.mutation.ID(); ok {
 		_node.ID = id
-		_spec.ID.Value = id
+		_spec.ID.Value = &id
 	}
 	if value, ok := mc.mutation.AppID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -439,6 +451,12 @@ func (u *MessageUpsert) UpdateCreateAt() *MessageUpsert {
 	return u
 }
 
+// AddCreateAt adds v to the "create_at" field.
+func (u *MessageUpsert) AddCreateAt(v uint32) *MessageUpsert {
+	u.Add(message.FieldCreateAt, v)
+	return u
+}
+
 // SetUpdateAt sets the "update_at" field.
 func (u *MessageUpsert) SetUpdateAt(v uint32) *MessageUpsert {
 	u.Set(message.FieldUpdateAt, v)
@@ -448,6 +466,12 @@ func (u *MessageUpsert) SetUpdateAt(v uint32) *MessageUpsert {
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *MessageUpsert) UpdateUpdateAt() *MessageUpsert {
 	u.SetExcluded(message.FieldUpdateAt)
+	return u
+}
+
+// AddUpdateAt adds v to the "update_at" field.
+func (u *MessageUpsert) AddUpdateAt(v uint32) *MessageUpsert {
+	u.Add(message.FieldUpdateAt, v)
 	return u
 }
 
@@ -463,7 +487,13 @@ func (u *MessageUpsert) UpdateDeleteAt() *MessageUpsert {
 	return u
 }
 
-// UpdateNewValues updates the fields using the new values that were set on create except the ID field.
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *MessageUpsert) AddDeleteAt(v uint32) *MessageUpsert {
+	u.Add(message.FieldDeleteAt, v)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
 //	client.Message.Create().
@@ -590,6 +620,13 @@ func (u *MessageUpsertOne) SetCreateAt(v uint32) *MessageUpsertOne {
 	})
 }
 
+// AddCreateAt adds v to the "create_at" field.
+func (u *MessageUpsertOne) AddCreateAt(v uint32) *MessageUpsertOne {
+	return u.Update(func(s *MessageUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
 // UpdateCreateAt sets the "create_at" field to the value that was provided on create.
 func (u *MessageUpsertOne) UpdateCreateAt() *MessageUpsertOne {
 	return u.Update(func(s *MessageUpsert) {
@@ -604,6 +641,13 @@ func (u *MessageUpsertOne) SetUpdateAt(v uint32) *MessageUpsertOne {
 	})
 }
 
+// AddUpdateAt adds v to the "update_at" field.
+func (u *MessageUpsertOne) AddUpdateAt(v uint32) *MessageUpsertOne {
+	return u.Update(func(s *MessageUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *MessageUpsertOne) UpdateUpdateAt() *MessageUpsertOne {
 	return u.Update(func(s *MessageUpsert) {
@@ -615,6 +659,13 @@ func (u *MessageUpsertOne) UpdateUpdateAt() *MessageUpsertOne {
 func (u *MessageUpsertOne) SetDeleteAt(v uint32) *MessageUpsertOne {
 	return u.Update(func(s *MessageUpsert) {
 		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *MessageUpsertOne) AddDeleteAt(v uint32) *MessageUpsertOne {
+	return u.Update(func(s *MessageUpsert) {
+		s.AddDeleteAt(v)
 	})
 }
 
@@ -788,7 +839,7 @@ type MessageUpsertBulk struct {
 	create *MessageCreateBulk
 }
 
-// UpdateNewValues updates the fields using the new values that
+// UpdateNewValues updates the mutable fields using the new values that
 // were set on create. Using this option is equivalent to using:
 //
 //	client.Message.Create().
@@ -918,6 +969,13 @@ func (u *MessageUpsertBulk) SetCreateAt(v uint32) *MessageUpsertBulk {
 	})
 }
 
+// AddCreateAt adds v to the "create_at" field.
+func (u *MessageUpsertBulk) AddCreateAt(v uint32) *MessageUpsertBulk {
+	return u.Update(func(s *MessageUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
 // UpdateCreateAt sets the "create_at" field to the value that was provided on create.
 func (u *MessageUpsertBulk) UpdateCreateAt() *MessageUpsertBulk {
 	return u.Update(func(s *MessageUpsert) {
@@ -932,6 +990,13 @@ func (u *MessageUpsertBulk) SetUpdateAt(v uint32) *MessageUpsertBulk {
 	})
 }
 
+// AddUpdateAt adds v to the "update_at" field.
+func (u *MessageUpsertBulk) AddUpdateAt(v uint32) *MessageUpsertBulk {
+	return u.Update(func(s *MessageUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
 // UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
 func (u *MessageUpsertBulk) UpdateUpdateAt() *MessageUpsertBulk {
 	return u.Update(func(s *MessageUpsert) {
@@ -943,6 +1008,13 @@ func (u *MessageUpsertBulk) UpdateUpdateAt() *MessageUpsertBulk {
 func (u *MessageUpsertBulk) SetDeleteAt(v uint32) *MessageUpsertBulk {
 	return u.Update(func(s *MessageUpsert) {
 		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *MessageUpsertBulk) AddDeleteAt(v uint32) *MessageUpsertBulk {
+	return u.Update(func(s *MessageUpsert) {
+		s.AddDeleteAt(v)
 	})
 }
 

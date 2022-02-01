@@ -12,6 +12,8 @@ import (
 // Tx is a transactional client that is created by calling Client.Tx().
 type Tx struct {
 	config
+	// AppLang is the client for interacting with the AppLang builders.
+	AppLang *AppLangClient
 	// Lang is the client for interacting with the Lang builders.
 	Lang *LangClient
 	// Message is the client for interacting with the Message builders.
@@ -32,7 +34,7 @@ type Tx struct {
 }
 
 type (
-	// Committer is the interface that wraps the Committer method.
+	// Committer is the interface that wraps the Commit method.
 	Committer interface {
 		Commit(context.Context, *Tx) error
 	}
@@ -46,7 +48,7 @@ type (
 	// and returns a Committer. For example:
 	//
 	//	hook := func(next ent.Committer) ent.Committer {
-	//		return ent.CommitFunc(func(context.Context, tx *ent.Tx) error {
+	//		return ent.CommitFunc(func(ctx context.Context, tx *ent.Tx) error {
 	//			// Do some stuff before.
 	//			if err := next.Commit(ctx, tx); err != nil {
 	//				return err
@@ -87,7 +89,7 @@ func (tx *Tx) OnCommit(f CommitHook) {
 }
 
 type (
-	// Rollbacker is the interface that wraps the Rollbacker method.
+	// Rollbacker is the interface that wraps the Rollback method.
 	Rollbacker interface {
 		Rollback(context.Context, *Tx) error
 	}
@@ -101,7 +103,7 @@ type (
 	// and returns a Rollbacker. For example:
 	//
 	//	hook := func(next ent.Rollbacker) ent.Rollbacker {
-	//		return ent.RollbackFunc(func(context.Context, tx *ent.Tx) error {
+	//		return ent.RollbackFunc(func(ctx context.Context, tx *ent.Tx) error {
 	//			// Do some stuff before.
 	//			if err := next.Rollback(ctx, tx); err != nil {
 	//				return err
@@ -151,6 +153,7 @@ func (tx *Tx) Client() *Client {
 }
 
 func (tx *Tx) init() {
+	tx.AppLang = NewAppLangClient(tx.config)
 	tx.Lang = NewLangClient(tx.config)
 	tx.Message = NewMessageClient(tx.config)
 }
@@ -162,7 +165,7 @@ func (tx *Tx) init() {
 // of them in order to commit or rollback the transaction.
 //
 // If a closed transaction is embedded in one of the generated entities, and the entity
-// applies a query, for example: Lang.QueryXXX(), the query will be executed
+// applies a query, for example: AppLang.QueryXXX(), the query will be executed
 // through the driver which created this transaction.
 //
 // Note that txDriver is not goroutine safe.

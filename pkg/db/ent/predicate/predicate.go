@@ -6,6 +6,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// AppLang is the predicate function for applang builders.
+type AppLang func(*sql.Selector)
+
 // Lang is the predicate function for lang builders.
 type Lang func(*sql.Selector)
 
