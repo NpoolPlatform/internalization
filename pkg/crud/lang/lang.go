@@ -7,6 +7,7 @@ import (
 	constant "github.com/NpoolPlatform/internationalization/pkg/const"
 	"github.com/NpoolPlatform/internationalization/pkg/db"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/lang"
 	npool "github.com/NpoolPlatform/message/npool/internationalization"
 
 	"github.com/google/uuid"
@@ -111,7 +112,12 @@ func Update(ctx context.Context, in *npool.UpdateLangRequest) (*npool.UpdateLang
 	}, nil
 }
 
-func GetByApp(ctx context.Context, in *npool.GetLangsByAppRequest) (*npool.GetLangsByAppResponse, error) {
+func Get(ctx context.Context, in *npool.GetLangRequest) (*npool.GetLangResponse, error) {
+	id, err := uuid.Parse(in.GetID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid lang id: %v", err)
+	}
+
 	cli, err := db.Client()
 	if err != nil {
 		return nil, xerrors.Errorf("fail get db client: %v", err)
@@ -123,18 +129,22 @@ func GetByApp(ctx context.Context, in *npool.GetLangsByAppRequest) (*npool.GetLa
 	infos, err := cli.
 		Lang.
 		Query().
+		Where(
+			lang.ID(id),
+		).
 		All(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail query langs: %v", err)
 	}
 
-	langs := []*npool.Lang{}
+	var _lang *npool.Lang
 	for _, info := range infos {
-		langs = append(langs, dbRowToLang(info))
+		_lang = dbRowToLang(info)
+		break
 	}
 
-	return &npool.GetLangsByAppResponse{
-		Infos: langs,
+	return &npool.GetLangResponse{
+		Info: _lang,
 	}, nil
 }
 
