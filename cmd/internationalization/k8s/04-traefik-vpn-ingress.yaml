@@ -24,7 +24,7 @@ spec:
             backend:
               serviceName: internationalization
               servicePort: 50190
-    - host: www.procyon.vip
+    - host: api.procyon.vip
       http: *http_rules
     - host: api.xpool.top
       http: *http_rules
