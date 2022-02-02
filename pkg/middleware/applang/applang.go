@@ -3,6 +3,7 @@ package applang
 import (
 	"context"
 
+	"github.com/NpoolPlatform/go-service-framework/pkg/logger"
 	crud "github.com/NpoolPlatform/internationalization/pkg/crud/applang"
 	langcrud "github.com/NpoolPlatform/internationalization/pkg/crud/lang"
 	npool "github.com/NpoolPlatform/message/npool/internationalization"
@@ -25,6 +26,10 @@ func GetByApp(ctx context.Context, in *npool.GetAppLangInfosByAppRequest) (*npoo
 		})
 		if err != nil {
 			return nil, xerrors.Errorf("fail get lang: %v", err)
+		}
+		if resp1.Info == nil {
+			logger.Sugar().Warnf("invalid lang")
+			continue
 		}
 		infos = append(infos, &npool.AppLangInfo{
 			AppLang: info,
