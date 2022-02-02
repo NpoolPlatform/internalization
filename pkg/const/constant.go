@@ -5,10 +5,10 @@ type Lang struct {
 }
 
 var Langs = map[string]*Lang{
-	"zh_CN": {
+	"zh-CN": {
 		Name: "Chinese Simplified",
 	},
-	"en_US": {
+	"en-US": {
 		Name: "English USA",
 	},
 }
