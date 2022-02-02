@@ -34,7 +34,7 @@ var (
 	LangsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
 		{Name: "lang", Type: field.TypeString, Unique: true},
-		{Name: "logo", Type: field.TypeString, Unique: true},
+		{Name: "logo", Type: field.TypeString},
 		{Name: "name", Type: field.TypeString, Unique: true},
 		{Name: "create_at", Type: field.TypeUint32},
 		{Name: "update_at", Type: field.TypeUint32},
