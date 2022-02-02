@@ -46,16 +46,3 @@ func (s *Server) GetAppLangInfosByApp(ctx context.Context, in *npool.GetAppLangI
 	}
 	return resp, nil
 }
-
-func (s *Server) GetAppLangInfosByOtherApp(ctx context.Context, in *npool.GetAppLangInfosByOtherAppRequest) (*npool.GetAppLangInfosByOtherAppResponse, error) {
-	resp, err := mw.GetByApp(ctx, &npool.GetAppLangInfosByAppRequest{
-		AppID: in.GetTargetAppID(),
-	})
-	if err != nil {
-		logger.Sugar().Errorw("fail get app lang infos by other app: %v", err)
-		return &npool.GetAppLangInfosByOtherAppResponse{}, status.Error(codes.Internal, err.Error())
-	}
-	return &npool.GetAppLangInfosByOtherAppResponse{
-		Infos: resp.Infos,
-	}, nil
-}
