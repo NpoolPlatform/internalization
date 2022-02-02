@@ -13,13 +13,9 @@ import (
 )
 
 func GetByApp(ctx context.Context, in *npool.GetAppLangInfosByAppRequest) (*npool.GetAppLangInfosByAppResponse, error) {
-	appID, err := uuid.Parse(in.GetTargetAppID())
-	invalidUUID := uuid.UUID{}
-	if err != nil || appID == invalidUUID {
-		appID, err = uuid.Parse(in.GetAppID())
-		if err != nil {
-			return nil, xerrors.Errorf("invalid app id or target app id: %v", err)
-		}
+	appID, err := uuid.Parse(in.GetAppID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid app id: %v", err)
 	}
 
 	resp, err := crud.GetByApp(ctx, &npool.GetAppLangsByAppRequest{
