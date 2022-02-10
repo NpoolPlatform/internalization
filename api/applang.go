@@ -20,6 +20,22 @@ func (s *Server) CreateAppLang(ctx context.Context, in *npool.CreateAppLangReque
 	return resp, nil
 }
 
+func (s *Server) CreateAppLangForOtherApp(ctx context.Context, in *npool.CreateAppLangForOtherAppRequest) (*npool.CreateAppLangForOtherAppResponse, error) {
+	info := in.GetInfo()
+	info.AppID = in.GetTargetAppID()
+
+	resp, err := crud.Create(ctx, &npool.CreateAppLangRequest{
+		Info: info,
+	})
+	if err != nil {
+		logger.Sugar().Errorw("fail create lang: %v", err)
+		return &npool.CreateAppLangForOtherAppResponse{}, status.Error(codes.Internal, err.Error())
+	}
+	return &npool.CreateAppLangForOtherAppResponse{
+		Info: resp.Info,
+	}, nil
+}
+
 func (s *Server) GetAppLang(ctx context.Context, in *npool.GetAppLangRequest) (*npool.GetAppLangResponse, error) {
 	resp, err := crud.Get(ctx, in)
 	if err != nil {
