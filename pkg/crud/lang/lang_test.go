@@ -30,14 +30,16 @@ func assertLang(t *testing.T, actual, expected *npool.Lang) {
 	assert.Equal(t, actual.Lang, expected.Lang)
 	assert.Equal(t, actual.Name, expected.Name)
 	assert.Equal(t, actual.Logo, expected.Logo)
+	assert.Equal(t, actual.Short, expected.Short)
 }
 
 func TestCRUD(t *testing.T) {
 	id := uuid.New()
 	lang := npool.Lang{
-		Lang: fmt.Sprintf("zh_CN-%v", id),
-		Name: fmt.Sprintf("Chinese-%v", id),
-		Logo: fmt.Sprintf("ChineseLogo-%v", id),
+		Lang:  fmt.Sprintf("zh_CN-%v", id),
+		Name:  fmt.Sprintf("Chinese-%v", id),
+		Logo:  fmt.Sprintf("ChineseLogo-%v", id),
+		Short: fmt.Sprintf("ChineseShort-%v", id),
 	}
 
 	resp, err := Add(context.Background(), &npool.AddLangRequest{
