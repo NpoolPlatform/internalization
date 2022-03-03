@@ -21,6 +21,22 @@ func (s *Server) CreateMessage(ctx context.Context, in *npool.CreateMessageReque
 	return resp, nil
 }
 
+func (s *Server) CreateMessageForOtherApp(ctx context.Context, in *npool.CreateMessageForOtherAppRequest) (*npool.CreateMessageForOtherAppResponse, error) {
+	info := in.GetInfo()
+	info.AppID = in.GetTargetAppID()
+
+	resp, err := crud.CreateMessage(ctx, &npool.CreateMessageRequest{
+		Info: info,
+	})
+	if err != nil {
+		logger.Sugar().Errorf("fail create message: %v", err)
+		return &npool.CreateMessageForOtherAppResponse{}, status.Error(codes.Internal, "internal server error")
+	}
+	return &npool.CreateMessageForOtherAppResponse{
+		Info: resp.Info,
+	}, nil
+}
+
 func (s *Server) CreateMessages(ctx context.Context, in *npool.CreateMessagesRequest) (*npool.CreateMessagesResponse, error) {
 	resp, err := crud.CreateMessages(ctx, in)
 	if err != nil {
@@ -55,6 +71,20 @@ func (s *Server) GetMessagesByAppLang(ctx context.Context, in *npool.GetMessages
 		return &npool.GetMessagesByAppLangResponse{}, status.Error(codes.Internal, "internal server error")
 	}
 	return resp, nil
+}
+
+func (s *Server) GetMessagesByOtherAppLang(ctx context.Context, in *npool.GetMessagesByOtherAppLangRequest) (*npool.GetMessagesByOtherAppLangResponse, error) {
+	resp, err := crud.GetMessagesByAppLang(ctx, &npool.GetMessagesByAppLangRequest{
+		AppID:  in.GetTargetAppID(),
+		LangID: in.GetLangID(),
+	})
+	if err != nil {
+		logger.Sugar().Errorf("fail get messages by lang id: %v", err)
+		return &npool.GetMessagesByOtherAppLangResponse{}, status.Error(codes.Internal, "internal server error")
+	}
+	return &npool.GetMessagesByOtherAppLangResponse{
+		Infos: resp.Infos,
+	}, nil
 }
 
 func (s *Server) GetMessageByAppLangMessage(ctx context.Context, in *npool.GetMessageByAppLangMessageRequest) (*npool.GetMessageByAppLangMessageResponse, error) {
