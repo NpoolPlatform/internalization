@@ -40,10 +40,11 @@ func validateLang(info *npool.Lang) error {
 
 func dbRowToLang(row *ent.Lang) *npool.Lang {
 	return &npool.Lang{
-		ID:   row.ID.String(),
-		Lang: row.Lang,
-		Name: row.Name,
-		Logo: row.Logo,
+		ID:    row.ID.String(),
+		Lang:  row.Lang,
+		Name:  row.Name,
+		Logo:  row.Logo,
+		Short: row.Short,
 	}
 }
 
@@ -70,6 +71,7 @@ func Add(ctx context.Context, in *npool.AddLangRequest) (*npool.AddLangResponse,
 		SetLang(in.GetInfo().GetLang()).
 		SetName(in.GetInfo().GetName()).
 		SetLogo(in.GetInfo().GetLogo()).
+		SetShort(in.GetInfo().GetShort()).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail create lang: %v", err)

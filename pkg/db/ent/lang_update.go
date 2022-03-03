@@ -45,6 +45,12 @@ func (lu *LangUpdate) SetName(s string) *LangUpdate {
 	return lu
 }
 
+// SetShort sets the "short" field.
+func (lu *LangUpdate) SetShort(s string) *LangUpdate {
+	lu.mutation.SetShort(s)
+	return lu
+}
+
 // SetCreateAt sets the "create_at" field.
 func (lu *LangUpdate) SetCreateAt(u uint32) *LangUpdate {
 	lu.mutation.ResetCreateAt()
@@ -207,6 +213,13 @@ func (lu *LangUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: lang.FieldName,
 		})
 	}
+	if value, ok := lu.mutation.Short(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: lang.FieldShort,
+		})
+	}
 	if value, ok := lu.mutation.CreateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
@@ -283,6 +296,12 @@ func (luo *LangUpdateOne) SetLogo(s string) *LangUpdateOne {
 // SetName sets the "name" field.
 func (luo *LangUpdateOne) SetName(s string) *LangUpdateOne {
 	luo.mutation.SetName(s)
+	return luo
+}
+
+// SetShort sets the "short" field.
+func (luo *LangUpdateOne) SetShort(s string) *LangUpdateOne {
+	luo.mutation.SetShort(s)
 	return luo
 }
 
@@ -470,6 +489,13 @@ func (luo *LangUpdateOne) sqlSave(ctx context.Context) (_node *Lang, err error) 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: lang.FieldName,
+		})
+	}
+	if value, ok := luo.mutation.Short(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: lang.FieldShort,
 		})
 	}
 	if value, ok := luo.mutation.CreateAt(); ok {

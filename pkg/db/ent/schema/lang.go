@@ -25,6 +25,8 @@ func (Lang) Fields() []ent.Field {
 		field.String("logo"),
 		field.String("name").
 			Unique(),
+		field.String("short").
+			Unique(),
 		field.Uint32("create_at").
 			DefaultFunc(func() uint32 {
 				return uint32(time.Now().Unix())

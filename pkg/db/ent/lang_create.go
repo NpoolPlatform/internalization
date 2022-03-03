@@ -41,6 +41,12 @@ func (lc *LangCreate) SetName(s string) *LangCreate {
 	return lc
 }
 
+// SetShort sets the "short" field.
+func (lc *LangCreate) SetShort(s string) *LangCreate {
+	lc.mutation.SetShort(s)
+	return lc
+}
+
 // SetCreateAt sets the "create_at" field.
 func (lc *LangCreate) SetCreateAt(u uint32) *LangCreate {
 	lc.mutation.SetCreateAt(u)
@@ -197,6 +203,9 @@ func (lc *LangCreate) check() error {
 	if _, ok := lc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Lang.name"`)}
 	}
+	if _, ok := lc.mutation.Short(); !ok {
+		return &ValidationError{Name: "short", err: errors.New(`ent: missing required field "Lang.short"`)}
+	}
 	if _, ok := lc.mutation.CreateAt(); !ok {
 		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "Lang.create_at"`)}
 	}
@@ -266,6 +275,14 @@ func (lc *LangCreate) createSpec() (*Lang, *sqlgraph.CreateSpec) {
 			Column: lang.FieldName,
 		})
 		_node.Name = value
+	}
+	if value, ok := lc.mutation.Short(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: lang.FieldShort,
+		})
+		_node.Short = value
 	}
 	if value, ok := lc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -378,6 +395,18 @@ func (u *LangUpsert) SetName(v string) *LangUpsert {
 // UpdateName sets the "name" field to the value that was provided on create.
 func (u *LangUpsert) UpdateName() *LangUpsert {
 	u.SetExcluded(lang.FieldName)
+	return u
+}
+
+// SetShort sets the "short" field.
+func (u *LangUpsert) SetShort(v string) *LangUpsert {
+	u.Set(lang.FieldShort, v)
+	return u
+}
+
+// UpdateShort sets the "short" field to the value that was provided on create.
+func (u *LangUpsert) UpdateShort() *LangUpsert {
+	u.SetExcluded(lang.FieldShort)
 	return u
 }
 
@@ -524,6 +553,20 @@ func (u *LangUpsertOne) SetName(v string) *LangUpsertOne {
 func (u *LangUpsertOne) UpdateName() *LangUpsertOne {
 	return u.Update(func(s *LangUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetShort sets the "short" field.
+func (u *LangUpsertOne) SetShort(v string) *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.SetShort(v)
+	})
+}
+
+// UpdateShort sets the "short" field to the value that was provided on create.
+func (u *LangUpsertOne) UpdateShort() *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.UpdateShort()
 	})
 }
 
@@ -845,6 +888,20 @@ func (u *LangUpsertBulk) SetName(v string) *LangUpsertBulk {
 func (u *LangUpsertBulk) UpdateName() *LangUpsertBulk {
 	return u.Update(func(s *LangUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetShort sets the "short" field.
+func (u *LangUpsertBulk) SetShort(v string) *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.SetShort(v)
+	})
+}
+
+// UpdateShort sets the "short" field to the value that was provided on create.
+func (u *LangUpsertBulk) UpdateShort() *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.UpdateShort()
 	})
 }
 

@@ -17,6 +17,8 @@ const (
 	FieldLogo = "logo"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
+	// FieldShort holds the string denoting the short field in the database.
+	FieldShort = "short"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldUpdateAt holds the string denoting the update_at field in the database.
@@ -33,6 +35,7 @@ var Columns = []string{
 	FieldLang,
 	FieldLogo,
 	FieldName,
+	FieldShort,
 	FieldCreateAt,
 	FieldUpdateAt,
 	FieldDeleteAt,

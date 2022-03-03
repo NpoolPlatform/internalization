@@ -22,6 +22,8 @@ type Lang struct {
 	Logo string `json:"logo,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// Short holds the value of the "short" field.
+	Short string `json:"short,omitempty"`
 	// CreateAt holds the value of the "create_at" field.
 	CreateAt uint32 `json:"create_at,omitempty"`
 	// UpdateAt holds the value of the "update_at" field.
@@ -37,7 +39,7 @@ func (*Lang) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case lang.FieldCreateAt, lang.FieldUpdateAt, lang.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
-		case lang.FieldLang, lang.FieldLogo, lang.FieldName:
+		case lang.FieldLang, lang.FieldLogo, lang.FieldName, lang.FieldShort:
 			values[i] = new(sql.NullString)
 		case lang.FieldID:
 			values[i] = new(uuid.UUID)
@@ -79,6 +81,12 @@ func (l *Lang) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				l.Name = value.String
+			}
+		case lang.FieldShort:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field short", values[i])
+			} else if value.Valid {
+				l.Short = value.String
 			}
 		case lang.FieldCreateAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -132,6 +140,8 @@ func (l *Lang) String() string {
 	builder.WriteString(l.Logo)
 	builder.WriteString(", name=")
 	builder.WriteString(l.Name)
+	builder.WriteString(", short=")
+	builder.WriteString(l.Short)
 	builder.WriteString(", create_at=")
 	builder.WriteString(fmt.Sprintf("%v", l.CreateAt))
 	builder.WriteString(", update_at=")

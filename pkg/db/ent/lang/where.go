@@ -112,6 +112,13 @@ func Name(v string) predicate.Lang {
 	})
 }
 
+// Short applies equality check predicate on the "short" field. It's identical to ShortEQ.
+func Short(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldShort), v))
+	})
+}
+
 // CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
 func CreateAt(v uint32) predicate.Lang {
 	return predicate.Lang(func(s *sql.Selector) {
@@ -463,6 +470,117 @@ func NameEqualFold(v string) predicate.Lang {
 func NameContainsFold(v string) predicate.Lang {
 	return predicate.Lang(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldName), v))
+	})
+}
+
+// ShortEQ applies the EQ predicate on the "short" field.
+func ShortEQ(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldShort), v))
+	})
+}
+
+// ShortNEQ applies the NEQ predicate on the "short" field.
+func ShortNEQ(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldShort), v))
+	})
+}
+
+// ShortIn applies the In predicate on the "short" field.
+func ShortIn(vs ...string) predicate.Lang {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Lang(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldShort), v...))
+	})
+}
+
+// ShortNotIn applies the NotIn predicate on the "short" field.
+func ShortNotIn(vs ...string) predicate.Lang {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Lang(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldShort), v...))
+	})
+}
+
+// ShortGT applies the GT predicate on the "short" field.
+func ShortGT(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldShort), v))
+	})
+}
+
+// ShortGTE applies the GTE predicate on the "short" field.
+func ShortGTE(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldShort), v))
+	})
+}
+
+// ShortLT applies the LT predicate on the "short" field.
+func ShortLT(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldShort), v))
+	})
+}
+
+// ShortLTE applies the LTE predicate on the "short" field.
+func ShortLTE(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldShort), v))
+	})
+}
+
+// ShortContains applies the Contains predicate on the "short" field.
+func ShortContains(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldShort), v))
+	})
+}
+
+// ShortHasPrefix applies the HasPrefix predicate on the "short" field.
+func ShortHasPrefix(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldShort), v))
+	})
+}
+
+// ShortHasSuffix applies the HasSuffix predicate on the "short" field.
+func ShortHasSuffix(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldShort), v))
+	})
+}
+
+// ShortEqualFold applies the EqualFold predicate on the "short" field.
+func ShortEqualFold(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldShort), v))
+	})
+}
+
+// ShortContainsFold applies the ContainsFold predicate on the "short" field.
+func ShortContainsFold(v string) predicate.Lang {
+	return predicate.Lang(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldShort), v))
 	})
 }
 
