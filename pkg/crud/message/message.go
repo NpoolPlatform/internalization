@@ -211,7 +211,12 @@ func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npoo
 	}, nil
 }
 
-func GetMessagesByLangID(ctx context.Context, in *npool.GetMessagesByLangIDRequest) (*npool.GetMessagesByLangIDResponse, error) {
+func GetMessagesByAppLang(ctx context.Context, in *npool.GetMessagesByAppLangRequest) (*npool.GetMessagesByAppLangResponse, error) {
+	appID, err := uuid.Parse(in.GetAppID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid app id: %v", err)
+	}
+
 	langID, err := uuid.Parse(in.GetLangID())
 	if err != nil {
 		return nil, xerrors.Errorf("invalid lang id: %v", err)
@@ -229,7 +234,10 @@ func GetMessagesByLangID(ctx context.Context, in *npool.GetMessagesByLangIDReque
 		Message.
 		Query().
 		Where(
-			message.LangID(langID),
+			message.And(
+				message.AppID(appID),
+				message.LangID(langID),
+			),
 		).
 		All(ctx)
 	if err != nil {
@@ -241,12 +249,17 @@ func GetMessagesByLangID(ctx context.Context, in *npool.GetMessagesByLangIDReque
 		msgs = append(msgs, dbRowToMessage(info))
 	}
 
-	return &npool.GetMessagesByLangIDResponse{
+	return &npool.GetMessagesByAppLangResponse{
 		Infos: msgs,
 	}, nil
 }
 
-func GetMessageByLangIDMessageID(ctx context.Context, in *npool.GetMessageByLangIDMessageIDRequest) (*npool.GetMessageByLangIDMessageIDResponse, error) {
+func GetMessageByAppLangMessage(ctx context.Context, in *npool.GetMessageByAppLangMessageRequest) (*npool.GetMessageByAppLangMessageResponse, error) {
+	appID, err := uuid.Parse(in.GetAppID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid app id: %v", err)
+	}
+
 	langID, err := uuid.Parse(in.GetLangID())
 	if err != nil {
 		return nil, xerrors.Errorf("invalid lang id: %v", err)
@@ -269,6 +282,7 @@ func GetMessageByLangIDMessageID(ctx context.Context, in *npool.GetMessageByLang
 		Query().
 		Where(
 			message.And(
+				message.AppID(appID),
 				message.LangID(langID),
 				message.MessageID(in.GetMessageID()),
 			),
@@ -284,7 +298,7 @@ func GetMessageByLangIDMessageID(ctx context.Context, in *npool.GetMessageByLang
 		break
 	}
 
-	return &npool.GetMessageByLangIDMessageIDResponse{
+	return &npool.GetMessageByAppLangMessageResponse{
 		Info: msg,
 	}, nil
 }

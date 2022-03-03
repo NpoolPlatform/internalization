@@ -90,14 +90,16 @@ func TestCRUD(t *testing.T) {
 		assertMessage(t, resp2.Infos[1], &message2)
 	}
 
-	resp3, err := GetMessagesByLangID(context.Background(), &npool.GetMessagesByLangIDRequest{
+	resp3, err := GetMessagesByAppLang(context.Background(), &npool.GetMessagesByAppLangRequest{
+		AppID:  message1.AppID,
 		LangID: message1.LangID,
 	})
 	if assert.Nil(t, err) {
 		assert.NotEqual(t, len(resp3.Infos), 0)
 	}
 
-	resp4, err := GetMessageByLangIDMessageID(context.Background(), &npool.GetMessageByLangIDMessageIDRequest{
+	resp4, err := GetMessageByAppLangMessage(context.Background(), &npool.GetMessageByAppLangMessageRequest{
+		AppID:     message1.AppID,
 		LangID:    message1.LangID,
 		MessageID: message1.MessageID,
 	})

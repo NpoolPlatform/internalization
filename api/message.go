@@ -48,20 +48,20 @@ func (s *Server) UpdateMessages(ctx context.Context, in *npool.UpdateMessagesReq
 	return resp, nil
 }
 
-func (s *Server) GetMessagesByLangID(ctx context.Context, in *npool.GetMessagesByLangIDRequest) (*npool.GetMessagesByLangIDResponse, error) {
-	resp, err := crud.GetMessagesByLangID(ctx, in)
+func (s *Server) GetMessagesByAppLang(ctx context.Context, in *npool.GetMessagesByAppLangRequest) (*npool.GetMessagesByAppLangResponse, error) {
+	resp, err := crud.GetMessagesByAppLang(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail get messages by lang id: %v", err)
-		return &npool.GetMessagesByLangIDResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.GetMessagesByAppLangResponse{}, status.Error(codes.Internal, "internal server error")
 	}
 	return resp, nil
 }
 
-func (s *Server) GetMessageByLangIDMessageID(ctx context.Context, in *npool.GetMessageByLangIDMessageIDRequest) (*npool.GetMessageByLangIDMessageIDResponse, error) {
-	resp, err := crud.GetMessageByLangIDMessageID(ctx, in)
+func (s *Server) GetMessageByAppLangMessage(ctx context.Context, in *npool.GetMessageByAppLangMessageRequest) (*npool.GetMessageByAppLangMessageResponse, error) {
+	resp, err := crud.GetMessageByAppLangMessage(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail get message by lang id message id: %v", err)
-		return &npool.GetMessageByLangIDMessageIDResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.GetMessageByAppLangMessageResponse{}, status.Error(codes.Internal, "internal server error")
 	}
 	return resp, nil
 }
