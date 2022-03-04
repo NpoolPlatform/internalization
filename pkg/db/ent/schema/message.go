@@ -53,7 +53,7 @@ func (Message) Edges() []ent.Edge {
 // Indexes of the Message
 func (Message) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("app_id", "message_id").
+		index.Fields("app_id", "lang_id", "message_id").
 			Unique(),
 	}
 }

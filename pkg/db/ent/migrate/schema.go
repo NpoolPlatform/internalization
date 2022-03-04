@@ -66,9 +66,9 @@ var (
 		PrimaryKey: []*schema.Column{MessagesColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "message_app_id_message_id",
+				Name:    "message_app_id_lang_id_message_id",
 				Unique:  true,
-				Columns: []*schema.Column{MessagesColumns[1], MessagesColumns[2]},
+				Columns: []*schema.Column{MessagesColumns[1], MessagesColumns[3], MessagesColumns[2]},
 			},
 		},
 	}
