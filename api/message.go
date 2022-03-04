@@ -16,7 +16,7 @@ func (s *Server) CreateMessage(ctx context.Context, in *npool.CreateMessageReque
 	resp, err := crud.CreateMessage(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail create message: %v", err)
-		return &npool.CreateMessageResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.CreateMessageResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -30,7 +30,7 @@ func (s *Server) CreateMessageForOtherApp(ctx context.Context, in *npool.CreateM
 	})
 	if err != nil {
 		logger.Sugar().Errorf("fail create message: %v", err)
-		return &npool.CreateMessageForOtherAppResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.CreateMessageForOtherAppResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return &npool.CreateMessageForOtherAppResponse{
 		Info: resp.Info,
@@ -41,7 +41,7 @@ func (s *Server) CreateMessages(ctx context.Context, in *npool.CreateMessagesReq
 	resp, err := crud.CreateMessages(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail create messages: %v", err)
-		return &npool.CreateMessagesResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.CreateMessagesResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -50,7 +50,7 @@ func (s *Server) UpdateMessage(ctx context.Context, in *npool.UpdateMessageReque
 	resp, err := crud.UpdateMessage(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail update message: %v", err)
-		return &npool.UpdateMessageResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.UpdateMessageResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -59,7 +59,7 @@ func (s *Server) UpdateMessages(ctx context.Context, in *npool.UpdateMessagesReq
 	resp, err := crud.UpdateMessages(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail update messages: %v", err)
-		return &npool.UpdateMessagesResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.UpdateMessagesResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -68,7 +68,7 @@ func (s *Server) GetMessagesByAppLang(ctx context.Context, in *npool.GetMessages
 	resp, err := crud.GetMessagesByAppLang(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail get messages by lang id: %v", err)
-		return &npool.GetMessagesByAppLangResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.GetMessagesByAppLangResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
@@ -80,7 +80,7 @@ func (s *Server) GetMessagesByOtherAppLang(ctx context.Context, in *npool.GetMes
 	})
 	if err != nil {
 		logger.Sugar().Errorf("fail get messages by lang id: %v", err)
-		return &npool.GetMessagesByOtherAppLangResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.GetMessagesByOtherAppLangResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return &npool.GetMessagesByOtherAppLangResponse{
 		Infos: resp.Infos,
@@ -91,7 +91,7 @@ func (s *Server) GetMessageByAppLangMessage(ctx context.Context, in *npool.GetMe
 	resp, err := crud.GetMessageByAppLangMessage(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail get message by lang id message id: %v", err)
-		return &npool.GetMessageByAppLangMessageResponse{}, status.Error(codes.Internal, "internal server error")
+		return &npool.GetMessageByAppLangMessageResponse{}, status.Error(codes.Internal, err.Error())
 	}
 	return resp, nil
 }
