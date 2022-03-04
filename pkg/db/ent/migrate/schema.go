@@ -53,7 +53,7 @@ var (
 		{Name: "app_id", Type: field.TypeUUID},
 		{Name: "message_id", Type: field.TypeString},
 		{Name: "lang_id", Type: field.TypeUUID},
-		{Name: "message", Type: field.TypeString, Unique: true},
+		{Name: "message", Type: field.TypeString},
 		{Name: "batch_get", Type: field.TypeBool},
 		{Name: "create_at", Type: field.TypeUint32},
 		{Name: "update_at", Type: field.TypeUint32},
