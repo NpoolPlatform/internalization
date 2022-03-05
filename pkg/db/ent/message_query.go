@@ -107,7 +107,7 @@ func (mq *MessageQuery) FirstIDX(ctx context.Context) uuid.UUID {
 }
 
 // Only returns a single Message entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one Message entity is not found.
+// Returns a *NotSingularError when more than one Message entity is found.
 // Returns a *NotFoundError when no Message entities are found.
 func (mq *MessageQuery) Only(ctx context.Context) (*Message, error) {
 	nodes, err := mq.Limit(2).All(ctx)
@@ -134,7 +134,7 @@ func (mq *MessageQuery) OnlyX(ctx context.Context) *Message {
 }
 
 // OnlyID is like Only, but returns the only Message ID in the query.
-// Returns a *NotSingularError when exactly one Message ID is not found.
+// Returns a *NotSingularError when more than one Message ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (mq *MessageQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
 	var ids []uuid.UUID
@@ -243,8 +243,9 @@ func (mq *MessageQuery) Clone() *MessageQuery {
 		order:      append([]OrderFunc{}, mq.order...),
 		predicates: append([]predicate.Message{}, mq.predicates...),
 		// clone intermediate query.
-		sql:  mq.sql.Clone(),
-		path: mq.path,
+		sql:    mq.sql.Clone(),
+		path:   mq.path,
+		unique: mq.unique,
 	}
 }
 

@@ -126,12 +126,18 @@ func (mu *MessageUpdate) Save(ctx context.Context) (int, error) {
 	)
 	mu.defaults()
 	if len(mu.hooks) == 0 {
+		if err = mu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = mu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*MessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = mu.check(); err != nil {
+				return 0, err
 			}
 			mu.mutation = mutation
 			affected, err = mu.sqlSave(ctx)
@@ -179,6 +185,16 @@ func (mu *MessageUpdate) defaults() {
 		v := message.UpdateDefaultUpdateAt()
 		mu.mutation.SetUpdateAt(v)
 	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (mu *MessageUpdate) check() error {
+	if v, ok := mu.mutation.Message(); ok {
+		if err := message.MessageValidator(v); err != nil {
+			return &ValidationError{Name: "message", err: fmt.Errorf(`ent: validator failed for field "Message.message": %w`, err)}
+		}
+	}
+	return nil
 }
 
 func (mu *MessageUpdate) sqlSave(ctx context.Context) (n int, err error) {
@@ -400,12 +416,18 @@ func (muo *MessageUpdateOne) Save(ctx context.Context) (*Message, error) {
 	)
 	muo.defaults()
 	if len(muo.hooks) == 0 {
+		if err = muo.check(); err != nil {
+			return nil, err
+		}
 		node, err = muo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*MessageMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = muo.check(); err != nil {
+				return nil, err
 			}
 			muo.mutation = mutation
 			node, err = muo.sqlSave(ctx)
@@ -453,6 +475,16 @@ func (muo *MessageUpdateOne) defaults() {
 		v := message.UpdateDefaultUpdateAt()
 		muo.mutation.SetUpdateAt(v)
 	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (muo *MessageUpdateOne) check() error {
+	if v, ok := muo.mutation.Message(); ok {
+		if err := message.MessageValidator(v); err != nil {
+			return &ValidationError{Name: "message", err: fmt.Errorf(`ent: validator failed for field "Message.message": %w`, err)}
+		}
+	}
+	return nil
 }
 
 func (muo *MessageUpdateOne) sqlSave(ctx context.Context) (_node *Message, err error) {

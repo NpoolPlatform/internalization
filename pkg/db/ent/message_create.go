@@ -212,6 +212,11 @@ func (mc *MessageCreate) check() error {
 	if _, ok := mc.mutation.Message(); !ok {
 		return &ValidationError{Name: "message", err: errors.New(`ent: missing required field "Message.message"`)}
 	}
+	if v, ok := mc.mutation.Message(); ok {
+		if err := message.MessageValidator(v); err != nil {
+			return &ValidationError{Name: "message", err: fmt.Errorf(`ent: validator failed for field "Message.message": %w`, err)}
+		}
+	}
 	if _, ok := mc.mutation.BatchGet(); !ok {
 		return &ValidationError{Name: "batch_get", err: errors.New(`ent: missing required field "Message.batch_get"`)}
 	}

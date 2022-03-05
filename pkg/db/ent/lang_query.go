@@ -107,7 +107,7 @@ func (lq *LangQuery) FirstIDX(ctx context.Context) uuid.UUID {
 }
 
 // Only returns a single Lang entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one Lang entity is not found.
+// Returns a *NotSingularError when more than one Lang entity is found.
 // Returns a *NotFoundError when no Lang entities are found.
 func (lq *LangQuery) Only(ctx context.Context) (*Lang, error) {
 	nodes, err := lq.Limit(2).All(ctx)
@@ -134,7 +134,7 @@ func (lq *LangQuery) OnlyX(ctx context.Context) *Lang {
 }
 
 // OnlyID is like Only, but returns the only Lang ID in the query.
-// Returns a *NotSingularError when exactly one Lang ID is not found.
+// Returns a *NotSingularError when more than one Lang ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (lq *LangQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
 	var ids []uuid.UUID
@@ -243,8 +243,9 @@ func (lq *LangQuery) Clone() *LangQuery {
 		order:      append([]OrderFunc{}, lq.order...),
 		predicates: append([]predicate.Lang{}, lq.predicates...),
 		// clone intermediate query.
-		sql:  lq.sql.Clone(),
-		path: lq.path,
+		sql:    lq.sql.Clone(),
+		path:   lq.path,
+		unique: lq.unique,
 	}
 }
 

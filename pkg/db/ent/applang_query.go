@@ -107,7 +107,7 @@ func (alq *AppLangQuery) FirstIDX(ctx context.Context) uuid.UUID {
 }
 
 // Only returns a single AppLang entity found by the query, ensuring it only returns one.
-// Returns a *NotSingularError when exactly one AppLang entity is not found.
+// Returns a *NotSingularError when more than one AppLang entity is found.
 // Returns a *NotFoundError when no AppLang entities are found.
 func (alq *AppLangQuery) Only(ctx context.Context) (*AppLang, error) {
 	nodes, err := alq.Limit(2).All(ctx)
@@ -134,7 +134,7 @@ func (alq *AppLangQuery) OnlyX(ctx context.Context) *AppLang {
 }
 
 // OnlyID is like Only, but returns the only AppLang ID in the query.
-// Returns a *NotSingularError when exactly one AppLang ID is not found.
+// Returns a *NotSingularError when more than one AppLang ID is found.
 // Returns a *NotFoundError when no entities are found.
 func (alq *AppLangQuery) OnlyID(ctx context.Context) (id uuid.UUID, err error) {
 	var ids []uuid.UUID
@@ -243,8 +243,9 @@ func (alq *AppLangQuery) Clone() *AppLangQuery {
 		order:      append([]OrderFunc{}, alq.order...),
 		predicates: append([]predicate.AppLang{}, alq.predicates...),
 		// clone intermediate query.
-		sql:  alq.sql.Clone(),
-		path: alq.path,
+		sql:    alq.sql.Clone(),
+		path:   alq.path,
+		unique: alq.unique,
 	}
 }
 

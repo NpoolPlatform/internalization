@@ -56,6 +56,10 @@ func init() {
 	lang.DefaultID = langDescID.Default.(func() uuid.UUID)
 	messageFields := schema.Message{}.Fields()
 	_ = messageFields
+	// messageDescMessage is the schema descriptor for message field.
+	messageDescMessage := messageFields[4].Descriptor()
+	// message.MessageValidator is a validator for the "message" field. It is called by the builders before save.
+	message.MessageValidator = messageDescMessage.Validators[0].(func(string) error)
 	// messageDescCreateAt is the schema descriptor for create_at field.
 	messageDescCreateAt := messageFields[6].Descriptor()
 	// message.DefaultCreateAt holds the default value on creation for the create_at field.
