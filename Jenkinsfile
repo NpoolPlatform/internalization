@@ -307,7 +307,7 @@ pipeline {
     stage('Deploy for development') {
       when {
         expression { DEPLOY_TARGET == 'true' }
-        expression { TARGET_ENV == 'development' }
+        expression { TARGET_ENV ==~ /.*development.*/ }
       }
       steps {
         sh 'sed -i "s/uhub.service.ucloud.cn/$DOCKER_REGISTRY/g" cmd/internationalization/k8s/01-internationalization.yaml'
@@ -318,7 +318,7 @@ pipeline {
     stage('Deploy for testing') {
       when {
         expression { DEPLOY_TARGET == 'true' }
-        expression { TARGET_ENV == 'testing' }
+        expression { TARGET_ENV ==~ /.*testing.*/ }
       }
       steps {
         sh(returnStdout: true, script: '''
