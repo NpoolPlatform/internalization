@@ -41,6 +41,12 @@ func (cc *CountryCreate) SetCode(s string) *CountryCreate {
 	return cc
 }
 
+// SetShort sets the "short" field.
+func (cc *CountryCreate) SetShort(s string) *CountryCreate {
+	cc.mutation.SetShort(s)
+	return cc
+}
+
 // SetCreateAt sets the "create_at" field.
 func (cc *CountryCreate) SetCreateAt(u uint32) *CountryCreate {
 	cc.mutation.SetCreateAt(u)
@@ -197,6 +203,9 @@ func (cc *CountryCreate) check() error {
 	if _, ok := cc.mutation.Code(); !ok {
 		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Country.code"`)}
 	}
+	if _, ok := cc.mutation.Short(); !ok {
+		return &ValidationError{Name: "short", err: errors.New(`ent: missing required field "Country.short"`)}
+	}
 	if _, ok := cc.mutation.CreateAt(); !ok {
 		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "Country.create_at"`)}
 	}
@@ -266,6 +275,14 @@ func (cc *CountryCreate) createSpec() (*Country, *sqlgraph.CreateSpec) {
 			Column: country.FieldCode,
 		})
 		_node.Code = value
+	}
+	if value, ok := cc.mutation.Short(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: country.FieldShort,
+		})
+		_node.Short = value
 	}
 	if value, ok := cc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -378,6 +395,18 @@ func (u *CountryUpsert) SetCode(v string) *CountryUpsert {
 // UpdateCode sets the "code" field to the value that was provided on create.
 func (u *CountryUpsert) UpdateCode() *CountryUpsert {
 	u.SetExcluded(country.FieldCode)
+	return u
+}
+
+// SetShort sets the "short" field.
+func (u *CountryUpsert) SetShort(v string) *CountryUpsert {
+	u.Set(country.FieldShort, v)
+	return u
+}
+
+// UpdateShort sets the "short" field to the value that was provided on create.
+func (u *CountryUpsert) UpdateShort() *CountryUpsert {
+	u.SetExcluded(country.FieldShort)
 	return u
 }
 
@@ -524,6 +553,20 @@ func (u *CountryUpsertOne) SetCode(v string) *CountryUpsertOne {
 func (u *CountryUpsertOne) UpdateCode() *CountryUpsertOne {
 	return u.Update(func(s *CountryUpsert) {
 		s.UpdateCode()
+	})
+}
+
+// SetShort sets the "short" field.
+func (u *CountryUpsertOne) SetShort(v string) *CountryUpsertOne {
+	return u.Update(func(s *CountryUpsert) {
+		s.SetShort(v)
+	})
+}
+
+// UpdateShort sets the "short" field to the value that was provided on create.
+func (u *CountryUpsertOne) UpdateShort() *CountryUpsertOne {
+	return u.Update(func(s *CountryUpsert) {
+		s.UpdateShort()
 	})
 }
 
@@ -845,6 +888,20 @@ func (u *CountryUpsertBulk) SetCode(v string) *CountryUpsertBulk {
 func (u *CountryUpsertBulk) UpdateCode() *CountryUpsertBulk {
 	return u.Update(func(s *CountryUpsert) {
 		s.UpdateCode()
+	})
+}
+
+// SetShort sets the "short" field.
+func (u *CountryUpsertBulk) SetShort(v string) *CountryUpsertBulk {
+	return u.Update(func(s *CountryUpsert) {
+		s.SetShort(v)
+	})
+}
+
+// UpdateShort sets the "short" field to the value that was provided on create.
+func (u *CountryUpsertBulk) UpdateShort() *CountryUpsertBulk {
+	return u.Update(func(s *CountryUpsert) {
+		s.UpdateShort()
 	})
 }
 

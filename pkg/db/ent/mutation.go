@@ -677,6 +677,7 @@ type CountryMutation struct {
 	country       *string
 	flag          *string
 	code          *string
+	short         *string
 	create_at     *uint32
 	addcreate_at  *int32
 	update_at     *uint32
@@ -901,6 +902,42 @@ func (m *CountryMutation) ResetCode() {
 	m.code = nil
 }
 
+// SetShort sets the "short" field.
+func (m *CountryMutation) SetShort(s string) {
+	m.short = &s
+}
+
+// Short returns the value of the "short" field in the mutation.
+func (m *CountryMutation) Short() (r string, exists bool) {
+	v := m.short
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldShort returns the old "short" field's value of the Country entity.
+// If the Country object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CountryMutation) OldShort(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldShort is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldShort requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldShort: %w", err)
+	}
+	return oldValue.Short, nil
+}
+
+// ResetShort resets all changes to the "short" field.
+func (m *CountryMutation) ResetShort() {
+	m.short = nil
+}
+
 // SetCreateAt sets the "create_at" field.
 func (m *CountryMutation) SetCreateAt(u uint32) {
 	m.create_at = &u
@@ -1088,7 +1125,7 @@ func (m *CountryMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CountryMutation) Fields() []string {
-	fields := make([]string, 0, 6)
+	fields := make([]string, 0, 7)
 	if m.country != nil {
 		fields = append(fields, country.FieldCountry)
 	}
@@ -1097,6 +1134,9 @@ func (m *CountryMutation) Fields() []string {
 	}
 	if m.code != nil {
 		fields = append(fields, country.FieldCode)
+	}
+	if m.short != nil {
+		fields = append(fields, country.FieldShort)
 	}
 	if m.create_at != nil {
 		fields = append(fields, country.FieldCreateAt)
@@ -1121,6 +1161,8 @@ func (m *CountryMutation) Field(name string) (ent.Value, bool) {
 		return m.Flag()
 	case country.FieldCode:
 		return m.Code()
+	case country.FieldShort:
+		return m.Short()
 	case country.FieldCreateAt:
 		return m.CreateAt()
 	case country.FieldUpdateAt:
@@ -1142,6 +1184,8 @@ func (m *CountryMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldFlag(ctx)
 	case country.FieldCode:
 		return m.OldCode(ctx)
+	case country.FieldShort:
+		return m.OldShort(ctx)
 	case country.FieldCreateAt:
 		return m.OldCreateAt(ctx)
 	case country.FieldUpdateAt:
@@ -1177,6 +1221,13 @@ func (m *CountryMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCode(v)
+		return nil
+	case country.FieldShort:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetShort(v)
 		return nil
 	case country.FieldCreateAt:
 		v, ok := value.(uint32)
@@ -1295,6 +1346,9 @@ func (m *CountryMutation) ResetField(name string) error {
 		return nil
 	case country.FieldCode:
 		m.ResetCode()
+		return nil
+	case country.FieldShort:
+		m.ResetShort()
 		return nil
 	case country.FieldCreateAt:
 		m.ResetCreateAt()

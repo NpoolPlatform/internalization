@@ -22,6 +22,8 @@ type Country struct {
 	Flag string `json:"flag,omitempty"`
 	// Code holds the value of the "code" field.
 	Code string `json:"code,omitempty"`
+	// Short holds the value of the "short" field.
+	Short string `json:"short,omitempty"`
 	// CreateAt holds the value of the "create_at" field.
 	CreateAt uint32 `json:"create_at,omitempty"`
 	// UpdateAt holds the value of the "update_at" field.
@@ -37,7 +39,7 @@ func (*Country) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case country.FieldCreateAt, country.FieldUpdateAt, country.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
-		case country.FieldCountry, country.FieldFlag, country.FieldCode:
+		case country.FieldCountry, country.FieldFlag, country.FieldCode, country.FieldShort:
 			values[i] = new(sql.NullString)
 		case country.FieldID:
 			values[i] = new(uuid.UUID)
@@ -79,6 +81,12 @@ func (c *Country) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field code", values[i])
 			} else if value.Valid {
 				c.Code = value.String
+			}
+		case country.FieldShort:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field short", values[i])
+			} else if value.Valid {
+				c.Short = value.String
 			}
 		case country.FieldCreateAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -132,6 +140,8 @@ func (c *Country) String() string {
 	builder.WriteString(c.Flag)
 	builder.WriteString(", code=")
 	builder.WriteString(c.Code)
+	builder.WriteString(", short=")
+	builder.WriteString(c.Short)
 	builder.WriteString(", create_at=")
 	builder.WriteString(fmt.Sprintf("%v", c.CreateAt))
 	builder.WriteString(", update_at=")

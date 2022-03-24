@@ -38,17 +38,17 @@ func init() {
 	countryFields := schema.Country{}.Fields()
 	_ = countryFields
 	// countryDescCreateAt is the schema descriptor for create_at field.
-	countryDescCreateAt := countryFields[4].Descriptor()
+	countryDescCreateAt := countryFields[5].Descriptor()
 	// country.DefaultCreateAt holds the default value on creation for the create_at field.
 	country.DefaultCreateAt = countryDescCreateAt.Default.(func() uint32)
 	// countryDescUpdateAt is the schema descriptor for update_at field.
-	countryDescUpdateAt := countryFields[5].Descriptor()
+	countryDescUpdateAt := countryFields[6].Descriptor()
 	// country.DefaultUpdateAt holds the default value on creation for the update_at field.
 	country.DefaultUpdateAt = countryDescUpdateAt.Default.(func() uint32)
 	// country.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
 	country.UpdateDefaultUpdateAt = countryDescUpdateAt.UpdateDefault.(func() uint32)
 	// countryDescDeleteAt is the schema descriptor for delete_at field.
-	countryDescDeleteAt := countryFields[6].Descriptor()
+	countryDescDeleteAt := countryFields[7].Descriptor()
 	// country.DefaultDeleteAt holds the default value on creation for the delete_at field.
 	country.DefaultDeleteAt = countryDescDeleteAt.Default.(func() uint32)
 	// countryDescID is the schema descriptor for id field.
