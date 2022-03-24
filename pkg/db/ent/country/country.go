@@ -15,6 +15,8 @@ const (
 	FieldCountry = "country"
 	// FieldFlag holds the string denoting the flag field in the database.
 	FieldFlag = "flag"
+	// FieldCode holds the string denoting the code field in the database.
+	FieldCode = "code"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldUpdateAt holds the string denoting the update_at field in the database.
@@ -30,6 +32,7 @@ var Columns = []string{
 	FieldID,
 	FieldCountry,
 	FieldFlag,
+	FieldCode,
 	FieldCreateAt,
 	FieldUpdateAt,
 	FieldDeleteAt,

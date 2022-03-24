@@ -676,6 +676,7 @@ type CountryMutation struct {
 	id            *uuid.UUID
 	country       *string
 	flag          *string
+	code          *string
 	create_at     *uint32
 	addcreate_at  *int32
 	update_at     *uint32
@@ -862,6 +863,42 @@ func (m *CountryMutation) OldFlag(ctx context.Context) (v string, err error) {
 // ResetFlag resets all changes to the "flag" field.
 func (m *CountryMutation) ResetFlag() {
 	m.flag = nil
+}
+
+// SetCode sets the "code" field.
+func (m *CountryMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *CountryMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the Country entity.
+// If the Country object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CountryMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *CountryMutation) ResetCode() {
+	m.code = nil
 }
 
 // SetCreateAt sets the "create_at" field.
@@ -1051,12 +1088,15 @@ func (m *CountryMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CountryMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.country != nil {
 		fields = append(fields, country.FieldCountry)
 	}
 	if m.flag != nil {
 		fields = append(fields, country.FieldFlag)
+	}
+	if m.code != nil {
+		fields = append(fields, country.FieldCode)
 	}
 	if m.create_at != nil {
 		fields = append(fields, country.FieldCreateAt)
@@ -1079,6 +1119,8 @@ func (m *CountryMutation) Field(name string) (ent.Value, bool) {
 		return m.Country()
 	case country.FieldFlag:
 		return m.Flag()
+	case country.FieldCode:
+		return m.Code()
 	case country.FieldCreateAt:
 		return m.CreateAt()
 	case country.FieldUpdateAt:
@@ -1098,6 +1140,8 @@ func (m *CountryMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldCountry(ctx)
 	case country.FieldFlag:
 		return m.OldFlag(ctx)
+	case country.FieldCode:
+		return m.OldCode(ctx)
 	case country.FieldCreateAt:
 		return m.OldCreateAt(ctx)
 	case country.FieldUpdateAt:
@@ -1126,6 +1170,13 @@ func (m *CountryMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetFlag(v)
+		return nil
+	case country.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
 		return nil
 	case country.FieldCreateAt:
 		v, ok := value.(uint32)
@@ -1241,6 +1292,9 @@ func (m *CountryMutation) ResetField(name string) error {
 		return nil
 	case country.FieldFlag:
 		m.ResetFlag()
+		return nil
+	case country.FieldCode:
+		m.ResetCode()
 		return nil
 	case country.FieldCreateAt:
 		m.ResetCreateAt()

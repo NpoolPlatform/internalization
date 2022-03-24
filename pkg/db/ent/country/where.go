@@ -105,6 +105,13 @@ func Flag(v string) predicate.Country {
 	})
 }
 
+// Code applies equality check predicate on the "code" field. It's identical to CodeEQ.
+func Code(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCode), v))
+	})
+}
+
 // CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
 func CreateAt(v uint32) predicate.Country {
 	return predicate.Country(func(s *sql.Selector) {
@@ -345,6 +352,117 @@ func FlagEqualFold(v string) predicate.Country {
 func FlagContainsFold(v string) predicate.Country {
 	return predicate.Country(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldFlag), v))
+	})
+}
+
+// CodeEQ applies the EQ predicate on the "code" field.
+func CodeEQ(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCode), v))
+	})
+}
+
+// CodeNEQ applies the NEQ predicate on the "code" field.
+func CodeNEQ(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldCode), v))
+	})
+}
+
+// CodeIn applies the In predicate on the "code" field.
+func CodeIn(vs ...string) predicate.Country {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Country(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldCode), v...))
+	})
+}
+
+// CodeNotIn applies the NotIn predicate on the "code" field.
+func CodeNotIn(vs ...string) predicate.Country {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.Country(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldCode), v...))
+	})
+}
+
+// CodeGT applies the GT predicate on the "code" field.
+func CodeGT(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldCode), v))
+	})
+}
+
+// CodeGTE applies the GTE predicate on the "code" field.
+func CodeGTE(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldCode), v))
+	})
+}
+
+// CodeLT applies the LT predicate on the "code" field.
+func CodeLT(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldCode), v))
+	})
+}
+
+// CodeLTE applies the LTE predicate on the "code" field.
+func CodeLTE(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldCode), v))
+	})
+}
+
+// CodeContains applies the Contains predicate on the "code" field.
+func CodeContains(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldCode), v))
+	})
+}
+
+// CodeHasPrefix applies the HasPrefix predicate on the "code" field.
+func CodeHasPrefix(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldCode), v))
+	})
+}
+
+// CodeHasSuffix applies the HasSuffix predicate on the "code" field.
+func CodeHasSuffix(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldCode), v))
+	})
+}
+
+// CodeEqualFold applies the EqualFold predicate on the "code" field.
+func CodeEqualFold(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldCode), v))
+	})
+}
+
+// CodeContainsFold applies the ContainsFold predicate on the "code" field.
+func CodeContainsFold(v string) predicate.Country {
+	return predicate.Country(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldCode), v))
 	})
 }
 

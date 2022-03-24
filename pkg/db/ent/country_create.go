@@ -35,6 +35,12 @@ func (cc *CountryCreate) SetFlag(s string) *CountryCreate {
 	return cc
 }
 
+// SetCode sets the "code" field.
+func (cc *CountryCreate) SetCode(s string) *CountryCreate {
+	cc.mutation.SetCode(s)
+	return cc
+}
+
 // SetCreateAt sets the "create_at" field.
 func (cc *CountryCreate) SetCreateAt(u uint32) *CountryCreate {
 	cc.mutation.SetCreateAt(u)
@@ -188,6 +194,9 @@ func (cc *CountryCreate) check() error {
 	if _, ok := cc.mutation.Flag(); !ok {
 		return &ValidationError{Name: "flag", err: errors.New(`ent: missing required field "Country.flag"`)}
 	}
+	if _, ok := cc.mutation.Code(); !ok {
+		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Country.code"`)}
+	}
 	if _, ok := cc.mutation.CreateAt(); !ok {
 		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "Country.create_at"`)}
 	}
@@ -249,6 +258,14 @@ func (cc *CountryCreate) createSpec() (*Country, *sqlgraph.CreateSpec) {
 			Column: country.FieldFlag,
 		})
 		_node.Flag = value
+	}
+	if value, ok := cc.mutation.Code(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: country.FieldCode,
+		})
+		_node.Code = value
 	}
 	if value, ok := cc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -349,6 +366,18 @@ func (u *CountryUpsert) SetFlag(v string) *CountryUpsert {
 // UpdateFlag sets the "flag" field to the value that was provided on create.
 func (u *CountryUpsert) UpdateFlag() *CountryUpsert {
 	u.SetExcluded(country.FieldFlag)
+	return u
+}
+
+// SetCode sets the "code" field.
+func (u *CountryUpsert) SetCode(v string) *CountryUpsert {
+	u.Set(country.FieldCode, v)
+	return u
+}
+
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *CountryUpsert) UpdateCode() *CountryUpsert {
+	u.SetExcluded(country.FieldCode)
 	return u
 }
 
@@ -481,6 +510,20 @@ func (u *CountryUpsertOne) SetFlag(v string) *CountryUpsertOne {
 func (u *CountryUpsertOne) UpdateFlag() *CountryUpsertOne {
 	return u.Update(func(s *CountryUpsert) {
 		s.UpdateFlag()
+	})
+}
+
+// SetCode sets the "code" field.
+func (u *CountryUpsertOne) SetCode(v string) *CountryUpsertOne {
+	return u.Update(func(s *CountryUpsert) {
+		s.SetCode(v)
+	})
+}
+
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *CountryUpsertOne) UpdateCode() *CountryUpsertOne {
+	return u.Update(func(s *CountryUpsert) {
+		s.UpdateCode()
 	})
 }
 
@@ -788,6 +831,20 @@ func (u *CountryUpsertBulk) SetFlag(v string) *CountryUpsertBulk {
 func (u *CountryUpsertBulk) UpdateFlag() *CountryUpsertBulk {
 	return u.Update(func(s *CountryUpsert) {
 		s.UpdateFlag()
+	})
+}
+
+// SetCode sets the "code" field.
+func (u *CountryUpsertBulk) SetCode(v string) *CountryUpsertBulk {
+	return u.Update(func(s *CountryUpsert) {
+		s.SetCode(v)
+	})
+}
+
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *CountryUpsertBulk) UpdateCode() *CountryUpsertBulk {
+	return u.Update(func(s *CountryUpsert) {
+		s.UpdateCode()
 	})
 }
 

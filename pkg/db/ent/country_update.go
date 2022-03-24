@@ -39,6 +39,12 @@ func (cu *CountryUpdate) SetFlag(s string) *CountryUpdate {
 	return cu
 }
 
+// SetCode sets the "code" field.
+func (cu *CountryUpdate) SetCode(s string) *CountryUpdate {
+	cu.mutation.SetCode(s)
+	return cu
+}
+
 // SetCreateAt sets the "create_at" field.
 func (cu *CountryUpdate) SetCreateAt(u uint32) *CountryUpdate {
 	cu.mutation.ResetCreateAt()
@@ -194,6 +200,13 @@ func (cu *CountryUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: country.FieldFlag,
 		})
 	}
+	if value, ok := cu.mutation.Code(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: country.FieldCode,
+		})
+	}
 	if value, ok := cu.mutation.CreateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
@@ -264,6 +277,12 @@ func (cuo *CountryUpdateOne) SetCountry(s string) *CountryUpdateOne {
 // SetFlag sets the "flag" field.
 func (cuo *CountryUpdateOne) SetFlag(s string) *CountryUpdateOne {
 	cuo.mutation.SetFlag(s)
+	return cuo
+}
+
+// SetCode sets the "code" field.
+func (cuo *CountryUpdateOne) SetCode(s string) *CountryUpdateOne {
+	cuo.mutation.SetCode(s)
 	return cuo
 }
 
@@ -444,6 +463,13 @@ func (cuo *CountryUpdateOne) sqlSave(ctx context.Context) (_node *Country, err e
 			Type:   field.TypeString,
 			Value:  value,
 			Column: country.FieldFlag,
+		})
+	}
+	if value, ok := cuo.mutation.Code(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: country.FieldCode,
 		})
 	}
 	if value, ok := cuo.mutation.CreateAt(); ok {
