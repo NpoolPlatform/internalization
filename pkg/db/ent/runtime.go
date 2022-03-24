@@ -4,6 +4,7 @@ package ent
 
 import (
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/applang"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/country"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/lang"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/schema"
@@ -34,6 +35,26 @@ func init() {
 	applangDescID := applangFields[0].Descriptor()
 	// applang.DefaultID holds the default value on creation for the id field.
 	applang.DefaultID = applangDescID.Default.(func() uuid.UUID)
+	countryFields := schema.Country{}.Fields()
+	_ = countryFields
+	// countryDescCreateAt is the schema descriptor for create_at field.
+	countryDescCreateAt := countryFields[3].Descriptor()
+	// country.DefaultCreateAt holds the default value on creation for the create_at field.
+	country.DefaultCreateAt = countryDescCreateAt.Default.(func() uint32)
+	// countryDescUpdateAt is the schema descriptor for update_at field.
+	countryDescUpdateAt := countryFields[4].Descriptor()
+	// country.DefaultUpdateAt holds the default value on creation for the update_at field.
+	country.DefaultUpdateAt = countryDescUpdateAt.Default.(func() uint32)
+	// country.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
+	country.UpdateDefaultUpdateAt = countryDescUpdateAt.UpdateDefault.(func() uint32)
+	// countryDescDeleteAt is the schema descriptor for delete_at field.
+	countryDescDeleteAt := countryFields[5].Descriptor()
+	// country.DefaultDeleteAt holds the default value on creation for the delete_at field.
+	country.DefaultDeleteAt = countryDescDeleteAt.Default.(func() uint32)
+	// countryDescID is the schema descriptor for id field.
+	countryDescID := countryFields[0].Descriptor()
+	// country.DefaultID holds the default value on creation for the id field.
+	country.DefaultID = countryDescID.Default.(func() uuid.UUID)
 	langFields := schema.Lang{}.Fields()
 	_ = langFields
 	// langDescCreateAt is the schema descriptor for create_at field.

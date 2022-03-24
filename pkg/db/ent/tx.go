@@ -14,6 +14,8 @@ type Tx struct {
 	config
 	// AppLang is the client for interacting with the AppLang builders.
 	AppLang *AppLangClient
+	// Country is the client for interacting with the Country builders.
+	Country *CountryClient
 	// Lang is the client for interacting with the Lang builders.
 	Lang *LangClient
 	// Message is the client for interacting with the Message builders.
@@ -154,6 +156,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.AppLang = NewAppLangClient(tx.config)
+	tx.Country = NewCountryClient(tx.config)
 	tx.Lang = NewLangClient(tx.config)
 	tx.Message = NewMessageClient(tx.config)
 }

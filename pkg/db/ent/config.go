@@ -25,6 +25,7 @@ type config struct {
 // hooks per client, for fast access.
 type hooks struct {
 	AppLang []ent.Hook
+	Country []ent.Hook
 	Lang    []ent.Hook
 	Message []ent.Hook
 }

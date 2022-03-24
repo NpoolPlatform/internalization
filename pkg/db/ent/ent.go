@@ -9,6 +9,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/applang"
+	"github.com/NpoolPlatform/internationalization/pkg/db/ent/country"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/lang"
 	"github.com/NpoolPlatform/internationalization/pkg/db/ent/message"
 )
@@ -32,6 +33,7 @@ type OrderFunc func(*sql.Selector)
 func columnChecker(table string) func(string) error {
 	checks := map[string]func(string) bool{
 		applang.Table: applang.ValidColumn,
+		country.Table: country.ValidColumn,
 		lang.Table:    lang.ValidColumn,
 		message.Table: message.ValidColumn,
 	}

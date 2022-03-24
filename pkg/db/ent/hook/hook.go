@@ -22,6 +22,19 @@ func (f AppLangFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, err
 	return f(ctx, mv)
 }
 
+// The CountryFunc type is an adapter to allow the use of ordinary
+// function as Country mutator.
+type CountryFunc func(context.Context, *ent.CountryMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CountryFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	mv, ok := m.(*ent.CountryMutation)
+	if !ok {
+		return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CountryMutation", m)
+	}
+	return f(ctx, mv)
+}
+
 // The LangFunc type is an adapter to allow the use of ordinary
 // function as Lang mutator.
 type LangFunc func(context.Context, *ent.LangMutation) (ent.Value, error)
