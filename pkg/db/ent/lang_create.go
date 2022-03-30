@@ -29,6 +29,12 @@ func (lc *LangCreate) SetLang(s string) *LangCreate {
 	return lc
 }
 
+// SetShort sets the "short" field.
+func (lc *LangCreate) SetShort(s string) *LangCreate {
+	lc.mutation.SetShort(s)
+	return lc
+}
+
 // SetLogo sets the "logo" field.
 func (lc *LangCreate) SetLogo(s string) *LangCreate {
 	lc.mutation.SetLogo(s)
@@ -38,12 +44,6 @@ func (lc *LangCreate) SetLogo(s string) *LangCreate {
 // SetName sets the "name" field.
 func (lc *LangCreate) SetName(s string) *LangCreate {
 	lc.mutation.SetName(s)
-	return lc
-}
-
-// SetShort sets the "short" field.
-func (lc *LangCreate) SetShort(s string) *LangCreate {
-	lc.mutation.SetShort(s)
 	return lc
 }
 
@@ -197,14 +197,14 @@ func (lc *LangCreate) check() error {
 	if _, ok := lc.mutation.Lang(); !ok {
 		return &ValidationError{Name: "lang", err: errors.New(`ent: missing required field "Lang.lang"`)}
 	}
+	if _, ok := lc.mutation.Short(); !ok {
+		return &ValidationError{Name: "short", err: errors.New(`ent: missing required field "Lang.short"`)}
+	}
 	if _, ok := lc.mutation.Logo(); !ok {
 		return &ValidationError{Name: "logo", err: errors.New(`ent: missing required field "Lang.logo"`)}
 	}
 	if _, ok := lc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Lang.name"`)}
-	}
-	if _, ok := lc.mutation.Short(); !ok {
-		return &ValidationError{Name: "short", err: errors.New(`ent: missing required field "Lang.short"`)}
 	}
 	if _, ok := lc.mutation.CreateAt(); !ok {
 		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "Lang.create_at"`)}
@@ -260,6 +260,14 @@ func (lc *LangCreate) createSpec() (*Lang, *sqlgraph.CreateSpec) {
 		})
 		_node.Lang = value
 	}
+	if value, ok := lc.mutation.Short(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: lang.FieldShort,
+		})
+		_node.Short = value
+	}
 	if value, ok := lc.mutation.Logo(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -275,14 +283,6 @@ func (lc *LangCreate) createSpec() (*Lang, *sqlgraph.CreateSpec) {
 			Column: lang.FieldName,
 		})
 		_node.Name = value
-	}
-	if value, ok := lc.mutation.Short(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Value:  value,
-			Column: lang.FieldShort,
-		})
-		_node.Short = value
 	}
 	if value, ok := lc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -374,6 +374,18 @@ func (u *LangUpsert) UpdateLang() *LangUpsert {
 	return u
 }
 
+// SetShort sets the "short" field.
+func (u *LangUpsert) SetShort(v string) *LangUpsert {
+	u.Set(lang.FieldShort, v)
+	return u
+}
+
+// UpdateShort sets the "short" field to the value that was provided on create.
+func (u *LangUpsert) UpdateShort() *LangUpsert {
+	u.SetExcluded(lang.FieldShort)
+	return u
+}
+
 // SetLogo sets the "logo" field.
 func (u *LangUpsert) SetLogo(v string) *LangUpsert {
 	u.Set(lang.FieldLogo, v)
@@ -395,18 +407,6 @@ func (u *LangUpsert) SetName(v string) *LangUpsert {
 // UpdateName sets the "name" field to the value that was provided on create.
 func (u *LangUpsert) UpdateName() *LangUpsert {
 	u.SetExcluded(lang.FieldName)
-	return u
-}
-
-// SetShort sets the "short" field.
-func (u *LangUpsert) SetShort(v string) *LangUpsert {
-	u.Set(lang.FieldShort, v)
-	return u
-}
-
-// UpdateShort sets the "short" field to the value that was provided on create.
-func (u *LangUpsert) UpdateShort() *LangUpsert {
-	u.SetExcluded(lang.FieldShort)
 	return u
 }
 
@@ -528,6 +528,20 @@ func (u *LangUpsertOne) UpdateLang() *LangUpsertOne {
 	})
 }
 
+// SetShort sets the "short" field.
+func (u *LangUpsertOne) SetShort(v string) *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.SetShort(v)
+	})
+}
+
+// UpdateShort sets the "short" field to the value that was provided on create.
+func (u *LangUpsertOne) UpdateShort() *LangUpsertOne {
+	return u.Update(func(s *LangUpsert) {
+		s.UpdateShort()
+	})
+}
+
 // SetLogo sets the "logo" field.
 func (u *LangUpsertOne) SetLogo(v string) *LangUpsertOne {
 	return u.Update(func(s *LangUpsert) {
@@ -553,20 +567,6 @@ func (u *LangUpsertOne) SetName(v string) *LangUpsertOne {
 func (u *LangUpsertOne) UpdateName() *LangUpsertOne {
 	return u.Update(func(s *LangUpsert) {
 		s.UpdateName()
-	})
-}
-
-// SetShort sets the "short" field.
-func (u *LangUpsertOne) SetShort(v string) *LangUpsertOne {
-	return u.Update(func(s *LangUpsert) {
-		s.SetShort(v)
-	})
-}
-
-// UpdateShort sets the "short" field to the value that was provided on create.
-func (u *LangUpsertOne) UpdateShort() *LangUpsertOne {
-	return u.Update(func(s *LangUpsert) {
-		s.UpdateShort()
 	})
 }
 
@@ -863,6 +863,20 @@ func (u *LangUpsertBulk) UpdateLang() *LangUpsertBulk {
 	})
 }
 
+// SetShort sets the "short" field.
+func (u *LangUpsertBulk) SetShort(v string) *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.SetShort(v)
+	})
+}
+
+// UpdateShort sets the "short" field to the value that was provided on create.
+func (u *LangUpsertBulk) UpdateShort() *LangUpsertBulk {
+	return u.Update(func(s *LangUpsert) {
+		s.UpdateShort()
+	})
+}
+
 // SetLogo sets the "logo" field.
 func (u *LangUpsertBulk) SetLogo(v string) *LangUpsertBulk {
 	return u.Update(func(s *LangUpsert) {
@@ -888,20 +902,6 @@ func (u *LangUpsertBulk) SetName(v string) *LangUpsertBulk {
 func (u *LangUpsertBulk) UpdateName() *LangUpsertBulk {
 	return u.Update(func(s *LangUpsert) {
 		s.UpdateName()
-	})
-}
-
-// SetShort sets the "short" field.
-func (u *LangUpsertBulk) SetShort(v string) *LangUpsertBulk {
-	return u.Update(func(s *LangUpsert) {
-		s.SetShort(v)
-	})
-}
-
-// UpdateShort sets the "short" field to the value that was provided on create.
-func (u *LangUpsertBulk) UpdateShort() *LangUpsertBulk {
-	return u.Update(func(s *LangUpsert) {
-		s.UpdateShort()
 	})
 }
 

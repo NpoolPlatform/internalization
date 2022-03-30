@@ -1418,9 +1418,9 @@ type LangMutation struct {
 	typ           string
 	id            *uuid.UUID
 	lang          *string
+	short         *string
 	logo          *string
 	name          *string
-	short         *string
 	create_at     *uint32
 	addcreate_at  *int32
 	update_at     *uint32
@@ -1573,6 +1573,42 @@ func (m *LangMutation) ResetLang() {
 	m.lang = nil
 }
 
+// SetShort sets the "short" field.
+func (m *LangMutation) SetShort(s string) {
+	m.short = &s
+}
+
+// Short returns the value of the "short" field in the mutation.
+func (m *LangMutation) Short() (r string, exists bool) {
+	v := m.short
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldShort returns the old "short" field's value of the Lang entity.
+// If the Lang object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *LangMutation) OldShort(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldShort is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldShort requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldShort: %w", err)
+	}
+	return oldValue.Short, nil
+}
+
+// ResetShort resets all changes to the "short" field.
+func (m *LangMutation) ResetShort() {
+	m.short = nil
+}
+
 // SetLogo sets the "logo" field.
 func (m *LangMutation) SetLogo(s string) {
 	m.logo = &s
@@ -1643,42 +1679,6 @@ func (m *LangMutation) OldName(ctx context.Context) (v string, err error) {
 // ResetName resets all changes to the "name" field.
 func (m *LangMutation) ResetName() {
 	m.name = nil
-}
-
-// SetShort sets the "short" field.
-func (m *LangMutation) SetShort(s string) {
-	m.short = &s
-}
-
-// Short returns the value of the "short" field in the mutation.
-func (m *LangMutation) Short() (r string, exists bool) {
-	v := m.short
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldShort returns the old "short" field's value of the Lang entity.
-// If the Lang object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *LangMutation) OldShort(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldShort is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldShort requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldShort: %w", err)
-	}
-	return oldValue.Short, nil
-}
-
-// ResetShort resets all changes to the "short" field.
-func (m *LangMutation) ResetShort() {
-	m.short = nil
 }
 
 // SetCreateAt sets the "create_at" field.
@@ -1872,14 +1872,14 @@ func (m *LangMutation) Fields() []string {
 	if m.lang != nil {
 		fields = append(fields, lang.FieldLang)
 	}
+	if m.short != nil {
+		fields = append(fields, lang.FieldShort)
+	}
 	if m.logo != nil {
 		fields = append(fields, lang.FieldLogo)
 	}
 	if m.name != nil {
 		fields = append(fields, lang.FieldName)
-	}
-	if m.short != nil {
-		fields = append(fields, lang.FieldShort)
 	}
 	if m.create_at != nil {
 		fields = append(fields, lang.FieldCreateAt)
@@ -1900,12 +1900,12 @@ func (m *LangMutation) Field(name string) (ent.Value, bool) {
 	switch name {
 	case lang.FieldLang:
 		return m.Lang()
+	case lang.FieldShort:
+		return m.Short()
 	case lang.FieldLogo:
 		return m.Logo()
 	case lang.FieldName:
 		return m.Name()
-	case lang.FieldShort:
-		return m.Short()
 	case lang.FieldCreateAt:
 		return m.CreateAt()
 	case lang.FieldUpdateAt:
@@ -1923,12 +1923,12 @@ func (m *LangMutation) OldField(ctx context.Context, name string) (ent.Value, er
 	switch name {
 	case lang.FieldLang:
 		return m.OldLang(ctx)
+	case lang.FieldShort:
+		return m.OldShort(ctx)
 	case lang.FieldLogo:
 		return m.OldLogo(ctx)
 	case lang.FieldName:
 		return m.OldName(ctx)
-	case lang.FieldShort:
-		return m.OldShort(ctx)
 	case lang.FieldCreateAt:
 		return m.OldCreateAt(ctx)
 	case lang.FieldUpdateAt:
@@ -1951,6 +1951,13 @@ func (m *LangMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetLang(v)
 		return nil
+	case lang.FieldShort:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetShort(v)
+		return nil
 	case lang.FieldLogo:
 		v, ok := value.(string)
 		if !ok {
@@ -1964,13 +1971,6 @@ func (m *LangMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetName(v)
-		return nil
-	case lang.FieldShort:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetShort(v)
 		return nil
 	case lang.FieldCreateAt:
 		v, ok := value.(uint32)
@@ -2084,14 +2084,14 @@ func (m *LangMutation) ResetField(name string) error {
 	case lang.FieldLang:
 		m.ResetLang()
 		return nil
+	case lang.FieldShort:
+		m.ResetShort()
+		return nil
 	case lang.FieldLogo:
 		m.ResetLogo()
 		return nil
 	case lang.FieldName:
 		m.ResetName()
-		return nil
-	case lang.FieldShort:
-		m.ResetShort()
 		return nil
 	case lang.FieldCreateAt:
 		m.ResetCreateAt()

@@ -23,7 +23,8 @@ func (Country) Fields() []ent.Field {
 		field.String("country").
 			Unique(),
 		field.String("flag"),
-		field.String("code"),
+		field.String("code").
+			Unique(),
 		field.String("short"),
 		field.Uint32("create_at").
 			DefaultFunc(func() uint32 {

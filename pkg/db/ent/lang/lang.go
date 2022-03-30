@@ -13,12 +13,12 @@ const (
 	FieldID = "id"
 	// FieldLang holds the string denoting the lang field in the database.
 	FieldLang = "lang"
+	// FieldShort holds the string denoting the short field in the database.
+	FieldShort = "short"
 	// FieldLogo holds the string denoting the logo field in the database.
 	FieldLogo = "logo"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
-	// FieldShort holds the string denoting the short field in the database.
-	FieldShort = "short"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldUpdateAt holds the string denoting the update_at field in the database.
@@ -33,9 +33,9 @@ const (
 var Columns = []string{
 	FieldID,
 	FieldLang,
+	FieldShort,
 	FieldLogo,
 	FieldName,
-	FieldShort,
 	FieldCreateAt,
 	FieldUpdateAt,
 	FieldDeleteAt,
