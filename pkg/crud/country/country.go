@@ -74,6 +74,48 @@ func Create(ctx context.Context, in *npool.CreateCountryRequest) (*npool.CreateC
 	}, nil
 }
 
+func CreateCountries(ctx context.Context, in *npool.CreateCountriesRequest) (*npool.CreateCountriesResponse, error) {
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	bulk := make([]*ent.CountryCreate, len(in.GetInfos()))
+	for i, info := range in.GetInfos() {
+		if err := validateCountry(info); err != nil {
+			return nil, xerrors.Errorf("invalid parameter: %v", err)
+		}
+
+		bulk[i] = cli.
+			Country.
+			Create().
+			SetCountry(info.GetCountry()).
+			SetFlag(info.GetFlag()).
+			SetCode(info.GetCode()).
+			SetShort(info.GetShort())
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	infos, err := cli.
+		Country.
+		CreateBulk(bulk...).
+		Save(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail create bulk countries: %v", err)
+	}
+
+	countries := []*npool.Country{}
+	for _, info := range infos {
+		countries = append(countries, dbRowToCountry(info))
+	}
+
+	return &npool.CreateCountriesResponse{
+		Infos: countries,
+	}, nil
+}
+
 func Update(ctx context.Context, in *npool.UpdateCountryRequest) (*npool.UpdateCountryResponse, error) {
 	id, err := uuid.Parse(in.GetInfo().GetID())
 	if err != nil {
