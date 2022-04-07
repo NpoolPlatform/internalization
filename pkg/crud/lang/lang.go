@@ -103,7 +103,10 @@ func Update(ctx context.Context, in *npool.UpdateLangRequest) (*npool.UpdateLang
 	info, err := cli.
 		Lang.
 		UpdateOneID(id).
+		SetLang(in.GetInfo().GetLang()).
+		SetName(in.GetInfo().GetName()).
 		SetLogo(in.GetInfo().GetLogo()).
+		SetShort(in.GetInfo().GetShort()).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail update lang: %v", err)
