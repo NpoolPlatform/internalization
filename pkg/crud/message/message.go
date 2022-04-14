@@ -181,6 +181,9 @@ func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npoo
 		return nil, xerrors.Errorf("fail get db client: %v", err)
 	}
 
+	langID := uuid.UUID{}
+	appID := uuid.UUID{}
+
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 
@@ -189,7 +192,6 @@ func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npoo
 		return nil, xerrors.Errorf("fail get transaction: %v", err)
 	}
 
-	msgs := []*npool.Message{}
 	for _, info := range in.GetInfos() {
 		if err := validateMessage(info); err != nil {
 			if rerr := tx.Rollback(); rerr != nil {
@@ -206,26 +208,51 @@ func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npoo
 			return nil, xerrors.Errorf("invalid id: %v", err)
 		}
 
-		msg, err := tx.
+		langID = uuid.MustParse(info.GetLangID())
+		appID = uuid.MustParse(info.GetAppID())
+
+		err = tx.
 			Message.
-			UpdateOneID(id).
+			Create().
+			SetID(id).
+			SetAppID(uuid.MustParse(info.GetAppID())).
+			SetLangID(uuid.MustParse(info.GetLangID())).
 			SetMessageID(info.GetMessageID()).
-			SetMessage(info.GetMessage()).
 			SetBatchGet(info.GetBatchGet()).
-			Save(ctx)
+			SetMessage(info.GetMessage()).
+			OnConflict().
+			UpdateNewValues().
+			Exec(ctx)
 		if err != nil {
 			if rerr := tx.Rollback(); rerr != nil {
 				return nil, xerrors.Errorf("fail rollback update message: %v, %v", rerr, err)
 			}
 			return nil, xerrors.Errorf("fail update message: %v", err)
 		}
-
-		msgs = append(msgs, dbRowToMessage(msg))
 	}
 
 	err = tx.Commit()
 	if err != nil {
 		return nil, xerrors.Errorf("fail commit update message: %v", err)
+	}
+
+	infos, err := cli.
+		Message.
+		Query().
+		Where(
+			message.And(
+				message.AppID(appID),
+				message.LangID(langID),
+			),
+		).
+		All(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("Fail query message: %v", err)
+	}
+
+	msgs := []*npool.Message{}
+	for _, info := range infos {
+		msgs = append(msgs, dbRowToMessage(info))
 	}
 
 	return &npool.UpdateMessagesResponse{
