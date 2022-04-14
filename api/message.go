@@ -74,7 +74,15 @@ func (s *Server) UpdateMessages(ctx context.Context, in *npool.UpdateMessagesReq
 }
 
 func (s *Server) GetMessagesByAppLang(ctx context.Context, in *npool.GetMessagesByAppLangRequest) (*npool.GetMessagesByAppLangResponse, error) {
-	resp, err := crud.GetMessagesByAppLang(ctx, in)
+	langID := in.GetTargetLangID()
+	if _, err := uuid.Parse(langID); err != nil {
+		langID = in.GetLangID()
+	}
+
+	resp, err := crud.GetMessagesByAppLang(ctx, &npool.GetMessagesByAppLangRequest{
+		AppID:  in.GetAppID(),
+		LangID: langID,
+	})
 	if err != nil {
 		logger.Sugar().Errorf("fail get messages by lang id: %v", err)
 		return &npool.GetMessagesByAppLangResponse{}, status.Error(codes.Internal, err.Error())
@@ -84,8 +92,9 @@ func (s *Server) GetMessagesByAppLang(ctx context.Context, in *npool.GetMessages
 
 func (s *Server) GetMessagesByOtherAppLang(ctx context.Context, in *npool.GetMessagesByOtherAppLangRequest) (*npool.GetMessagesByOtherAppLangResponse, error) {
 	resp, err := crud.GetMessagesByAppLang(ctx, &npool.GetMessagesByAppLangRequest{
-		AppID:  in.GetTargetAppID(),
-		LangID: in.GetLangID(),
+		AppID:        in.GetTargetAppID(),
+		LangID:       in.GetLangID(),
+		TargetLangID: in.GetTargetLangID(),
 	})
 	if err != nil {
 		logger.Sugar().Errorf("fail get messages by lang id: %v", err)
