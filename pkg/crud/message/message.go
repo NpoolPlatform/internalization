@@ -175,7 +175,7 @@ func UpdateMessage(ctx context.Context, in *npool.UpdateMessageRequest) (*npool.
 	}, nil
 }
 
-func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npool.UpdateMessagesResponse, error) {
+func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npool.UpdateMessagesResponse, error) { //nolint
 	cli, err := db.Client()
 	if err != nil {
 		return nil, xerrors.Errorf("fail get db client: %v", err)
