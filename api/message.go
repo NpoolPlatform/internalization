@@ -54,6 +54,8 @@ func (s *Server) CreateMessages(ctx context.Context, in *npool.CreateMessagesReq
 			info.LangID = in.GetTargetLangID()
 			newInfos = append(newInfos, info)
 		}
+	} else {
+		newInfos = infos
 	}
 
 	resp, err := crud.CreateMessages(ctx, &npool.CreateMessagesRequest{
