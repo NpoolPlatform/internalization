@@ -82,11 +82,17 @@ func CreateMessages(ctx context.Context, in *npool.CreateMessagesRequest) (*npoo
 		return nil, xerrors.Errorf("fail get db client: %v", err)
 	}
 
+	langID := uuid.UUID{}
+	appID := uuid.UUID{}
+
 	bulk := make([]*ent.MessageCreate, len(in.GetInfos()))
 	for i, info := range in.GetInfos() {
 		if err := validateMessage(info); err != nil {
 			return nil, xerrors.Errorf("invalid parameter: %v", err)
 		}
+
+		langID = uuid.MustParse(info.GetLangID())
+		appID = uuid.MustParse(info.GetAppID())
 
 		bulk[i] = cli.
 			Message.
@@ -114,6 +120,12 @@ func CreateMessages(ctx context.Context, in *npool.CreateMessagesRequest) (*npoo
 	infos, err := cli.
 		Message.
 		Query().
+		Where(
+			message.And(
+				message.AppID(appID),
+				message.LangID(langID),
+			),
+		).
 		All(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("Fail query message: %v", err)
