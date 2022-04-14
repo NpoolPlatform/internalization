@@ -24,7 +24,7 @@ func (Message) Fields() []ent.Field {
 		field.UUID("app_id", uuid.UUID{}),
 		field.String("message_id"),
 		field.UUID("lang_id", uuid.UUID{}),
-		field.String("message").MaxLen(1024),
+		field.String("message").MaxLen(16016),
 		field.Bool("batch_get"),
 		field.Uint32("create_at").
 			DefaultFunc(func() uint32 {

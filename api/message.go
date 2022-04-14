@@ -10,10 +10,19 @@ import (
 	npool "github.com/NpoolPlatform/message/npool/internationalization"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/google/uuid"
 )
 
 func (s *Server) CreateMessage(ctx context.Context, in *npool.CreateMessageRequest) (*npool.CreateMessageResponse, error) {
-	resp, err := crud.CreateMessage(ctx, in)
+	info := in.GetInfo()
+	if _, err := uuid.Parse(in.GetTargetLangID()); err == nil {
+		info.LangID = in.GetTargetLangID()
+	}
+
+	resp, err := crud.CreateMessage(ctx, &npool.CreateMessageRequest{
+		Info: info,
+	})
 	if err != nil {
 		logger.Sugar().Errorf("fail create message: %v", err)
 		return &npool.CreateMessageResponse{}, status.Error(codes.Internal, err.Error())
