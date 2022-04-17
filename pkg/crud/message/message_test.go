@@ -72,7 +72,6 @@ func TestCRUD(t *testing.T) {
 
 	message1.BatchGet = false
 	message1.ID = resp1.Infos[0].ID
-	message2.MessageID = uuid.New().String()
 	message2.ID = resp1.Infos[1].ID
 
 	resp2, err := UpdateMessages(context.Background(), &npool.UpdateMessagesRequest{
