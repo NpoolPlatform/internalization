@@ -111,6 +111,7 @@ func CreateMessages(ctx context.Context, in *npool.CreateMessagesRequest) (*npoo
 		Message.
 		CreateBulk(bulk...).
 		OnConflict().
+		UpdateNewValues().
 		Exec(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail create bulk messages: %v", err)
@@ -210,18 +211,13 @@ func UpdateMessages(ctx context.Context, in *npool.UpdateMessagesRequest) (*npoo
 		langID = uuid.MustParse(info.GetLangID())
 		appID = uuid.MustParse(info.GetAppID())
 
-		err = tx.
+		_, err = tx.
 			Message.
-			Create().
-			SetID(id).
-			SetAppID(uuid.MustParse(info.GetAppID())).
-			SetLangID(uuid.MustParse(info.GetLangID())).
+			UpdateOneID(id).
 			SetMessageID(info.GetMessageID()).
 			SetBatchGet(info.GetBatchGet()).
 			SetMessage(info.GetMessage()).
-			OnConflict().
-			UpdateNewValues().
-			Exec(ctx)
+			Save(ctx)
 		if err != nil {
 			if rerr := tx.Rollback(); rerr != nil {
 				return nil, xerrors.Errorf("fail rollback update message: %v, %v", rerr, err)
