@@ -107,12 +107,12 @@ func CreateMessages(ctx context.Context, in *npool.CreateMessagesRequest) (*npoo
 	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
 	defer cancel()
 
-	err = cli.
+	_, err = cli.
 		Message.
 		CreateBulk(bulk...).
-		OnConflict().
-		UpdateNewValues().
-		Exec(ctx)
+		Save(ctx)
+		// OnConflict().
+		// Exec(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail create bulk messages: %v", err)
 	}
