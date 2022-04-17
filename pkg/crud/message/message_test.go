@@ -70,17 +70,6 @@ func TestCRUD(t *testing.T) {
 		assert.NotEqual(t, len(resp1.Infos), 0)
 	}
 
-	message1.BatchGet = false
-	message1.ID = resp1.Infos[0].ID
-	message2.ID = resp1.Infos[1].ID
-
-	resp2, err := UpdateMessages(context.Background(), &npool.UpdateMessagesRequest{
-		Infos: []*npool.Message{&message1, &message2},
-	})
-	if assert.Nil(t, err) {
-		assert.NotEqual(t, len(resp2.Infos), 0)
-	}
-
 	resp3, err := GetMessagesByAppLang(context.Background(), &npool.GetMessagesByAppLangRequest{
 		AppID:  message1.AppID,
 		LangID: message1.LangID,
