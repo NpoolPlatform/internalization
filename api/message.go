@@ -68,6 +68,31 @@ func (s *Server) CreateMessages(ctx context.Context, in *npool.CreateMessagesReq
 	return resp, nil
 }
 
+func (s *Server) CreateMessagesForOtherApp(ctx context.Context, in *npool.CreateMessagesForOtherAppRequest) (*npool.CreateMessagesForOtherAppResponse, error) {
+	infos := in.GetInfos()
+	newInfos := []*npool.Message{}
+	if _, err := uuid.Parse(in.GetTargetLangID()); err == nil {
+		for _, info := range infos {
+			info.LangID = in.GetTargetLangID()
+			info.AppID = in.GetTargetAppID()
+			newInfos = append(newInfos, info)
+		}
+	} else {
+		newInfos = infos
+	}
+
+	resp, err := crud.CreateMessages(ctx, &npool.CreateMessagesRequest{
+		Infos: newInfos,
+	})
+	if err != nil {
+		logger.Sugar().Errorf("fail create messages: %v", err)
+		return &npool.CreateMessagesForOtherAppResponse{}, status.Error(codes.Internal, err.Error())
+	}
+	return &npool.CreateMessagesForOtherAppResponse{
+		Infos: resp.Infos,
+	}, nil
+}
+
 func (s *Server) UpdateMessage(ctx context.Context, in *npool.UpdateMessageRequest) (*npool.UpdateMessageResponse, error) {
 	resp, err := crud.UpdateMessage(ctx, in)
 	if err != nil {
