@@ -33,6 +33,9 @@ func (s *Server) CreateMessage(ctx context.Context, in *npool.CreateMessageReque
 func (s *Server) CreateMessageForOtherApp(ctx context.Context, in *npool.CreateMessageForOtherAppRequest) (*npool.CreateMessageForOtherAppResponse, error) {
 	info := in.GetInfo()
 	info.AppID = in.GetTargetAppID()
+	if _, err := uuid.Parse(in.GetTargetLangID()); err == nil {
+		info.LangID = in.GetTargetLangID()
+	}
 
 	resp, err := crud.CreateMessage(ctx, &npool.CreateMessageRequest{
 		Info: info,
