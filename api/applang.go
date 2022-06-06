@@ -36,6 +36,15 @@ func (s *Server) CreateAppLangForOtherApp(ctx context.Context, in *npool.CreateA
 	}, nil
 }
 
+func (s *Server) UpdateAppLang(ctx context.Context, in *npool.UpdateAppLangRequest) (*npool.UpdateAppLangResponse, error) {
+	resp, err := crud.Update(ctx, in)
+	if err != nil {
+		logger.Sugar().Errorw("fail update lang: %v", err)
+		return &npool.UpdateAppLangResponse{}, status.Error(codes.Internal, err.Error())
+	}
+	return resp, nil
+}
+
 func (s *Server) GetAppLang(ctx context.Context, in *npool.GetAppLangRequest) (*npool.GetAppLangResponse, error) {
 	resp, err := crud.Get(ctx, in)
 	if err != nil {

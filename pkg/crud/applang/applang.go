@@ -66,6 +66,38 @@ func Create(ctx context.Context, in *npool.CreateAppLangRequest) (*npool.CreateA
 	}, nil
 }
 
+func Update(ctx context.Context, in *npool.UpdateAppLangRequest) (*npool.UpdateAppLangResponse, error) {
+	if err := validateAppLang(in.GetInfo()); err != nil {
+		return nil, xerrors.Errorf("invalid parameter: %v", err)
+	}
+
+	id, err := uuid.Parse(in.GetInfo().GetID())
+	if err != nil {
+		return nil, xerrors.Errorf("invalid id: %v", err)
+	}
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, dbTimeout)
+	defer cancel()
+
+	info, err := cli.
+		AppLang.
+		UpdateOneID(id).
+		SetMainLang(in.GetInfo().GetMainLang()).
+		Save(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail update lang: %v", err)
+	}
+
+	return &npool.UpdateAppLangResponse{
+		Info: dbRowToLang(info),
+	}, nil
+}
+
 func GetByApp(ctx context.Context, in *npool.GetAppLangsByAppRequest) (*npool.GetAppLangsByAppResponse, error) {
 	appID, err := uuid.Parse(in.GetAppID())
 	if err != nil {
