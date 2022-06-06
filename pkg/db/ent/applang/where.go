@@ -105,6 +105,13 @@ func LangID(v uuid.UUID) predicate.AppLang {
 	})
 }
 
+// MainLang applies equality check predicate on the "main_lang" field. It's identical to MainLangEQ.
+func MainLang(v bool) predicate.AppLang {
+	return predicate.AppLang(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMainLang), v))
+	})
+}
+
 // CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
 func CreateAt(v uint32) predicate.AppLang {
 	return predicate.AppLang(func(s *sql.Selector) {
@@ -275,6 +282,20 @@ func LangIDLT(v uuid.UUID) predicate.AppLang {
 func LangIDLTE(v uuid.UUID) predicate.AppLang {
 	return predicate.AppLang(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldLangID), v))
+	})
+}
+
+// MainLangEQ applies the EQ predicate on the "main_lang" field.
+func MainLangEQ(v bool) predicate.AppLang {
+	return predicate.AppLang(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMainLang), v))
+	})
+}
+
+// MainLangNEQ applies the NEQ predicate on the "main_lang" field.
+func MainLangNEQ(v bool) predicate.AppLang {
+	return predicate.AppLang(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldMainLang), v))
 	})
 }
 

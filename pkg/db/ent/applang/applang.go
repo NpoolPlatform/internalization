@@ -15,6 +15,8 @@ const (
 	FieldAppID = "app_id"
 	// FieldLangID holds the string denoting the lang_id field in the database.
 	FieldLangID = "lang_id"
+	// FieldMainLang holds the string denoting the main_lang field in the database.
+	FieldMainLang = "main_lang"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
 	FieldCreateAt = "create_at"
 	// FieldUpdateAt holds the string denoting the update_at field in the database.
@@ -30,6 +32,7 @@ var Columns = []string{
 	FieldID,
 	FieldAppID,
 	FieldLangID,
+	FieldMainLang,
 	FieldCreateAt,
 	FieldUpdateAt,
 	FieldDeleteAt,
@@ -46,6 +49,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultMainLang holds the default value on creation for the "main_lang" field.
+	DefaultMainLang bool
 	// DefaultCreateAt holds the default value on creation for the "create_at" field.
 	DefaultCreateAt func() uint32
 	// DefaultUpdateAt holds the default value on creation for the "update_at" field.

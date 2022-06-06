@@ -20,6 +20,8 @@ type AppLang struct {
 	AppID uuid.UUID `json:"app_id,omitempty"`
 	// LangID holds the value of the "lang_id" field.
 	LangID uuid.UUID `json:"lang_id,omitempty"`
+	// MainLang holds the value of the "main_lang" field.
+	MainLang bool `json:"main_lang,omitempty"`
 	// CreateAt holds the value of the "create_at" field.
 	CreateAt uint32 `json:"create_at,omitempty"`
 	// UpdateAt holds the value of the "update_at" field.
@@ -33,6 +35,8 @@ func (*AppLang) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
+		case applang.FieldMainLang:
+			values[i] = new(sql.NullBool)
 		case applang.FieldCreateAt, applang.FieldUpdateAt, applang.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
 		case applang.FieldID, applang.FieldAppID, applang.FieldLangID:
@@ -69,6 +73,12 @@ func (al *AppLang) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field lang_id", values[i])
 			} else if value != nil {
 				al.LangID = *value
+			}
+		case applang.FieldMainLang:
+			if value, ok := values[i].(*sql.NullBool); !ok {
+				return fmt.Errorf("unexpected type %T for field main_lang", values[i])
+			} else if value.Valid {
+				al.MainLang = value.Bool
 			}
 		case applang.FieldCreateAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -120,6 +130,8 @@ func (al *AppLang) String() string {
 	builder.WriteString(fmt.Sprintf("%v", al.AppID))
 	builder.WriteString(", lang_id=")
 	builder.WriteString(fmt.Sprintf("%v", al.LangID))
+	builder.WriteString(", main_lang=")
+	builder.WriteString(fmt.Sprintf("%v", al.MainLang))
 	builder.WriteString(", create_at=")
 	builder.WriteString(fmt.Sprintf("%v", al.CreateAt))
 	builder.WriteString(", update_at=")

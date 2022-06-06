@@ -40,6 +40,20 @@ func (alu *AppLangUpdate) SetLangID(u uuid.UUID) *AppLangUpdate {
 	return alu
 }
 
+// SetMainLang sets the "main_lang" field.
+func (alu *AppLangUpdate) SetMainLang(b bool) *AppLangUpdate {
+	alu.mutation.SetMainLang(b)
+	return alu
+}
+
+// SetNillableMainLang sets the "main_lang" field if the given value is not nil.
+func (alu *AppLangUpdate) SetNillableMainLang(b *bool) *AppLangUpdate {
+	if b != nil {
+		alu.SetMainLang(*b)
+	}
+	return alu
+}
+
 // SetCreateAt sets the "create_at" field.
 func (alu *AppLangUpdate) SetCreateAt(u uint32) *AppLangUpdate {
 	alu.mutation.ResetCreateAt()
@@ -195,6 +209,13 @@ func (alu *AppLangUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: applang.FieldLangID,
 		})
 	}
+	if value, ok := alu.mutation.MainLang(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: applang.FieldMainLang,
+		})
+	}
 	if value, ok := alu.mutation.CreateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeUint32,
@@ -265,6 +286,20 @@ func (aluo *AppLangUpdateOne) SetAppID(u uuid.UUID) *AppLangUpdateOne {
 // SetLangID sets the "lang_id" field.
 func (aluo *AppLangUpdateOne) SetLangID(u uuid.UUID) *AppLangUpdateOne {
 	aluo.mutation.SetLangID(u)
+	return aluo
+}
+
+// SetMainLang sets the "main_lang" field.
+func (aluo *AppLangUpdateOne) SetMainLang(b bool) *AppLangUpdateOne {
+	aluo.mutation.SetMainLang(b)
+	return aluo
+}
+
+// SetNillableMainLang sets the "main_lang" field if the given value is not nil.
+func (aluo *AppLangUpdateOne) SetNillableMainLang(b *bool) *AppLangUpdateOne {
+	if b != nil {
+		aluo.SetMainLang(*b)
+	}
 	return aluo
 }
 
@@ -445,6 +480,13 @@ func (aluo *AppLangUpdateOne) sqlSave(ctx context.Context) (_node *AppLang, err 
 			Type:   field.TypeUUID,
 			Value:  value,
 			Column: applang.FieldLangID,
+		})
+	}
+	if value, ok := aluo.mutation.MainLang(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: applang.FieldMainLang,
 		})
 	}
 	if value, ok := aluo.mutation.CreateAt(); ok {

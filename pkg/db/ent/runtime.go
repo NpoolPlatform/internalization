@@ -17,18 +17,22 @@ import (
 func init() {
 	applangFields := schema.AppLang{}.Fields()
 	_ = applangFields
+	// applangDescMainLang is the schema descriptor for main_lang field.
+	applangDescMainLang := applangFields[3].Descriptor()
+	// applang.DefaultMainLang holds the default value on creation for the main_lang field.
+	applang.DefaultMainLang = applangDescMainLang.Default.(bool)
 	// applangDescCreateAt is the schema descriptor for create_at field.
-	applangDescCreateAt := applangFields[3].Descriptor()
+	applangDescCreateAt := applangFields[4].Descriptor()
 	// applang.DefaultCreateAt holds the default value on creation for the create_at field.
 	applang.DefaultCreateAt = applangDescCreateAt.Default.(func() uint32)
 	// applangDescUpdateAt is the schema descriptor for update_at field.
-	applangDescUpdateAt := applangFields[4].Descriptor()
+	applangDescUpdateAt := applangFields[5].Descriptor()
 	// applang.DefaultUpdateAt holds the default value on creation for the update_at field.
 	applang.DefaultUpdateAt = applangDescUpdateAt.Default.(func() uint32)
 	// applang.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
 	applang.UpdateDefaultUpdateAt = applangDescUpdateAt.UpdateDefault.(func() uint32)
 	// applangDescDeleteAt is the schema descriptor for delete_at field.
-	applangDescDeleteAt := applangFields[5].Descriptor()
+	applangDescDeleteAt := applangFields[6].Descriptor()
 	// applang.DefaultDeleteAt holds the default value on creation for the delete_at field.
 	applang.DefaultDeleteAt = applangDescDeleteAt.Default.(func() uint32)
 	// applangDescID is the schema descriptor for id field.

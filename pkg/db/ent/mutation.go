@@ -41,6 +41,7 @@ type AppLangMutation struct {
 	id            *uuid.UUID
 	app_id        *uuid.UUID
 	lang_id       *uuid.UUID
+	main_lang     *bool
 	create_at     *uint32
 	addcreate_at  *int32
 	update_at     *uint32
@@ -227,6 +228,42 @@ func (m *AppLangMutation) OldLangID(ctx context.Context) (v uuid.UUID, err error
 // ResetLangID resets all changes to the "lang_id" field.
 func (m *AppLangMutation) ResetLangID() {
 	m.lang_id = nil
+}
+
+// SetMainLang sets the "main_lang" field.
+func (m *AppLangMutation) SetMainLang(b bool) {
+	m.main_lang = &b
+}
+
+// MainLang returns the value of the "main_lang" field in the mutation.
+func (m *AppLangMutation) MainLang() (r bool, exists bool) {
+	v := m.main_lang
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMainLang returns the old "main_lang" field's value of the AppLang entity.
+// If the AppLang object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AppLangMutation) OldMainLang(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMainLang is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMainLang requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMainLang: %w", err)
+	}
+	return oldValue.MainLang, nil
+}
+
+// ResetMainLang resets all changes to the "main_lang" field.
+func (m *AppLangMutation) ResetMainLang() {
+	m.main_lang = nil
 }
 
 // SetCreateAt sets the "create_at" field.
@@ -416,12 +453,15 @@ func (m *AppLangMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AppLangMutation) Fields() []string {
-	fields := make([]string, 0, 5)
+	fields := make([]string, 0, 6)
 	if m.app_id != nil {
 		fields = append(fields, applang.FieldAppID)
 	}
 	if m.lang_id != nil {
 		fields = append(fields, applang.FieldLangID)
+	}
+	if m.main_lang != nil {
+		fields = append(fields, applang.FieldMainLang)
 	}
 	if m.create_at != nil {
 		fields = append(fields, applang.FieldCreateAt)
@@ -444,6 +484,8 @@ func (m *AppLangMutation) Field(name string) (ent.Value, bool) {
 		return m.AppID()
 	case applang.FieldLangID:
 		return m.LangID()
+	case applang.FieldMainLang:
+		return m.MainLang()
 	case applang.FieldCreateAt:
 		return m.CreateAt()
 	case applang.FieldUpdateAt:
@@ -463,6 +505,8 @@ func (m *AppLangMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldAppID(ctx)
 	case applang.FieldLangID:
 		return m.OldLangID(ctx)
+	case applang.FieldMainLang:
+		return m.OldMainLang(ctx)
 	case applang.FieldCreateAt:
 		return m.OldCreateAt(ctx)
 	case applang.FieldUpdateAt:
@@ -491,6 +535,13 @@ func (m *AppLangMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetLangID(v)
+		return nil
+	case applang.FieldMainLang:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMainLang(v)
 		return nil
 	case applang.FieldCreateAt:
 		v, ok := value.(uint32)
@@ -606,6 +657,9 @@ func (m *AppLangMutation) ResetField(name string) error {
 		return nil
 	case applang.FieldLangID:
 		m.ResetLangID()
+		return nil
+	case applang.FieldMainLang:
+		m.ResetMainLang()
 		return nil
 	case applang.FieldCreateAt:
 		m.ResetCreateAt()

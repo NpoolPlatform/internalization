@@ -35,6 +35,20 @@ func (alc *AppLangCreate) SetLangID(u uuid.UUID) *AppLangCreate {
 	return alc
 }
 
+// SetMainLang sets the "main_lang" field.
+func (alc *AppLangCreate) SetMainLang(b bool) *AppLangCreate {
+	alc.mutation.SetMainLang(b)
+	return alc
+}
+
+// SetNillableMainLang sets the "main_lang" field if the given value is not nil.
+func (alc *AppLangCreate) SetNillableMainLang(b *bool) *AppLangCreate {
+	if b != nil {
+		alc.SetMainLang(*b)
+	}
+	return alc
+}
+
 // SetCreateAt sets the "create_at" field.
 func (alc *AppLangCreate) SetCreateAt(u uint32) *AppLangCreate {
 	alc.mutation.SetCreateAt(u)
@@ -162,6 +176,10 @@ func (alc *AppLangCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (alc *AppLangCreate) defaults() {
+	if _, ok := alc.mutation.MainLang(); !ok {
+		v := applang.DefaultMainLang
+		alc.mutation.SetMainLang(v)
+	}
 	if _, ok := alc.mutation.CreateAt(); !ok {
 		v := applang.DefaultCreateAt()
 		alc.mutation.SetCreateAt(v)
@@ -187,6 +205,9 @@ func (alc *AppLangCreate) check() error {
 	}
 	if _, ok := alc.mutation.LangID(); !ok {
 		return &ValidationError{Name: "lang_id", err: errors.New(`ent: missing required field "AppLang.lang_id"`)}
+	}
+	if _, ok := alc.mutation.MainLang(); !ok {
+		return &ValidationError{Name: "main_lang", err: errors.New(`ent: missing required field "AppLang.main_lang"`)}
 	}
 	if _, ok := alc.mutation.CreateAt(); !ok {
 		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "AppLang.create_at"`)}
@@ -249,6 +270,14 @@ func (alc *AppLangCreate) createSpec() (*AppLang, *sqlgraph.CreateSpec) {
 			Column: applang.FieldLangID,
 		})
 		_node.LangID = value
+	}
+	if value, ok := alc.mutation.MainLang(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeBool,
+			Value:  value,
+			Column: applang.FieldMainLang,
+		})
+		_node.MainLang = value
 	}
 	if value, ok := alc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -349,6 +378,18 @@ func (u *AppLangUpsert) SetLangID(v uuid.UUID) *AppLangUpsert {
 // UpdateLangID sets the "lang_id" field to the value that was provided on create.
 func (u *AppLangUpsert) UpdateLangID() *AppLangUpsert {
 	u.SetExcluded(applang.FieldLangID)
+	return u
+}
+
+// SetMainLang sets the "main_lang" field.
+func (u *AppLangUpsert) SetMainLang(v bool) *AppLangUpsert {
+	u.Set(applang.FieldMainLang, v)
+	return u
+}
+
+// UpdateMainLang sets the "main_lang" field to the value that was provided on create.
+func (u *AppLangUpsert) UpdateMainLang() *AppLangUpsert {
+	u.SetExcluded(applang.FieldMainLang)
 	return u
 }
 
@@ -481,6 +522,20 @@ func (u *AppLangUpsertOne) SetLangID(v uuid.UUID) *AppLangUpsertOne {
 func (u *AppLangUpsertOne) UpdateLangID() *AppLangUpsertOne {
 	return u.Update(func(s *AppLangUpsert) {
 		s.UpdateLangID()
+	})
+}
+
+// SetMainLang sets the "main_lang" field.
+func (u *AppLangUpsertOne) SetMainLang(v bool) *AppLangUpsertOne {
+	return u.Update(func(s *AppLangUpsert) {
+		s.SetMainLang(v)
+	})
+}
+
+// UpdateMainLang sets the "main_lang" field to the value that was provided on create.
+func (u *AppLangUpsertOne) UpdateMainLang() *AppLangUpsertOne {
+	return u.Update(func(s *AppLangUpsert) {
+		s.UpdateMainLang()
 	})
 }
 
@@ -788,6 +843,20 @@ func (u *AppLangUpsertBulk) SetLangID(v uuid.UUID) *AppLangUpsertBulk {
 func (u *AppLangUpsertBulk) UpdateLangID() *AppLangUpsertBulk {
 	return u.Update(func(s *AppLangUpsert) {
 		s.UpdateLangID()
+	})
+}
+
+// SetMainLang sets the "main_lang" field.
+func (u *AppLangUpsertBulk) SetMainLang(v bool) *AppLangUpsertBulk {
+	return u.Update(func(s *AppLangUpsert) {
+		s.SetMainLang(v)
+	})
+}
+
+// UpdateMainLang sets the "main_lang" field to the value that was provided on create.
+func (u *AppLangUpsertBulk) UpdateMainLang() *AppLangUpsertBulk {
+	return u.Update(func(s *AppLangUpsert) {
+		s.UpdateMainLang()
 	})
 }
 

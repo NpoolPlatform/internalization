@@ -30,9 +30,10 @@ func validateAppLang(info *npool.AppLang) error {
 
 func dbRowToLang(row *ent.AppLang) *npool.AppLang {
 	return &npool.AppLang{
-		ID:     row.ID.String(),
-		AppID:  row.AppID.String(),
-		LangID: row.LangID.String(),
+		ID:       row.ID.String(),
+		AppID:    row.AppID.String(),
+		LangID:   row.LangID.String(),
+		MainLang: row.MainLang,
 	}
 }
 
@@ -54,6 +55,7 @@ func Create(ctx context.Context, in *npool.CreateAppLangRequest) (*npool.CreateA
 		Create().
 		SetAppID(uuid.MustParse(in.GetInfo().GetAppID())).
 		SetLangID(uuid.MustParse(in.GetInfo().GetLangID())).
+		SetMainLang(in.GetInfo().GetMainLang()).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail create lang: %v", err)
