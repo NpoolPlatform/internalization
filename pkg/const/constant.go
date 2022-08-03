@@ -14,4 +14,13 @@ var Langs = map[string]*Lang{
 	"ja-JP": {
 		Name: "Japanese",
 	},
+	"ru-RU": {
+		Name: "Russian",
+	},
+	"ko-KR": {
+		Name: "Korea",
+	},
+	"fr": {
+		Name: "French",
+	},
 }
