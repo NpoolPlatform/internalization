@@ -20,7 +20,7 @@ spec:
     - host: api.npool.top
       http: &http_rules
         paths:
-          - path: /api/internationalization
+          - path: /api/internationalization/v1/get
             backend:
               serviceName: internationalization
               servicePort: 50190
@@ -41,6 +41,8 @@ spec:
     - host: api.singapore-testing.npool.top
       http: *http_rules
     - host: api.development.npool.top
+      http: *http_rules
+    - host: api.procyon.xpool.top
       http: *http_rules
 
 
@@ -68,7 +70,7 @@ spec:
     - host: api.npool.top
       http: &http_rules
         paths:
-          - path: /api/internationalization/create
+          - path: /api/internationalization/v1/create
             backend:
               serviceName: internationalization
               servicePort: 50190
@@ -89,5 +91,7 @@ spec:
     - host: api.singapore-testing.npool.top
       http: *http_rules
     - host: api.development.npool.top
+      http: *http_rules
+    - host: api.procyon.xpool.top
       http: *http_rules
 
