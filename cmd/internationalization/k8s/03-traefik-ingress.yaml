@@ -74,6 +74,10 @@ spec:
             backend:
               serviceName: internationalization
               servicePort: 50190
+          - path: /api/internationalization/v1/update
+            backend:
+              serviceName: internationalization
+              servicePort: 50190
     - host: api.procyon.vip
       http: *http_rules
     - host: api.xpool.top
