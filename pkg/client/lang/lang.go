@@ -1,5 +1,5 @@
 //nolint:nolintlint,dupl
-package verify
+package lang
 
 import (
 	"context"
